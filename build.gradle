@@ -1,0 +1,85 @@
+/*
+ * Copyright (c) E-System - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Written by E-System team (https://ext-system.com), 2015
+ */
+buildscript {
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url "${artifactory_contextUrl}/plugins-snapshot"
+            credentials {
+                username "${artifactory_user}"
+                password "${artifactory_password}"
+            }
+        }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.es.gradle:esgc:1.2.0-SNAPSHOT'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.1-rc3"
+    }
+}
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}
+
+apply from: "build-${profile}.gradle"
+apply plugin: 'com.es.gradle.esgc'
+apply plugin: 'com.es.gradle.esgcGlobal'
+
+esgcGlobal{
+    idea()
+}
+esgc{
+    manifestVersion()
+    propertyVersion("/com/es/lib/spring")
+
+    publish()
+
+    dependencies{
+        compile{
+            esCommonLib()
+            esCommonValidator()
+            esCommonEntity()
+            esCommonDto()
+
+            commonsIO()
+            javaee()
+            springWeb()
+            springJdbc()
+            thumbnailator()
+
+            httpClient()
+        }
+        testCompile{
+            springBootWeb()
+            spockWithSpring()
+            springBootTest()
+        }
+    }
+}
+test {
+    systemProperty 'spring.profiles.active', 'test'
+}
+
+def sonarAvailable = properties['sonar_url'] != null && properties['sonar_user'] != null && properties['sonar_password'] != null
+if (sonarAvailable) {
+    apply plugin: 'org.sonarqube'
+
+    sonarqube {
+        properties {
+            property "sonar.host.url", "${sonar_url}"
+            property "sonar.login", "${sonar_user}"
+            property "sonar.password", "${sonar_password}"
+        }
+    }
+}

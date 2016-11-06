@@ -1,0 +1,93 @@
+/*
+ * Copyright (c) E-System - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Written by E-System team (https://ext-system.com), 2016
+ */
+
+package com.es.lib.spring.web.advice;
+
+import com.es.lib.dto.DTOResponse;
+import com.es.lib.dto.DTOResult;
+import com.es.lib.dto.ResponseBuilder;
+import com.es.lib.dto.validation.DTOValidationStatus;
+import com.es.lib.spring.exception.ServiceException;
+import com.es.lib.spring.exception.ServiceValidationException;
+import com.es.lib.spring.service.EnvironmentProfileService;
+import com.es.lib.spring.service.controller.MessageService;
+import com.es.lib.spring.web.common.BaseRestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+/**
+ * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @since 28.06.16
+ */
+@ControllerAdvice(assignableTypes = BaseRestController.class)
+public class BaseRestErrorAdvice {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseRestErrorAdvice.class);
+
+    private MessageService messageService;
+    private EnvironmentProfileService environmentProfileService;
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    private DTOResponse<DTOValidationStatus> validation(ServiceValidationException e) {
+        LOG.error(e.getCode(), e);
+        return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
+                .message(messageService.get(e.getCode(), e.getArgs()))
+                .data(e.getStatus())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public DTOResponse serviceException(ServiceException e) {
+        LOG.error("Service exception: " + e.getMessage(), e);
+        return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
+                .message(messageService.get(e))
+                .build();
+    }
+
+    @ExceptionHandler(value = {Throwable.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public DTOResponse throwable(Throwable e) {
+        LOG.error("Service exception: " + e.getMessage(), e);
+        String message;
+        if (environmentProfileService.isDevelop()) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            message = e.getMessage();
+            //+ "\n" + sw.toString();
+        } else {
+            message = "Произошла ошибка. Обратитесь в техническую поддержку";
+        }
+        return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
+                .message(message)
+                .build();
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setEnvironmentProfileService(EnvironmentProfileService environmentProfileService) {
+        this.environmentProfileService = environmentProfileService;
+    }
+}
