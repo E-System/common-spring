@@ -50,19 +50,26 @@ public class ImageThumbServiceImpl implements ImageThumbService {
         if (thumb == null) {
             return originalFile;
         }
-        final String ext = FilenameUtils.getExtension(originalFile.getAbsolutePath()).toLowerCase();
 
         File thumbTarget = new File(getPath(originalFile, thumb));
 
-        if (!thumbTarget.exists() || !thumbTarget.canRead()) {
-            try {
-                BufferedImage bufferedImage = Thumbnails.of(originalFile).size(thumb.getWidth(), thumb.getHeight()).asBufferedImage();
-                ImageIO.write(bufferedImage, ext, thumbTarget);
-            } catch (IOException e) {
-                LOG.error("Thumb save error: " + e.getMessage());
-            }
+        if (thumbTarget.exists() && thumbTarget.canRead()) {
+            return thumbTarget;
         }
-        return thumbTarget;
+
+        return generate(originalFile, thumbTarget, thumb);
+    }
+
+    private File generate(File originalFile, File thumbTarget, Thumb thumb) {
+        try {
+            final String ext = FilenameUtils.getExtension(originalFile.getAbsolutePath()).toLowerCase();
+            BufferedImage bufferedImage = Thumbnails.of(originalFile).size(thumb.getWidth(), thumb.getHeight()).asBufferedImage();
+            ImageIO.write(bufferedImage, ext, thumbTarget);
+            return thumbTarget;
+        } catch (IOException e) {
+            LOG.error("Thumb save error", e);
+            return originalFile;
+        }
     }
 
     private String getPath(File originalFile, Thumb parameters) {
