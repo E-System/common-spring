@@ -16,7 +16,6 @@
 
 package com.es.lib.spring.web.util.file
 
-import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -25,12 +24,9 @@ import spock.lang.Specification
  */
 class FileTypeUtilSpec extends Specification {
 
-    @Shared
-    def util = new FileTypeUtil()
-
     def "IsWord"() {
         expect:
-        util.isWord(ext) == result
+        FileTypeUtil.isWord(ext) == result
         where:
         ext    | result
         null   | false
@@ -45,7 +41,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsExcel"() {
         expect:
-        util.isExcel(ext) == result
+        FileTypeUtil.isExcel(ext) == result
         where:
         ext    | result
         null   | false
@@ -57,7 +53,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsPdf"() {
         expect:
-        util.isPdf(ext) == result
+        FileTypeUtil.isPdf(ext) == result
         where:
         ext   | result
         null  | false
@@ -68,7 +64,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsText"() {
         expect:
-        util.isText(ext) == result
+        FileTypeUtil.isText(ext) == result
         where:
         ext   | result
         null  | false
@@ -79,7 +75,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsArchive"() {
         expect:
-        util.isArchive(ext) == result
+        FileTypeUtil.isArchive(ext) == result
         where:
         ext   | result
         null  | false
@@ -93,7 +89,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsImage"() {
         expect:
-        util.isImage(ext) == result
+        FileTypeUtil.isImage(ext) == result
         where:
         ext    | result
         null   | false
@@ -108,7 +104,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "IsOther"() {
         expect:
-        util.isOther(ext) == result
+        FileTypeUtil.isOther(ext) == result
         where:
         ext    | result
         null   | true
@@ -141,7 +137,7 @@ class FileTypeUtilSpec extends Specification {
 
     def "GetIconPostfix"() {
         expect:
-        util.getIconPostfix(ext) == postfix
+        FileTypeUtil.getIconPostfix(ext) == postfix
         where:
         ext    | postfix
         null   | ""

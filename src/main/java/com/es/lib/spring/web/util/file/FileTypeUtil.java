@@ -23,7 +23,7 @@ import java.util.*;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 09.06.15
  */
-public class FileTypeUtil {
+public final class FileTypeUtil {
 
     private enum Type {
         WORD,
@@ -51,39 +51,43 @@ public class FileTypeUtil {
         }
     }
 
-    private boolean isTyped(Type type, String ext) {
+    private FileTypeUtil() {
+
+    }
+
+    private static boolean isTyped(Type type, String ext) {
         return ext != null && EXTENSIONS.get(type).contains(ext.toLowerCase());
     }
 
-    public boolean isWord(String ext) {
+    public static boolean isWord(String ext) {
         return isTyped(Type.WORD, ext);
     }
 
-    public boolean isExcel(String ext) {
+    public static boolean isExcel(String ext) {
         return isTyped(Type.EXCEL, ext);
     }
 
-    public boolean isPdf(String ext) {
+    public static boolean isPdf(String ext) {
         return isTyped(Type.PDF, ext);
     }
 
-    public boolean isText(String ext) {
+    public static boolean isText(String ext) {
         return isTyped(Type.TEXT, ext);
     }
 
-    public boolean isArchive(String ext) {
+    public static boolean isArchive(String ext) {
         return isTyped(Type.ARCHIVE, ext);
     }
 
-    public boolean isImage(String ext) {
+    public static boolean isImage(String ext) {
         return isTyped(Type.IMAGE, ext);
     }
 
-    public boolean isOther(String ext) {
+    public static boolean isOther(String ext) {
         return !(isImage(ext) || isPdf(ext) || isWord(ext) || isExcel(ext) || isText(ext) || isArchive(ext));
     }
 
-    public String getIconPostfix(String ext) {
+    public static String getIconPostfix(String ext) {
         if (ext == null) {
             return "";
         }
