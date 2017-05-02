@@ -20,6 +20,7 @@ import com.es.lib.spring.service.file.ImageThumbService;
 import com.es.lib.spring.service.file.model.Thumb;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -62,14 +63,20 @@ public class ImageThumbServiceImpl implements ImageThumbService {
 
     private File generate(File originalFile, File thumbTarget, Thumb thumb) {
         try {
-            final String ext = FilenameUtils.getExtension(originalFile.getAbsolutePath()).toLowerCase();
             BufferedImage bufferedImage = Thumbnails.of(originalFile).size(thumb.getWidth(), thumb.getHeight()).asBufferedImage();
-            ImageIO.write(bufferedImage, ext, thumbTarget);
+            if (!ImageIO.write(bufferedImage, getThumbImageType(originalFile), thumbTarget)) {
+                throw new IOException("File not created");
+            }
             return thumbTarget;
         } catch (IOException e) {
-            LOG.error("Thumb save error", e);
+            LOG.warn("Thumb save error for " + originalFile + ": " + e.getMessage());
             return originalFile;
         }
+    }
+
+    private String getThumbImageType(File originalFile) {
+        final String ext = FilenameUtils.getExtension(originalFile.getAbsolutePath()).toLowerCase();
+        return StringUtils.isNotBlank(ext) ? ext : "png";
     }
 
     private String getPath(File originalFile, Thumb parameters) {
