@@ -63,10 +63,7 @@ public class ImageThumbServiceImpl implements ImageThumbService {
 
     private File generate(File originalFile, File thumbTarget, Thumb thumb) {
         try {
-            BufferedImage bufferedImage = Thumbnails.of(originalFile).size(thumb.getWidth(), thumb.getHeight()).asBufferedImage();
-            if (!ImageIO.write(bufferedImage, getThumbImageType(originalFile), thumbTarget)) {
-                throw new IOException("File not created");
-            }
+            Thumbnails.of(originalFile).size(thumb.getWidth(), thumb.getHeight()).toFile(thumbTarget);
             return thumbTarget;
         } catch (IOException e) {
             LOG.warn("Thumb save error for " + originalFile + ": " + e.getMessage());
@@ -84,7 +81,6 @@ public class ImageThumbServiceImpl implements ImageThumbService {
         if (!parameters.isDefaultSize()) {
             postfix = ".thumb_" + parameters.getWidth() + "_" + parameters.getHeight();
         }
-        return originalFile.getAbsolutePath() + postfix;
-
+        return FilenameUtils.removeExtension(originalFile.getAbsolutePath()) + postfix + "." + getThumbImageType(originalFile);
     }
 }
