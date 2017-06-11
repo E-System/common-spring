@@ -16,7 +16,6 @@
 
 package com.es.lib.spring.service
 
-import com.es.lib.spring.BaseSpec
 import com.es.lib.spring.exception.ServiceException
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -26,7 +25,7 @@ import java.util.function.Supplier
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
-class BaseServiceSpec extends BaseSpec {
+class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
 
     @Autowired
     BaseService service
@@ -41,7 +40,7 @@ class BaseServiceSpec extends BaseSpec {
             Object get() {
                 return null
             }
-        });
+        })
         then:
         def ex = thrown(ServiceException)
         ex.code == errorCode
@@ -58,7 +57,7 @@ class BaseServiceSpec extends BaseSpec {
             Object get() {
                 return obj
             }
-        });
+        })
         then:
         res == obj
     }

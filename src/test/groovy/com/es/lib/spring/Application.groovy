@@ -17,9 +17,7 @@
 package com.es.lib.spring
 
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration
 import org.springframework.boot.web.support.SpringBootServletInitializer
 
 /**
@@ -27,7 +25,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer
  * @since 23.07.16
  */
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = [VelocityAutoConfiguration.class])
 class Application extends SpringBootServletInitializer {
 
     static void main(String[] args) {

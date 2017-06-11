@@ -14,26 +14,16 @@
  *    limitations under the License.
  */
 
-package com.es.lib.spring.service
+package com.es.lib.spring
 
-import com.es.lib.spring.service.file.FileStorePathService
-import com.es.lib.spring.service.file.model.FileStorePath
-import org.springframework.stereotype.Service
+import org.springframework.boot.test.context.SpringBootTest
+import spock.lang.Specification
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
-@Service
-class FileStorePathServiceImpl implements FileStorePathService {
-
-    @Override
-    String getBasePath() {
-        return null
-    }
-
-    @Override
-    FileStorePath getPath(String name, String ext) {
-        return null
-    }
-}
+@SpringBootTest(webEnvironment = NONE)
+abstract class BaseServiceSpec extends Specification {}

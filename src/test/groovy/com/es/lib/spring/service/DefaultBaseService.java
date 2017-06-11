@@ -23,6 +23,4 @@ import org.springframework.stereotype.Service;
  * @since 23.07.16
  */
 @Service
-public class DefaultBaseService extends BaseService {
-
-}
+public class DefaultBaseService extends BaseService {}
