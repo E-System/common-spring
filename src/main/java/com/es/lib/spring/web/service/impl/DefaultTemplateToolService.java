@@ -16,12 +16,13 @@
 
 package com.es.lib.spring.web.service.impl;
 
-import com.es.lib.common.DateUtil;
-import com.es.lib.common.NumberFormatUtil;
-import com.es.lib.common.Pluralizer;
 import com.es.lib.spring.web.service.TemplateToolService;
+import com.es.lib.spring.web.service.TemplateToolVariableProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,7 +31,10 @@ import java.util.Map;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 24.06.16
  */
-public abstract class BaseTemplateToolService implements TemplateToolService {
+@Service
+public class DefaultTemplateToolService implements TemplateToolService {
+
+    private Collection<TemplateToolVariableProvider> variableProviders;
 
     @Override
     public void fillModel(Model model, Locale locale) {
@@ -44,21 +48,14 @@ public abstract class BaseTemplateToolService implements TemplateToolService {
 
     protected Map<String, Object> getAll(Locale locale) {
         Map<String, Object> result = new HashMap<>();
-        result.put("Pluralizer", pluralizer(locale));
-        result.put("NumberFormatUtil", numberFormatUtil(locale));
-        result.put("DateUtil", dateUtil(locale));
+        for (TemplateToolVariableProvider variableProvider : variableProviders) {
+            result.putAll(variableProvider.get(locale));
+        }
         return result;
     }
 
-    protected Class pluralizer(Locale locale) {
-        return Pluralizer.class;
-    }
-
-    protected Class numberFormatUtil(Locale locale) {
-        return NumberFormatUtil.class;
-    }
-
-    protected Class dateUtil(Locale locale) {
-        return DateUtil.class;
+    @Autowired
+    public void setVariableProviders(Collection<TemplateToolVariableProvider> variableProviders) {
+        this.variableProviders = variableProviders;
     }
 }
