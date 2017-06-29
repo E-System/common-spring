@@ -51,7 +51,7 @@ public interface VersionLoader {
                 version,
                 date
             );
-        } catch (IOException e) {
+        } catch (Exception e) {
             return new BuildInfo(UNDEFINED, UNDEFINED_VERSION, UNDEFINED);
         }
     }
