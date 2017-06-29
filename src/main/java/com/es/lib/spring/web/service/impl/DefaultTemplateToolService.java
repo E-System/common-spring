@@ -16,6 +16,7 @@
 
 package com.es.lib.spring.web.service.impl;
 
+import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.web.service.TemplateToolService;
 import com.es.lib.spring.web.service.TemplateToolVariableProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import java.util.Map;
 @Service
 public class DefaultTemplateToolService implements TemplateToolService {
 
+    private BuildInfoService buildInfoService;
     private Collection<TemplateToolVariableProvider> variableProviders;
 
     @Override
@@ -48,10 +50,16 @@ public class DefaultTemplateToolService implements TemplateToolService {
 
     protected Map<String, Object> getAll(Locale locale) {
         Map<String, Object> result = new HashMap<>();
+        result.put("buildInfo", buildInfoService.getInfo());
         for (TemplateToolVariableProvider variableProvider : variableProviders) {
             result.putAll(variableProvider.get(locale));
         }
         return result;
+    }
+
+    @Autowired
+    public void setBuildInfoService(BuildInfoService buildInfoService) {
+        this.buildInfoService = buildInfoService;
     }
 
     @Autowired

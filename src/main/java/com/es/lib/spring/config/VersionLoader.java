@@ -17,6 +17,7 @@
 package com.es.lib.spring.config;
 
 import com.es.lib.common.exception.ESRuntimeException;
+import com.es.lib.spring.model.BuildInfo;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
@@ -30,11 +31,33 @@ import java.util.function.Supplier;
  */
 public interface VersionLoader {
 
+    String UNDEFINED = "UNDEFINED";
     String UNDEFINED_VERSION = "UNDEFINED_VERSION";
     Map<String, String> VERSIONS = new HashMap<>();
 
-    static Map.Entry<String, Collection<String>> readVersionAndModules(Supplier<InputStream> isSupplier) throws IOException {
-        try (InputStream is = isSupplier.get()) {
+    static BuildInfo readBuildInfo() {
+        return readBuildInfo(() -> VersionLoader.class.getResourceAsStream("/com/es/build.properties"));
+    }
+
+    static BuildInfo readBuildInfo(Supplier<InputStream> buildInfoSupplier) {
+        try (InputStream stream = buildInfoSupplier.get()) {
+            Properties props = new Properties();
+            props.load(stream);
+            String name = props.getProperty("name", UNDEFINED);
+            String version = props.getProperty("version", UNDEFINED_VERSION);
+            String date = props.getProperty("date", UNDEFINED);
+            return new BuildInfo(
+                name,
+                version,
+                date
+            );
+        } catch (IOException e) {
+            return new BuildInfo(UNDEFINED, UNDEFINED_VERSION, UNDEFINED);
+        }
+    }
+
+    static Map.Entry<String, Collection<String>> readVersionAndModules(Supplier<InputStream> streamSupplier) throws IOException {
+        try (InputStream is = streamSupplier.get()) {
             Properties props = new Properties();
             props.load(is);
             String version = props.getProperty("version", UNDEFINED_VERSION);
@@ -43,8 +66,8 @@ public interface VersionLoader {
         }
     }
 
-    static String readVersion(Supplier<InputStream> isSupplier) {
-        try (InputStream is = isSupplier.get()) {
+    static String readVersion(Supplier<InputStream> streamSupplier) {
+        try (InputStream is = streamSupplier.get()) {
             Properties props = new Properties();
             props.load(is);
             return props.getProperty("version", UNDEFINED_VERSION);
