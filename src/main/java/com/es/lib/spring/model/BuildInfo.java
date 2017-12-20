@@ -19,6 +19,8 @@ package com.es.lib.spring.model;
 import com.es.lib.common.HashUtil;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -65,6 +67,15 @@ public class BuildInfo implements Serializable {
 
     public String getHash() {
         return HashUtil.md5(name + version + date);
+    }
+
+    public Map<String, String> asMap() {
+        Map<String, String> result = new LinkedHashMap<>();
+        result.put("name", getName());
+        result.put("date", getDate());
+        result.put("hash", getHash());
+        result.put("version", getVersion());
+        return result;
     }
 
     @Override

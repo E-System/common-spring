@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 24.06.16
  */
 @Service
-public class DefaultTemplateToolService implements TemplateToolService {
+public class DefaultTemplateToolServiceImpl implements TemplateToolService {
 
     private BuildInfoService buildInfoService;
     private Collection<TemplateToolVariableProvider> variableProviders;

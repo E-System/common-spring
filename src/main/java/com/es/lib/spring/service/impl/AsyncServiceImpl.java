@@ -43,6 +43,6 @@ public class AsyncServiceImpl implements AsyncService {
 
     @Async
     public <T> Future<T> call(Callable<T> callable) throws Exception {
-        return new AsyncResult<T>(callable.call());
+        return new AsyncResult<>(callable.call());
     }
 }
