@@ -25,12 +25,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
     }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
+    gradleVersion = '4.5'
 }
 
 apply from: "build-${profile}.gradle"
@@ -141,7 +141,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE"
     compile "net.coobird:thumbnailator:0.4.8"
-    compile "org.apache.httpcomponents:httpclient:4.5.2"
+    compile "org.apache.httpcomponents:httpclient:4.5.5"
 
 
     testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
@@ -150,7 +150,7 @@ dependencies {
     testCompile "org.objenesis:objenesis:2.5.1"
     testCompile "org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE"
 
-    testCompile "org.hibernate:hibernate-validator:5.2.4.Final"
+    testCompile "org.hibernate:hibernate-validator:5.2.5.Final"
     testCompile "javax.el:javax.el-api:3.0.0"
 
 }

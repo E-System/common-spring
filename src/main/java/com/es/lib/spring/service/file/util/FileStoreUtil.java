@@ -33,10 +33,9 @@ import java.util.stream.Stream;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 01.02.16
  */
-public class FileStoreUtil {
+public final class FileStoreUtil {
 
-    private FileStoreUtil() {
-    }
+    private FileStoreUtil() { }
 
     public static boolean isMime(String mime, String part) {
         return mime != null && mime.contains(part);
@@ -67,14 +66,14 @@ public class FileStoreUtil {
     public static String getLocalPath(String prefix, String name, String ext) {
         LocalDateTime dateTime = LocalDateTime.now();
         return Stream.of(
-                prefix,
-                String.valueOf(dateTime.getYear()),
-                String.valueOf(dateTime.getMonthValue()),
-                String.valueOf(dateTime.getDayOfMonth()),
-                String.valueOf(dateTime.format(DateTimeFormatter.ofPattern("N"))),
-                name + "." + ext
+            prefix,
+            String.valueOf(dateTime.getYear()),
+            String.valueOf(dateTime.getMonthValue()),
+            String.valueOf(dateTime.getDayOfMonth()),
+            String.valueOf(dateTime.format(DateTimeFormatter.ofPattern("N"))),
+            name + "." + ext
         ).filter(Objects::nonNull)
-                .map(FileStoreUtil::getPathPart)
-                .collect(Collectors.joining());
+            .map(FileStoreUtil::getPathPart)
+            .collect(Collectors.joining());
     }
 }
