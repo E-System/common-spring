@@ -16,7 +16,7 @@
 
 package com.es.lib.spring.service;
 
-import com.es.lib.spring.model.BuildInfo;
+import com.es.lib.common.version.BuildInfo;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com

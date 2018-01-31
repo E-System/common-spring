@@ -16,8 +16,8 @@
 
 package com.es.lib.spring.service.impl;
 
-import com.es.lib.spring.config.VersionLoader;
-import com.es.lib.spring.model.BuildInfo;
+import com.es.lib.common.version.BuildInfo;
+import com.es.lib.common.version.VersionLoader;
 import com.es.lib.spring.service.BuildInfoService;
 import org.springframework.stereotype.Service;
 
