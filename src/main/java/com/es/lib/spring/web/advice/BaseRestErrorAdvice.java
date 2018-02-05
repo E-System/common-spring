@@ -67,8 +67,8 @@ public class BaseRestErrorAdvice {
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOResponse<DTOValidationStatus> violations(ConstraintViolationException e) {
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
             .message("Invalid parameters")
@@ -81,7 +81,7 @@ public class BaseRestErrorAdvice {
         Collection<DTOValidationField> fields = new ArrayList<>(violations.size());
 
         for (ConstraintViolation<?> violation : violations) {
-            fields.add(new DTOValidationField(violation.getConstraintDescriptor().getAttributes().toString(), violation.getMessage()));
+            fields.add(new DTOValidationField(violation.getPropertyPath().toString(), violation.getMessage()));
         }
         return new DTOValidationStatus(DTOValidationStatus.Type.Error, fields);
     }
