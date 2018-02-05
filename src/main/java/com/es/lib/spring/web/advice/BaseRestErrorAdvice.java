@@ -19,6 +19,7 @@ package com.es.lib.spring.web.advice;
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.dto.DTOResult;
 import com.es.lib.dto.ResponseBuilder;
+import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.dto.validation.DTOValidationStatus;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
@@ -34,8 +35,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -55,9 +61,29 @@ public class BaseRestErrorAdvice {
     private DTOResponse<DTOValidationStatus> validation(ServiceValidationException e) {
         LOG.error(e.getCode(), e);
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
-                .message(messageService.get(e.getCode(), e.getArgs()))
-                .data(e.getStatus())
-                .build();
+            .message(messageService.get(e.getCode(), e.getArgs()))
+            .data(e.getStatus())
+            .build();
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public DTOResponse<DTOValidationStatus> violations(ConstraintViolationException e) {
+        return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
+            .message("Invalid parameters")
+            .data(create(e))
+            .build();
+    }
+
+    private DTOValidationStatus create(ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        Collection<DTOValidationField> fields = new ArrayList<>(violations.size());
+
+        for (ConstraintViolation<?> violation : violations) {
+            fields.add(new DTOValidationField(violation.getConstraintDescriptor().getAttributes().toString(), violation.getMessage()));
+        }
+        return new DTOValidationStatus(DTOValidationStatus.Type.Error, fields);
     }
 
     @ExceptionHandler
@@ -66,8 +92,8 @@ public class BaseRestErrorAdvice {
     public DTOResponse serviceException(ServiceException e) {
         LOG.error("Service exception: " + e.getMessage(), e);
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-                .message(messageService.get(e))
-                .build();
+            .message(messageService.get(e))
+            .build();
     }
 
     @ExceptionHandler(value = {Throwable.class})
@@ -85,8 +111,8 @@ public class BaseRestErrorAdvice {
             message = "Произошла ошибка. Обратитесь в техническую поддержку";
         }
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-                .message(message)
-                .build();
+            .message(message)
+            .build();
     }
 
     @Autowired
