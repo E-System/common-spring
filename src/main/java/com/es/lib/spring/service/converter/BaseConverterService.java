@@ -18,6 +18,7 @@ package com.es.lib.spring.service.converter;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -27,14 +28,26 @@ import java.util.stream.Collectors;
 public abstract class BaseConverterService<R, T> {
 
     public Collection<R> convert(Collection<T> items) {
-        return items.stream().filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
+        return convert(items, null);
+    }
+
+    public Collection<R> convert(Collection<T> items, BiConsumer<T, R> enhancer) {
+        return items.stream().filter(Objects::nonNull).map(v -> convert(v, enhancer)).collect(Collectors.toList());
     }
 
     public R convert(T item) {
+        return convert(item, null);
+    }
+
+    public R convert(T item, BiConsumer<T, R> enhancer) {
         if (item == null) {
             return null;
         }
-        return realConvert(item);
+        R result = realConvert(item);
+        if (enhancer != null) {
+            enhancer.accept(item, result);
+        }
+        return result;
     }
 
     protected abstract R realConvert(T item);
