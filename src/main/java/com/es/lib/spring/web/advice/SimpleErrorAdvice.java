@@ -16,6 +16,7 @@
 
 package com.es.lib.spring.web.advice;
 
+import com.es.lib.spring.exception.RawServiceException;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
@@ -53,8 +54,18 @@ public class SimpleErrorAdvice {
         final String message = messageService.get(e.getCode(), e.getArgs());
         LOG.error("Service exception: " + message + " (" + e.getMessage() + ")", e);
         ModelAndView result = new ModelAndView("error")
-                .addObject("ename", e.getClass().getSimpleName())
-                .addObject("emessage", message);
+            .addObject("ename", e.getClass().getSimpleName())
+            .addObject("emessage", message);
+        fillGlobals(result.getModel(), locale);
+        return result;
+    }
+
+    @ExceptionHandler
+    public ModelAndView serviceExceptionHandler(RawServiceException e, Locale locale) {
+        LOG.error("Service exception: " + e.getMessage(), e);
+        ModelAndView result = new ModelAndView("error")
+            .addObject("ename", e.getClass().getSimpleName())
+            .addObject("emessage", e.getMessage());
         fillGlobals(result.getModel(), locale);
         return result;
     }
@@ -67,7 +78,7 @@ public class SimpleErrorAdvice {
         }
         LOG.error("Runtime exception: " + e.getMessage(), e);
         ModelAndView result = new ModelAndView("error")
-                .addObject("ename", e.getClass().getSimpleName());
+            .addObject("ename", e.getClass().getSimpleName());
         boolean isFullMessagePrint = environmentProfileService.isDevelop() || environmentProfileService.isTest();
         if (isFullMessagePrint) {
             StringWriter sw = new StringWriter();
