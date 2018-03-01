@@ -57,4 +57,12 @@ public interface MessageService {
      * @return Result message
      */
     String get(ServiceException e);
+
+    /**
+     * Get message from service exception with localization check
+     *
+     * @param e Exception object
+     * @return Result message
+     */
+    String getWithLocalizationCheck(ServiceException e);
 }

@@ -66,6 +66,27 @@ public class BaseService {
         return exceptionService.create(code, os);
     }
 
+    /**
+     * Сконструировать объект исключения
+     *
+     * @param message сообщения для исключения
+     * @return исключение
+     */
+    protected ServiceException message(String message) {
+        return exceptionService.message(message);
+    }
+
+    /**
+     * Сконструировать объект исключения
+     *
+     * @param message сообщения для исключения
+     * @param os      атрибуты для формирования сообщения
+     * @return исключение
+     */
+    protected ServiceException message(String message, Object... os) {
+        return exceptionService.message(message, os);
+    }
+
     @Autowired
     public void setExceptionService(ExceptionService exceptionService) {
         this.exceptionService = exceptionService;

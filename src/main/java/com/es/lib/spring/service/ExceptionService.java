@@ -32,6 +32,8 @@ public interface ExceptionService {
 
     ServiceException create(String code, Object... os);
 
+    ServiceException message(String message, Object... args);
+
     /**
      * Бросить исключение или вернуть результат
      *

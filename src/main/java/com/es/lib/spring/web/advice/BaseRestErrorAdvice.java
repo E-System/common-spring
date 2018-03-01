@@ -21,7 +21,6 @@ import com.es.lib.dto.DTOResult;
 import com.es.lib.dto.ResponseBuilder;
 import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.dto.validation.DTOValidationStatus;
-import com.es.lib.spring.exception.RawServiceException;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
@@ -91,19 +90,9 @@ public class BaseRestErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResponse serviceException(ServiceException e) {
-        LOG.error("Service exception: " + e.getMessage(), e);
+        String message = messageService.getWithLocalizationCheck(e);
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(messageService.get(e))
-            .build();
-    }
-
-    @ExceptionHandler
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public DTOResponse rawServiceException(RawServiceException e) {
-        LOG.error("Service exception: " + e.getMessage(), e);
-        return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(e.getMessage())
+            .message(message)
             .build();
     }
 

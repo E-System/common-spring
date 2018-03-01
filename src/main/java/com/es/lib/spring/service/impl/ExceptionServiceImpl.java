@@ -41,6 +41,11 @@ public class ExceptionServiceImpl implements ExceptionService {
         return new ServiceException(code, os);
     }
 
+    @Override
+    public ServiceException message(String message, Object... args) {
+        return new ServiceException(true, message, args);
+    }
+
     /**
      * Бросить исключение или вернуть результат
      *

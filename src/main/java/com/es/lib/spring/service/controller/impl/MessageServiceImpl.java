@@ -20,6 +20,8 @@ import com.es.lib.spring.config.Constant;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.LocaleService;
 import com.es.lib.spring.service.controller.MessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
@@ -31,6 +33,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageServiceImpl implements MessageService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MessageServiceImpl.class);
 
     private MessageSource messageSource;
     private LocaleService localeService;
@@ -80,6 +84,19 @@ public class MessageServiceImpl implements MessageService {
             return get(e.getCode(), e.getArgs());
         }
         return get(e.getCode());
+    }
+
+    @Override
+    public String getWithLocalizationCheck(ServiceException e) {
+        String result;
+        if (e.isNeedLocalize()) {
+            result = get(e);
+            LOG.error("Service exception: " + result + " (" + e.getMessage() + ")", e);
+        } else {
+            result = e.getMessage();
+            LOG.error("Service exception: " + result, e);
+        }
+        return result;
     }
 
 

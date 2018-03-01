@@ -16,6 +16,7 @@
 
 package com.es.lib.spring.exception;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
  */
 public class ServiceException extends RuntimeException {
 
-    private final String code;
+    private String code;
     private Object[] args;
 
     public ServiceException(String code) {
@@ -37,6 +38,10 @@ public class ServiceException extends RuntimeException {
         super(formatMessage(code, args));
         this.code = code;
         this.args = args;
+    }
+
+    public ServiceException(boolean simple, String message, Object... args) {
+        super(args == null ? message : MessageFormat.format(message, args));
     }
 
     private static String formatMessage(String code, Object[] args) {
@@ -51,9 +56,9 @@ public class ServiceException extends RuntimeException {
             return "";
         }
         return Stream.of(args)
-                .filter(Objects::nonNull)
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
+            .filter(Objects::nonNull)
+            .map(Object::toString)
+            .collect(Collectors.joining(","));
     }
 
     public String getCode() {
@@ -62,6 +67,10 @@ public class ServiceException extends RuntimeException {
 
     public Object[] getArgs() {
         return args;
+    }
+
+    public boolean isNeedLocalize() {
+        return getCode() != null;
     }
 
     @Override
