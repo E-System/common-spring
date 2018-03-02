@@ -19,6 +19,7 @@ package com.es.lib.spring.service.impl;
 import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.ExceptionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -42,7 +43,13 @@ public class ExceptionServiceImpl implements ExceptionService {
     }
 
     @Override
-    public ServiceException message(String message, Object... args) {
+    public ServiceException exception(String message, Object... args) {
+        if (message == null){
+            return new ServiceException("EMPTY_MESSAGE_IN_EXCEPTION");
+        }
+        if (message.startsWith("{") && message.endsWith("}")){
+            return new ServiceException(message.substring(1).substring(0, message.length() - 2), args);
+        }
         return new ServiceException(true, message, args);
     }
 

@@ -19,6 +19,8 @@ package com.es.lib.spring.service
 import com.es.lib.spring.exception.ServiceException
 import org.springframework.beans.factory.annotation.Autowired
 
+import java.text.MessageFormat
+import java.util.function.Function
 import java.util.function.Supplier
 
 /**
@@ -80,5 +82,40 @@ class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
         then:
         ex.code == errorCode
         Arrays.asList(ex.args) == ['arg1']
+    }
+
+    def "Fetch by id with null result (with simple message)"() {
+        given:
+        def errorMessage = "Error message {0}"
+        def id = 1L
+        when:
+        service.fetchById(new Function<Long, Object>() {
+            @Override
+            Object apply(Long o) {
+                return null
+            }
+        }, id, errorMessage)
+        then:
+        def ex = thrown(ServiceException)
+        ex.message == MessageFormat.format(errorMessage, id)
+    }
+
+    def "Fetch by id with null result (with code message)"() {
+        given:
+        def errorCode = 'fetch.error'
+        def errorMessage = "{${errorCode}}"
+        def id = 1L
+        when:
+        service.fetchById(new Function<Long, Object>() {
+            @Override
+            Object apply(Long o) {
+                return null
+            }
+        }, id, errorMessage)
+        then:
+        def ex = thrown(ServiceException)
+        ex.code == errorCode
+        ex.args.length == 1
+        ex.args[0] == id
     }
 }

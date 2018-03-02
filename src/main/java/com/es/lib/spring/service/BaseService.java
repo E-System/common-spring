@@ -19,6 +19,7 @@ package com.es.lib.spring.service;
 import com.es.lib.spring.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -46,6 +47,24 @@ public class BaseService {
     }
 
     /**
+     * Fetch entity by id, and throw messageException if entity is null
+     *
+     * @param fetcher Entity fetcher
+     * @param id      Id
+     * @param message Error message
+     * @param <T>     Id type
+     * @param <R>     Entity type
+     * @return
+     */
+    protected <T, R> R fetchById(Function<T, R> fetcher, T id, String message) {
+        R result = fetcher.apply(id);
+        if (result == null) {
+            throw exception(message, id);
+        }
+        return result;
+    }
+
+    /**
      * Сконструировать объект исключения
      *
      * @param code код сообщения для исключения
@@ -67,24 +86,14 @@ public class BaseService {
     }
 
     /**
-     * Сконструировать объект исключения
+     * Create ServiceException (if message in {} then resolve message from message resource)
      *
-     * @param message сообщения для исключения
+     * @param message Simple message or message code in {} symbols
+     * @param os      Attributes to format message
      * @return исключение
      */
-    protected ServiceException message(String message) {
-        return exceptionService.message(message);
-    }
-
-    /**
-     * Сконструировать объект исключения
-     *
-     * @param message сообщения для исключения
-     * @param os      атрибуты для формирования сообщения
-     * @return исключение
-     */
-    protected ServiceException message(String message, Object... os) {
-        return exceptionService.message(message, os);
+    protected ServiceException exception(String message, Object... os) {
+        return exceptionService.exception(message, os);
     }
 
     @Autowired
