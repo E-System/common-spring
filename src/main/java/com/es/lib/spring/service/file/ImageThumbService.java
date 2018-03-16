@@ -32,6 +32,7 @@ public interface ImageThumbService {
      *
      * @param originalFile Path to original file
      * @param thumb        Thumbnail parameters
+     * @param fileStore    File store
      * @return File object with generated file
      */
     File generate(File originalFile, Thumb thumb, IFileStore fileStore);

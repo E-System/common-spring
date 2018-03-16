@@ -54,7 +54,7 @@ public class BaseService {
      * @param message Error message
      * @param <T>     Id type
      * @param <R>     Entity type
-     * @return
+     * @return Entity instance
      */
     protected <T, R> R fetchById(Function<T, R> fetcher, T id, String message) {
         R result = fetcher.apply(id);
