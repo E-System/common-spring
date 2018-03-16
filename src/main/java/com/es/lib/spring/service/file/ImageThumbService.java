@@ -16,6 +16,7 @@
 
 package com.es.lib.spring.service.file;
 
+import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.spring.service.file.model.Thumb;
 
 import java.io.File;
@@ -33,5 +34,5 @@ public interface ImageThumbService {
      * @param thumb        Thumbnail parameters
      * @return File object with generated file
      */
-    File generate(File originalFile, Thumb thumb);
+    File generate(File originalFile, Thumb thumb, IFileStore fileStore);
 }

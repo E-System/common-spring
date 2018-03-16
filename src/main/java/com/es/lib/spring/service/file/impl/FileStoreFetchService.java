@@ -52,7 +52,7 @@ public class FileStoreFetchService {
         if (fileStore == null || fileStore.getFilePath() == null) {
             return null;
         }
-        return getRealFile(fileStore.getFilePath(), thumb);
+        return getRealFile(fileStore.getFilePath(), thumb, fileStore);
     }
 
     public File getFile(String base64, Thumb thumb) {
@@ -63,13 +63,13 @@ public class FileStoreFetchService {
         if (StringUtils.isBlank(path)) {
             return null;
         }
-        return getRealFile(path, thumb);
+        return getRealFile(path, thumb, null);
     }
 
-    protected File getRealFile(String path, Thumb thumb) {
+    protected File getRealFile(String path, Thumb thumb, IFileStore fileStore) {
         File originalFile = new File(fileStorePathService.getBasePath() + path);
         if (thumb != null) {
-            return thumbService.generate(originalFile, thumb);
+            return thumbService.generate(originalFile, thumb, fileStore);
         }
         return originalFile;
     }

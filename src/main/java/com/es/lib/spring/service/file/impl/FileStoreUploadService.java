@@ -64,12 +64,12 @@ public class FileStoreUploadService {
         final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
         try {
             return fileStoreSaveService.toStore(
-                    FileUtil.crc32(file.getBytes()),
-                    file.getSize(),
-                    basename,
-                    ext,
-                    file.getContentType(),
-                    file.getBytes()
+                FileUtil.crc32(file.getBytes()),
+                file.getSize(),
+                basename,
+                ext,
+                file.getContentType(),
+                file.getBytes()
             );
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -81,33 +81,33 @@ public class FileStoreUploadService {
         final String baseName = FilenameUtils.getBaseName(file.getOriginalFilename());
         final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
         FileStorePath path = fileStorePathService.getPath(
-                UUID.randomUUID().toString(),
-                ext
+            UUID.randomUUID().toString(),
+            ext
         );
         File resultFile = new File(path.getFullPath());
         long crc32;
         try {
             CheckedInputStream checkedInputStream = new CheckedInputStream(file.getInputStream(), new CRC32());
             FileUtils.copyInputStreamToFile(
-                    checkedInputStream,
-                    resultFile
+                checkedInputStream,
+                resultFile
             );
             crc32 = checkedInputStream.getChecksum().getValue();
             if (FileStoreUtil.isImage(file.getContentType())) {
-                thumbService.generate(resultFile, new Thumb());
+                thumbService.generate(resultFile, new Thumb(), null);
             }
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
             throw new ESRuntimeException(e.getMessage());
         }
         return new TemporaryFileStore(
-                resultFile,
-                path.getPath(),
-                baseName,
-                ext,
-                file.getSize(),
-                file.getContentType(),
-                crc32
+            resultFile,
+            path.getPath(),
+            baseName,
+            ext,
+            file.getSize(),
+            file.getContentType(),
+            crc32
         );
     }
 
