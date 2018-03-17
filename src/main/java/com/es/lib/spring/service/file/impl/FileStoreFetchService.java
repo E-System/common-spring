@@ -18,10 +18,11 @@ package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.Thumb;
+import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
-import com.es.lib.spring.service.file.ImageThumbService;
-import com.es.lib.spring.service.file.model.Thumb;
+import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,6 @@ public class FileStoreFetchService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileStoreFetchService.class);
 
-    private ImageThumbService thumbService;
     private FileStorePathService fileStorePathService;
     private FileStoreService fileStoreService;
 
@@ -69,7 +69,7 @@ public class FileStoreFetchService {
     protected File getRealFile(String path, Thumb thumb, IFileStore fileStore) {
         File originalFile = new File(fileStorePathService.getBasePath() + path);
         if (thumb != null) {
-            return thumbService.generate(originalFile, thumb, fileStore);
+            return ThumbUtil.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }
         return originalFile;
     }
@@ -86,11 +86,6 @@ public class FileStoreFetchService {
                 v -> v
             )
         );
-    }
-
-    @Autowired
-    public void setThumbService(ImageThumbService thumbService) {
-        this.thumbService = thumbService;
     }
 
     @Autowired

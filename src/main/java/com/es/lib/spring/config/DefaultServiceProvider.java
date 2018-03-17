@@ -17,12 +17,12 @@
 package com.es.lib.spring.config;
 
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileStorePath;
+import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.controller.CaptchaService;
 import com.es.lib.spring.service.controller.impl.BaseCaptchaServiceImpl;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
-import com.es.lib.spring.service.file.model.FileStorePath;
-import com.es.lib.spring.service.file.model.TemporaryFileStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

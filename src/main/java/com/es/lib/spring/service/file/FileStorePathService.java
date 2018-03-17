@@ -17,7 +17,7 @@
 package com.es.lib.spring.service.file;
 
 
-import com.es.lib.spring.service.file.model.FileStorePath;
+import com.es.lib.entity.model.file.FileStorePath;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 E-System LLC
+ * Copyright 2018 E-System LLC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,24 +16,26 @@
 
 package com.es.lib.spring.service.file;
 
-import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.spring.service.file.model.Thumb;
+import com.es.lib.entity.model.file.Thumb;
+import com.es.lib.entity.util.ThumbUtil;
+import net.coobird.thumbnailator.Thumbnails;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
- * @since 30.01.16
+ * @since 17.03.2018
  */
-public interface ImageThumbService {
+public class ThumbnailatorThumbGenerator implements ThumbUtil.Generator {
 
-    /**
-     * Generate thumbnail file and return path to generated file
-     *
-     * @param originalFile Path to original file
-     * @param thumb        Thumbnail parameters
-     * @param fileStore    File store
-     * @return File object with generated file
-     */
-    File generate(File originalFile, Thumb thumb, IFileStore fileStore);
+    @Override
+    public void process(File source, String extension, File target, Thumb thumb) throws IOException {
+        Thumbnails.Builder<File> builder = Thumbnails.of(source).size(thumb.getWidth(), thumb.getHeight());
+        if (extension.equals("png")) {
+            builder.imageType(BufferedImage.TYPE_INT_ARGB);
+        }
+        builder.toFile(target);
+    }
 }

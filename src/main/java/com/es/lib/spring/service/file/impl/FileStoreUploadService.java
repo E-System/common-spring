@@ -19,13 +19,14 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileStorePath;
+import com.es.lib.entity.model.file.TemporaryFileStore;
+import com.es.lib.entity.model.file.Thumb;
+import com.es.lib.entity.util.FileStoreUtil;
+import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
-import com.es.lib.spring.service.file.ImageThumbService;
-import com.es.lib.spring.service.file.model.FileStorePath;
-import com.es.lib.spring.service.file.model.TemporaryFileStore;
-import com.es.lib.spring.service.file.model.Thumb;
-import com.es.lib.spring.service.file.util.FileStoreUtil;
+import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -49,7 +50,6 @@ public class FileStoreUploadService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileStoreUploadService.class);
 
-    private ImageThumbService thumbService;
     private FileStoreService fileStoreSaveService;
     private FileStorePathService fileStorePathService;
 
@@ -94,7 +94,7 @@ public class FileStoreUploadService {
             );
             crc32 = checkedInputStream.getChecksum().getValue();
             if (FileStoreUtil.isImage(file.getContentType())) {
-                thumbService.generate(resultFile, new Thumb(), null);
+                ThumbUtil.generate(resultFile, new Thumb(), null, new ThumbnailatorThumbGenerator());
             }
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -109,11 +109,6 @@ public class FileStoreUploadService {
             file.getContentType(),
             crc32
         );
-    }
-
-    @Autowired
-    public void setThumbService(ImageThumbService thumbService) {
-        this.thumbService = thumbService;
     }
 
     @Autowired

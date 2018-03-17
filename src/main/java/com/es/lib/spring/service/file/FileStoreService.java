@@ -17,7 +17,7 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.spring.service.file.model.TemporaryFileStore;
+import com.es.lib.entity.model.file.TemporaryFileStore;
 
 import java.util.Collection;
 
@@ -30,12 +30,12 @@ public interface FileStoreService {
     IFileStore toStore(TemporaryFileStore temporaryFile);
 
     IFileStore toStore(
-            long crc32,
-            long size,
-            String fileName,
-            String ext,
-            String mime,
-            byte[] data
+        long crc32,
+        long size,
+        String fileName,
+        String ext,
+        String mime,
+        byte[] data
     );
 
     IFileStore fromStore(long id);

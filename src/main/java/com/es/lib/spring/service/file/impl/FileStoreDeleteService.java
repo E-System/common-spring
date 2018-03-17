@@ -18,10 +18,10 @@ package com.es.lib.spring.service.file.impl;
 
 
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.event.file.DeleteFileEvent;
 import com.es.lib.spring.event.file.DeleteFileStoreEvent;
 import com.es.lib.spring.service.file.FileStorePathService;
-import com.es.lib.spring.service.file.model.TemporaryFileStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -39,11 +39,11 @@ public class FileStoreDeleteService {
 
     public void delete(IFileStore file) {
         eventPublisher.publishEvent(
-                new DeleteFileEvent(
-                        this,
-                        fileStorePathService.getBasePath(),
-                        file.getFilePath()
-                )
+            new DeleteFileEvent(
+                this,
+                fileStorePathService.getBasePath(),
+                file.getFilePath()
+            )
         );
         eventPublisher.publishEvent(new DeleteFileStoreEvent(this, file));
     }
