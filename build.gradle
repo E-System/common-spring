@@ -139,7 +139,7 @@ publishing {
     }
 }
 ext{
-    springVersion = '1.5.10.RELEASE'
+    springVersion = '1.5.12.RELEASE'
 }
 dependencies {
     compile "com.es.lib:common-lib:1.3.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"

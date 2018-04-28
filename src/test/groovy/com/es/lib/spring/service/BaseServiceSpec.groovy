@@ -111,7 +111,7 @@ class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
             Object apply(Long o) {
                 return null
             }
-        }, id, errorMessage)
+        }, id, errorMessage.toString())
         then:
         def ex = thrown(ServiceException)
         ex.code == errorCode
