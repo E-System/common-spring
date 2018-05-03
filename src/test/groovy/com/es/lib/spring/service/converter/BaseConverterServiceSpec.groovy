@@ -73,4 +73,13 @@ class BaseConverterServiceSpec extends Specification {
         res.size() == 1
         res[0].value == "Hello"
     }
+
+    def "On empty or null collection return empty collection"() {
+        when:
+        def converter = new IOConverter()
+        def res = converter.convert(null as List)
+        then:
+        res != null
+        res.size() == 0
+    }
 }
