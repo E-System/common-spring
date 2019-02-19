@@ -34,6 +34,8 @@ public interface ExceptionService {
 
     ServiceException exception(String message, Object... args);
 
+    ServiceException exception(String code, String message, Object... args);
+
     /**
      * Бросить исключение или вернуть результат
      *

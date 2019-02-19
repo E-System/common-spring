@@ -25,6 +25,7 @@ import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
+import com.es.lib.spring.util.ErrorCodes;
 import com.es.lib.spring.web.common.BaseRestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class BaseRestErrorAdvice {
     private DTOResponse<DTOValidationStatus> validation(ServiceValidationException e) {
         LOG.error(e.getCode(), e);
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
-            .message(messageService.get(e.getCode(), e.getArgs()))
+            .message(e.getErrorCode(), messageService.get(e.getCode(), e.getArgs()))
             .data(e.getStatus())
             .build();
     }
@@ -71,7 +72,7 @@ public class BaseRestErrorAdvice {
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOResponse<DTOValidationStatus> violations(ConstraintViolationException e) {
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
-            .message("Invalid parameters")
+            .message(ErrorCodes.VALIDATION, "Invalid parameters")
             .data(create(e))
             .build();
     }
@@ -92,7 +93,7 @@ public class BaseRestErrorAdvice {
     public DTOResponse serviceException(ServiceException e) {
         String message = messageService.getWithLocalizationCheck(e);
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(message)
+            .message(e.getErrorCode(), message)
             .build();
     }
 
@@ -111,7 +112,7 @@ public class BaseRestErrorAdvice {
             message = "Произошла ошибка. Обратитесь в техническую поддержку";
         }
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(message)
+            .message(ErrorCodes.THROWABLE, message)
             .build();
     }
 

@@ -22,6 +22,7 @@ package com.es.lib.spring.util;
  */
 public interface ErrorCodes {
 
-    String VALIDATION_ERROR = "validation.error";
+    String VALIDATION = "validation.error";
+    String THROWABLE = "throwable";
 
 }

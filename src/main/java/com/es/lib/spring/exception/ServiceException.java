@@ -17,6 +17,7 @@
 package com.es.lib.spring.exception;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +29,7 @@ import java.util.stream.Stream;
 public class ServiceException extends RuntimeException {
 
     private String code;
+    private String errorCode;
     private Object[] args;
 
     public ServiceException(String code) {
@@ -40,8 +42,20 @@ public class ServiceException extends RuntimeException {
         this.args = args;
     }
 
+    public ServiceException(String errorCode, String code, Object... args) {
+        super(formatMessage(code, args));
+        this.errorCode = errorCode;
+        this.code = code;
+        this.args = args;
+    }
+
     public ServiceException(boolean simple, String message, Object... args) {
         super(args == null ? message : MessageFormat.format(message, args));
+    }
+
+    public ServiceException(boolean simple, String errorCode, String message, Object... args) {
+        super(args == null ? message : MessageFormat.format(message, args));
+        this.errorCode = errorCode;
     }
 
     private static String formatMessage(String code, Object[] args) {
@@ -61,6 +75,10 @@ public class ServiceException extends RuntimeException {
             .collect(Collectors.joining(","));
     }
 
+    public String getErrorCode() {
+        return errorCode;
+    }
+
     public String getCode() {
         return code;
     }
@@ -75,8 +93,10 @@ public class ServiceException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "ServiceException [" +
-               "code='" + code + "'" +
-               "] " + super.toString();
+        return "ServiceException{" +
+               "code='" + code + '\'' +
+               ", errorCode='" + errorCode + '\'' +
+               ", args=" + Arrays.toString(args) +
+               '}';
     }
 }
