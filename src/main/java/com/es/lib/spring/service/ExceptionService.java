@@ -36,7 +36,7 @@ public interface ExceptionService {
 
     ServiceException exception(String message, Object... args);
 
-    ServiceException exception(String errorCode, String message, Object... args);
+    ServiceException exceptionWithCode(String errorCode, String message, Object... args);
 
     /**
      * Бросить исключение или вернуть результат

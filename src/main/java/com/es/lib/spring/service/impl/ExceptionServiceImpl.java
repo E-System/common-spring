@@ -45,18 +45,22 @@ public class ExceptionServiceImpl implements ExceptionService {
 
     @Override
     public ServiceException exception(String message, Object... args) {
-        return exception(null, message, args);
+        return exceptionWithCode(null, message, args);
     }
 
     @Override
-    public ServiceException exception(String errorCode, String message, Object... args) {
+    public ServiceException exceptionWithCode(String errorCode, String message, Object... args) {
         if (message == null) {
             return new ServiceException("EMPTY_MESSAGE_IN_EXCEPTION");
         }
+        ServiceException result;
         if (message.startsWith("{") && message.endsWith("}")) {
-            return new ServiceException(errorCode, message.substring(1).substring(0, message.length() - 2), args);
+            result = new ServiceException(message.substring(1).substring(0, message.length() - 2), args);
+        } else {
+            result = new ServiceException(true, errorCode, message, args);
         }
-        return new ServiceException(true, errorCode, message, args);
+        result.setErrorCode(errorCode);
+        return result;
     }
 
     /**

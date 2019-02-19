@@ -42,20 +42,8 @@ public class ServiceException extends RuntimeException {
         this.args = args;
     }
 
-    public ServiceException(String errorCode, String code, Object... args) {
-        super(formatMessage(code, args));
-        this.errorCode = errorCode;
-        this.code = code;
-        this.args = args;
-    }
-
     public ServiceException(boolean simple, String message, Object... args) {
         super(args == null ? message : MessageFormat.format(message, args));
-    }
-
-    public ServiceException(boolean simple, String errorCode, String message, Object... args) {
-        super(args == null ? message : MessageFormat.format(message, args));
-        this.errorCode = errorCode;
     }
 
     private static String formatMessage(String code, Object[] args) {
@@ -77,6 +65,10 @@ public class ServiceException extends RuntimeException {
 
     public String getErrorCode() {
         return errorCode;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
     public String getCode() {

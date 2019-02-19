@@ -32,16 +32,6 @@ public class ServiceValidationException extends ServiceException {
         this.status = status;
     }
 
-    public ServiceValidationException(DTOValidationStatus status, String errorCode, String messageCode) {
-        super(errorCode, messageCode);
-        this.status = status;
-    }
-
-    public ServiceValidationException(DTOValidationStatus status, String errorCode, String messageCode, Object... args) {
-        super(errorCode, messageCode, args);
-        this.status = status;
-    }
-
     public DTOValidationStatus getStatus() {
         return status;
     }
