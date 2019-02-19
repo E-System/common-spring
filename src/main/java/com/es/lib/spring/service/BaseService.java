@@ -106,8 +106,8 @@ public class BaseService {
      * @param os        Attributes to format message
      * @return исключение
      */
-    protected ServiceException exception(String errorCode, String message, Object... os) {
-        return exceptionService.exception(errorCode, message, os);
+    protected ServiceException exceptionWithCode(String errorCode, String message, Object... os) {
+        return exceptionService.exceptionWithCode(errorCode, message, os);
     }
 
     @Autowired
