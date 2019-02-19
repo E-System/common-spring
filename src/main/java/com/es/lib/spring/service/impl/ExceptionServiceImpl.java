@@ -57,7 +57,7 @@ public class ExceptionServiceImpl implements ExceptionService {
         if (message.startsWith("{") && message.endsWith("}")) {
             result = new ServiceException(message.substring(1).substring(0, message.length() - 2), args);
         } else {
-            result = new ServiceException(true, errorCode, message, args);
+            result = new ServiceException(true, message, args);
         }
         result.setErrorCode(errorCode);
         return result;
