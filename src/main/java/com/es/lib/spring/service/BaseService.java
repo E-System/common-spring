@@ -70,6 +70,7 @@ public class BaseService {
      * @param code код сообщения для исключения
      * @return исключение
      */
+    @Deprecated
     protected ServiceException error(String code) {
         return exceptionService.create(code);
     }
@@ -81,6 +82,7 @@ public class BaseService {
      * @param os   атрибуты для формирования сообщения
      * @return исключение
      */
+    @Deprecated
     protected ServiceException error(String code, Object... os) {
         return exceptionService.create(code, os);
     }
@@ -94,6 +96,18 @@ public class BaseService {
      */
     protected ServiceException exception(String message, Object... os) {
         return exceptionService.exception(message, os);
+    }
+
+    /**
+     * Create ServiceException (if message in {} then resolve message from message resource)
+     *
+     * @param errorCode Error code
+     * @param message   Simple message or message code in {} symbols
+     * @param os        Attributes to format message
+     * @return исключение
+     */
+    protected ServiceException exception(String errorCode, String message, Object... os) {
+        return exceptionService.exception(errorCode, message, os);
     }
 
     @Autowired

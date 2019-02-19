@@ -32,11 +32,13 @@ import java.util.function.Supplier;
 public class ExceptionServiceImpl implements ExceptionService {
 
     @Override
+    @Deprecated
     public ServiceException create(String code) {
         return new ServiceException(code);
     }
 
     @Override
+    @Deprecated
     public ServiceException create(String code, Object... os) {
         return new ServiceException(code, os);
     }

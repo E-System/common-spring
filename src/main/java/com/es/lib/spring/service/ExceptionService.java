@@ -28,13 +28,15 @@ import java.util.function.Supplier;
  */
 public interface ExceptionService {
 
+    @Deprecated
     ServiceException create(String code);
 
+    @Deprecated
     ServiceException create(String code, Object... os);
 
     ServiceException exception(String message, Object... args);
 
-    ServiceException exception(String code, String message, Object... args);
+    ServiceException exception(String errorCode, String message, Object... args);
 
     /**
      * Бросить исключение или вернуть результат
