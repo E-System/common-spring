@@ -45,11 +45,11 @@ public class ExceptionServiceImpl implements ExceptionService {
 
     @Override
     public ServiceException exception(String message, Object... args) {
-        return exceptionWithCode(null, message, args);
+        return serviceException(null, message, args);
     }
 
     @Override
-    public ServiceException exceptionWithCode(String errorCode, String message, Object... args) {
+    public ServiceException serviceException(String errorCode, String message, Object... args) {
         if (message == null) {
             return new ServiceException("EMPTY_MESSAGE_IN_EXCEPTION");
         }

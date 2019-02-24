@@ -34,9 +34,10 @@ public interface ExceptionService {
     @Deprecated
     ServiceException create(String code, Object... os);
 
+    @Deprecated
     ServiceException exception(String message, Object... args);
 
-    ServiceException exceptionWithCode(String errorCode, String message, Object... args);
+    ServiceException serviceException(String errorCode, String message, Object... args);
 
     /**
      * Бросить исключение или вернуть результат

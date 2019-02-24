@@ -68,19 +68,20 @@ class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
         given:
         def errorCode = 'error.code'
         when:
-        def ex = service.error(errorCode)
+        def ex = service.serviceException(errorCode, "Message")
         then:
-        ex.code == errorCode
-        Arrays.asList(ex.args) == [null]
+        ex.errorCode == errorCode
+        ex.args == null
     }
 
     def "Error with args"() {
         given:
         def errorCode = 'error.code'
         when:
-        def ex = service.error(errorCode, 'arg1')
+        def ex = service.serviceException(errorCode, "{error}",'arg1')
         then:
-        ex.code == errorCode
+        ex.errorCode == errorCode
+        ex.code == 'error'
         Arrays.asList(ex.args) == ['arg1']
     }
 

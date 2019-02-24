@@ -94,8 +94,9 @@ public class BaseService {
      * @param os      Attributes to format message
      * @return исключение
      */
+    @Deprecated
     protected ServiceException exception(String message, Object... os) {
-        return exceptionService.exception(message, os);
+        return serviceException(null, message, os);
     }
 
     /**
@@ -106,8 +107,8 @@ public class BaseService {
      * @param os        Attributes to format message
      * @return исключение
      */
-    protected ServiceException exceptionWithCode(String errorCode, String message, Object... os) {
-        return exceptionService.exceptionWithCode(errorCode, message, os);
+    protected ServiceException serviceException(String errorCode, String message, Object... os) {
+        return exceptionService.serviceException(errorCode, message, os);
     }
 
     @Autowired
