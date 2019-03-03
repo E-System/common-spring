@@ -154,6 +154,7 @@ dependencies {
     compile "org.apache.httpcomponents:httpclient:4.5.5"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+    compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springVersion}"
 
     testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
     testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
