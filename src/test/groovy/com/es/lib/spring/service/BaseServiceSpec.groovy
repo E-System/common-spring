@@ -119,4 +119,30 @@ class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
         ex.args.length == 1
         ex.args[0] == id
     }
+
+    def "Fetch with null result need throw service exception"() {
+        given:
+        def errorCode = 'error.code'
+        def errorMessage = 'errorMessage {0}'
+        def errorOs = 'os'
+        when:
+        service.fetch({ null }, errorCode, errorMessage, errorOs)
+        then:
+        def ex = thrown(ServiceException)
+        ex.errorCode == errorCode
+        ex.message == 'errorMessage os'
+    }
+
+    def "Fetch with not null result not throw service exception"() {
+        given:
+        def errorCode = 'error.code'
+        def errorMessage = 'errorMessage {0}'
+        def errorOs = 'os'
+        def obj = new Object()
+        when:
+        def res = service.fetch({ obj }, errorCode, errorMessage, errorOs)
+        then:
+        res == obj
+    }
+
 }

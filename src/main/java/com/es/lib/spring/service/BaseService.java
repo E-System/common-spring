@@ -65,6 +65,24 @@ public class BaseService {
     }
 
     /**
+     * Получить объект и проверить на то что он существует
+     *
+     * @param supplier  лямбда получения объекта
+     * @param errorCode код сообщения в случае если объект == null
+     * @param message   текст сообщения в случае если объект == null
+     * @param os        атрибуты для форматирования теста сообщения
+     * @param <T>       тип получаемого объекта
+     * @return объект
+     */
+    protected <T> T fetch(Supplier<T> supplier, String errorCode, String message, Object... os) {
+        T result = supplier.get();
+        if (result == null) {
+            throw serviceException(errorCode, message, os);
+        }
+        return result;
+    }
+
+    /**
      * Сконструировать объект исключения
      *
      * @param code код сообщения для исключения
