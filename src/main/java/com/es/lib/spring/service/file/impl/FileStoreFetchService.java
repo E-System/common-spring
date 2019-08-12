@@ -24,6 +24,7 @@ import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class FileStoreFetchService {
         return getRealFile(fileStore.getFilePath(), thumb, fileStore);
     }
 
+    public Map.Entry<File, ? extends IFileStore> getFilePair(long id, Thumb thumb) {
+        return getFile(fileStoreService.fromStore(id), thumb);
+    }
+
     public File getFile(String base64, Thumb thumb) {
         if (StringUtils.isBlank(base64)) {
             return null;
@@ -64,6 +69,16 @@ public class FileStoreFetchService {
             return null;
         }
         return getRealFile(path, thumb, null);
+    }
+
+    protected Map.Entry<File, ? extends IFileStore> getFile(IFileStore fileStore, Thumb thumb) {
+        if (fileStore == null || fileStore.getFilePath() == null) {
+            return null;
+        }
+        return Pair.of(
+            getRealFile(fileStore.getFilePath(), thumb, fileStore),
+            fileStore
+        );
     }
 
     protected File getRealFile(String path, Thumb thumb, IFileStore fileStore) {
