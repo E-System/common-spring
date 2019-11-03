@@ -36,13 +36,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -73,18 +70,15 @@ public class BaseRestErrorAdvice {
     public DTOResponse<DTOValidationStatus> violations(ConstraintViolationException e) {
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
             .message(ErrorCodes.VALIDATION, "Invalid parameters")
-            .data(create(e))
+            .data(convert(e))
             .build();
     }
 
-    private DTOValidationStatus create(ConstraintViolationException e) {
-        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-        Collection<DTOValidationField> fields = new ArrayList<>(violations.size());
-
-        for (ConstraintViolation<?> violation : violations) {
-            fields.add(new DTOValidationField(violation.getPropertyPath().toString(), violation.getMessage()));
-        }
-        return new DTOValidationStatus(DTOValidationStatus.Type.Error, fields);
+    private DTOValidationStatus convert(ConstraintViolationException e) {
+        return new DTOValidationStatus(
+            DTOValidationStatus.Type.Error,
+            e.getConstraintViolations().stream().map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toList())
+        );
     }
 
     @ExceptionHandler

@@ -19,7 +19,6 @@ package com.es.lib.spring.web.advice;
 import com.es.lib.dto.DTOResult;
 import com.es.lib.dto.DTOValidationResult;
 import com.es.lib.dto.validation.DTOValidationField;
-import com.es.lib.dto.validation.DTOValidationStatus;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
@@ -35,13 +34,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -58,12 +55,12 @@ public class BaseNewRestErrorAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    private DTOValidationResult validation(ServiceValidationException e) {
+    public DTOValidationResult validation(ServiceValidationException e) {
         LOG.error(e.getCode(), e);
         return new DTOValidationResult(
             messageService.get(e.getCode(), e.getArgs()),
             e.getErrorCode(),
-            e.getStatus().getFields()
+            e.getFields()
         );
     }
 
@@ -74,18 +71,14 @@ public class BaseNewRestErrorAdvice {
         return new DTOValidationResult(
             "Invalid parameters",
             ErrorCodes.VALIDATION,
-            create(e).getFields()
+            convert(e)
         );
     }
 
-    private DTOValidationStatus create(ConstraintViolationException e) {
-        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-        Collection<DTOValidationField> fields = new ArrayList<>(violations.size());
-
-        for (ConstraintViolation<?> violation : violations) {
-            fields.add(new DTOValidationField(violation.getPropertyPath().toString(), violation.getMessage()));
-        }
-        return new DTOValidationStatus(DTOValidationStatus.Type.Error, fields);
+    private Collection<DTOValidationField> convert(ConstraintViolationException e) {
+        return e.getConstraintViolations().stream()
+                .map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage()))
+                .collect(Collectors.toList());
     }
 
     @ExceptionHandler

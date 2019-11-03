@@ -66,14 +66,15 @@ public class BaseNewRestController extends BaseController {
     }
 
     protected void checkError(String messageCode, Errors bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Collection<DTOValidationField> fields = new LinkedList<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                String message = messageService.get(fieldError);
-                LOG.error("BaseRestController::checkError - {}, {}", message, fieldError);
-                fields.add(new DTOValidationField(fieldError.getField(), message));
-            }
-            throw new ServiceValidationException(new DTOValidationStatus(DTOValidationStatus.Type.Error, fields), messageCode);
+        if (!bindingResult.hasErrors()) {
+            return;
         }
+        Collection<DTOValidationField> fields = new LinkedList<>();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            String message = messageService.get(fieldError);
+            LOG.error("BaseRestController::checkError - {}, {}", message, fieldError);
+            fields.add(new DTOValidationField(fieldError.getField(), message));
+        }
+        throw new ServiceValidationException(new DTOValidationStatus(fields), messageCode);
     }
 }

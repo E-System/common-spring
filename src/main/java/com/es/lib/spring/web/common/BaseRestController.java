@@ -43,15 +43,15 @@ public class BaseRestController extends BaseController {
 
     protected DTOResponse ok() {
         return new ResponseBuilder<>()
-                .code(DTOResult.OK)
-                .build();
+            .code(DTOResult.OK)
+            .build();
     }
 
     protected <T> DTOResponse<T> ok(T data) {
         return new ResponseBuilder<T>()
-                .code(DTOResult.OK)
-                .data(data)
-                .build();
+            .code(DTOResult.OK)
+            .data(data)
+            .build();
     }
 
     protected void checkError(BindingResult bindingResult, Object request, Validator... validators) {
@@ -72,14 +72,15 @@ public class BaseRestController extends BaseController {
     }
 
     protected void checkError(String messageCode, Errors bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Collection<DTOValidationField> fields = new LinkedList<>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                String message = messageService.get(fieldError);
-                LOG.error("BaseRestController::checkError - {}, {}", message, fieldError);
-                fields.add(new DTOValidationField(fieldError.getField(), message));
-            }
-            throw new ServiceValidationException(new DTOValidationStatus(DTOValidationStatus.Type.Error, fields), messageCode);
+        if (!bindingResult.hasErrors()) {
+            return;
         }
+        Collection<DTOValidationField> fields = new LinkedList<>();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            String message = messageService.get(fieldError);
+            LOG.error("BaseRestController::checkError - {}, {}", message, fieldError);
+            fields.add(new DTOValidationField(fieldError.getField(), message));
+        }
+        throw new ServiceValidationException(new DTOValidationStatus(DTOValidationStatus.Type.Error, fields), messageCode);
     }
 }

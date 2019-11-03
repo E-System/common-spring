@@ -17,7 +17,10 @@
 package com.es.lib.spring.exception;
 
 
+import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.dto.validation.DTOValidationStatus;
+
+import java.util.Collection;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -34,6 +37,10 @@ public class ServiceValidationException extends ServiceException {
 
     public DTOValidationStatus getStatus() {
         return status;
+    }
+
+    public Collection<DTOValidationField> getFields() {
+        return status != null ? status.getFields() : null;
     }
 
     @Override
