@@ -21,6 +21,7 @@ import com.es.lib.spring.service.controller.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -39,7 +40,11 @@ public class SessionServiceImpl implements SessionService {
      */
     @Override
     public HttpSession get() {
-        return requestService.get().getSession();
+        HttpServletRequest request = requestService.get();
+        if (request == null) {
+            return null;
+        }
+        return request.getSession();
     }
 
     @Autowired

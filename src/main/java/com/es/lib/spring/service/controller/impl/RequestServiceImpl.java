@@ -19,6 +19,7 @@ package com.es.lib.spring.service.controller.impl;
 import com.es.lib.spring.service.controller.RequestService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,7 +37,8 @@ public class RequestServiceImpl implements RequestService {
      */
     @Override
     public HttpServletRequest get() {
-        return RequestService.getRequestAttributes().getRequest();
+        ServletRequestAttributes requestAttributes = RequestService.getRequestAttributes();
+        return requestAttributes != null ? requestAttributes.getRequest() : null;
     }
 
     /**
@@ -49,7 +51,11 @@ public class RequestServiceImpl implements RequestService {
      */
     @Override
     public <T> T getAttribute(String name, Class<T> clz) {
-        return (T) get().getAttribute(name);
+        HttpServletRequest request = get();
+        if (request == null) {
+            return null;
+        }
+        return (T) request.getAttribute(name);
     }
 
     /**
@@ -60,6 +66,9 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public String getRemoteIp() {
         HttpServletRequest request = get();
+        if (request == null) {
+            return null;
+        }
         String ip = request.getHeader("X-FORWARDED-FOR");
         if (StringUtils.isNotBlank(ip)) {
             try {

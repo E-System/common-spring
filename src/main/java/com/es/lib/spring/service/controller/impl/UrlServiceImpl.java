@@ -94,6 +94,9 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public String getFullUrl() {
         HttpServletRequest request = requestService.get();
+        if (request == null) {
+            return null;
+        }
         String queryString = request.getQueryString();
         if (queryString == null || queryString.isEmpty()) {
             return request.getRequestURL().toString();
