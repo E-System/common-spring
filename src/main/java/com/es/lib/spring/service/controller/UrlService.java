@@ -56,7 +56,15 @@ public interface UrlService {
     String url(boolean redirect, String uri, Collection<Map.Entry<String, Object>> attributes);
 
     /**
+     * Get current full url
+     *
+     * @return full current url
+     */
+    String getFullUrl();
+
+    /**
      * Get previous page from Referer or null if Referer not available
+     *
      * @return previous page
      */
     Optional<String> getPreviousPage();

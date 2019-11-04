@@ -91,6 +91,7 @@ public class UrlServiceImpl implements UrlService {
         return url(redirect, sb.toString(), values.toArray());
     }
 
+    @Override
     public String getFullUrl() {
         HttpServletRequest request = requestService.get();
         String queryString = request.getQueryString();
