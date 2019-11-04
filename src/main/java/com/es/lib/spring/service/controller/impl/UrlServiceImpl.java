@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -81,13 +82,22 @@ public class UrlServiceImpl implements UrlService {
         final Collection<Object> values = new LinkedList<>();
         if (CollectionUtil.isNotEmpty(attributes)) {
             sb.append("?").append(
-                    attributes.stream()
-                            .map(UrlServiceImpl::mapAttribute)
-                            .collect(Collectors.joining("&"))
+                attributes.stream()
+                          .map(UrlServiceImpl::mapAttribute)
+                          .collect(Collectors.joining("&"))
             );
             values.addAll(attributes.stream().map(Map.Entry::getValue).collect(Collectors.toList()));
         }
         return url(redirect, sb.toString(), values.toArray());
+    }
+
+    public String getFullUrl() {
+        HttpServletRequest request = requestService.get();
+        String queryString = request.getQueryString();
+        if (queryString == null || queryString.isEmpty()) {
+            return request.getRequestURL().toString();
+        }
+        return request.getRequestURL().append('?').append(queryString).toString();
     }
 
     @Override
