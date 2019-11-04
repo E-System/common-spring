@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 27.08.14
  */
-public class BaseService {
+public abstract class BaseService {
 
     protected ExceptionService exceptionService;
 
