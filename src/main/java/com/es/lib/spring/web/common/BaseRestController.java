@@ -39,7 +39,7 @@ import java.util.LinkedList;
  * @since 24.06.16
  */
 @Slf4j
-public class BaseRestController extends BaseController {
+public abstract class BaseRestController extends BaseController {
 
     protected DTOResponse ok() {
         return new ResponseBuilder<>()

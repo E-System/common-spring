@@ -26,7 +26,7 @@ import java.util.Collections;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 28.08.14
  */
-public class BaseSimpleController extends BaseController {
+public abstract class BaseSimpleController extends BaseController {
 
     /**
      * Add flash RA error string {@link ServiceException}

@@ -37,7 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
@@ -80,10 +79,7 @@ public class FileStoreUploadService {
     public TemporaryFileStore loadTemporary(MultipartFile file) {
         final String baseName = FilenameUtils.getBaseName(file.getOriginalFilename());
         final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
-        FileStorePath path = fileStorePathService.getPath(
-            UUID.randomUUID().toString(),
-            ext
-        );
+        FileStorePath path = fileStorePathService.uniquePath(ext);
         File resultFile = new File(path.getFullPath());
         long crc32;
         try {

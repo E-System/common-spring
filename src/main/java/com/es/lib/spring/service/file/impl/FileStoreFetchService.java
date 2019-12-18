@@ -48,27 +48,15 @@ public class FileStoreFetchService {
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
 
-    public File getFile(long id, Thumb thumb) {
-        IFileStore fileStore = fileStoreService.fromStore(id);
-        if (fileStore == null || fileStore.getFilePath() == null) {
-            return null;
-        }
-        return getRealFile(fileStore.getFilePath(), thumb, fileStore);
-    }
-
-    public Map.Entry<File, ? extends IFileStore> getFilePair(long id, Thumb thumb) {
+    public Map.Entry<File, ? extends IFileStore> getFile(long id, Thumb thumb) {
         return getFile(fileStoreService.fromStore(id), thumb);
     }
 
-    public File getFile(String base64, Thumb thumb) {
+    public Map.Entry<File, ? extends IFileStore> getFile(String base64, Thumb thumb) {
         if (StringUtils.isBlank(base64)) {
             return null;
         }
-        String path = fileStoreService.fromStore(base64);
-        if (StringUtils.isBlank(path)) {
-            return null;
-        }
-        return getRealFile(path, thumb, null);
+        return getFile(fileStoreService.fromStore(base64), thumb);
     }
 
     protected Map.Entry<File, ? extends IFileStore> getFile(IFileStore fileStore, Thumb thumb) {

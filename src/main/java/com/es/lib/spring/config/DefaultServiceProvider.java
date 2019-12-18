@@ -16,18 +16,12 @@
 
 package com.es.lib.spring.config;
 
-import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.controller.CaptchaService;
 import com.es.lib.spring.service.controller.impl.BaseCaptchaServiceImpl;
-import com.es.lib.spring.service.file.FileStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -36,48 +30,6 @@ import java.util.Collections;
 @Slf4j
 @Configuration
 public class DefaultServiceProvider {
-
-    @Bean
-    @ConditionalOnMissingBean(FileStoreService.class)
-    public FileStoreService fileStoreService() {
-        return new FileStoreService() {
-            @Override
-            public IFileStore toStore(TemporaryFileStore temporaryFile) {
-                log.error("---USE DEFAULT FileStoreService::toStore({})---", temporaryFile);
-                return null;
-            }
-
-            @Override
-            public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data) {
-                log.error("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data);
-                return null;
-            }
-
-            @Override
-            public IFileStore fromStore(long id) {
-                log.error("---USE DEFAULT FileStoreService::fromStore({})---", id);
-                return null;
-            }
-
-            @Override
-            public IFileStore copyInStore(long id) {
-                log.error("---USE DEFAULT FileStoreService::copyInStore({})---", id);
-                return null;
-            }
-
-            @Override
-            public String fromStore(String base64) {
-                log.error("---USE DEFAULT FileStoreService::fromStore({})---", base64);
-                return null;
-            }
-
-            @Override
-            public Collection<? extends IFileStore> list(Collection<? extends Number> ids) {
-                log.error("---USE DEFAULT FileStoreService::list({})---", ids);
-                return Collections.emptyList();
-            }
-        };
-    }
 
     @Bean
     @ConditionalOnMissingBean(CaptchaService.class)

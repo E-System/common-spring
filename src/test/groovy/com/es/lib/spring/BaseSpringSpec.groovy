@@ -20,10 +20,11 @@ import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
-@SpringBootTest(webEnvironment = NONE)
-abstract class BaseServiceSpec extends Specification {}
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+abstract class BaseSpringSpec extends Specification {}

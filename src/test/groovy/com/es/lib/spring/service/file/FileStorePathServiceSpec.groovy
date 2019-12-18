@@ -1,9 +1,9 @@
 package com.es.lib.spring.service.file
 
-import com.es.lib.spring.BaseServiceSpec
+import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 
-class FileStorePathServiceSpec extends BaseServiceSpec {
+class FileStorePathServiceSpec extends BaseSpringSpec {
 
     @Autowired
     FileStorePathService fileStorePathService

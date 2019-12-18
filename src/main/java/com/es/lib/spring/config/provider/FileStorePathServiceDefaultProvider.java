@@ -11,10 +11,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.UUID;
+
 @Configuration
 public class FileStorePathServiceDefaultProvider {
 
-    private final BuildInfoService buildInfoService;
     private final EnvironmentProfileService environmentProfileService;
     private final String projectRoot;
     private final String basePath;
@@ -25,7 +26,6 @@ public class FileStorePathServiceDefaultProvider {
         EnvironmentProfileService environmentProfileService,
         @Value("${project.root:./}") String projectRoot,
         @Value("${common.fileStore.path:#{null}}") String basePath) {
-        this.buildInfoService = buildInfoService;
         this.environmentProfileService = environmentProfileService;
         this.projectRoot = projectRoot;
         this.basePath = basePath != null ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/file-store";
@@ -54,6 +54,11 @@ public class FileStorePathServiceDefaultProvider {
                         ext
                     )
                 );
+            }
+
+            @Override
+            public FileStorePath uniquePath(String ext) {
+                return this.getPath(UUID.randomUUID().toString(), ext);
             }
         };
     }

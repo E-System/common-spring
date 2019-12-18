@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 24.06.16
  */
-public class BaseController {
+public abstract class BaseController {
 
     protected MessageService messageService;
 

@@ -16,6 +16,7 @@
 
 package com.es.lib.spring.service
 
+import com.es.lib.spring.BaseSpringSpec
 import com.es.lib.spring.exception.ServiceException
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -27,10 +28,10 @@ import java.util.function.Supplier
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
-class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
+class TestBaseServiceSpec extends BaseSpringSpec {
 
     @Autowired
-    BaseService service
+    DefaultBaseService service
 
     def "FetchEntity with null result need throw service exception"() {
         given:
@@ -78,7 +79,7 @@ class BaseServiceSpec extends com.es.lib.spring.BaseServiceSpec {
         given:
         def errorCode = 'error.code'
         when:
-        def ex = service.serviceException(errorCode, "{error}",'arg1')
+        def ex = service.serviceException(errorCode, "{error}", 'arg1')
         then:
         ex.errorCode == errorCode
         ex.code == 'error'

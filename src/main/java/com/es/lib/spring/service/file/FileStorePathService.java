@@ -40,4 +40,7 @@ public interface FileStorePathService {
      * @return полный путь
      */
     FileStorePath getPath(String name, String ext);
+
+    FileStorePath uniquePath(String ext);
+
 }
