@@ -96,15 +96,15 @@ public class BaseNewRestErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult throwable(Throwable e) {
-        log.error("Service exception: " + e.getMessage(), e);
+        log.error("Runtime exception: " + e.getMessage(), e);
         String message;
-        if (environmentProfileService.isDevelop()) {
+        if (environmentProfileService.isFullErrorMessage()) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             message = e.getMessage();
             //+ "\n" + sw.toString();
         } else {
-            message = "Произошла ошибка. Обратитесь в техническую поддержку";
+            message = messageService.get("error.throwable.public", "Произошла ошибка. Обратитесь в техническую поддержку");
         }
         return new DTOResult(
             message,

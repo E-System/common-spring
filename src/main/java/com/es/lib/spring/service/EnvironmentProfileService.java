@@ -23,6 +23,7 @@ package com.es.lib.spring.service;
 public interface EnvironmentProfileService {
 
     String PROFILE_DEVELOP = "develop";
+    String PROFILE_MASTER = "master";
     String PROFILE_TEST = "test";
 
     /**
@@ -39,6 +40,20 @@ public interface EnvironmentProfileService {
      * @return true - активный провиль develop
      */
     boolean isDevelop();
+
+    /**
+     * Является ли активный профиль - master
+     *
+     * @return true - активный провиль master
+     */
+    boolean isMaster();
+
+    /**
+     * Включен вывод полного лога в адвайсах
+     *
+     * @return Включен вывод полного лога в адвайсах
+     */
+    boolean isFullErrorMessage();
 
     /**
      * Является ли активный профиль - test

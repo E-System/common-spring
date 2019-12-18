@@ -38,6 +38,16 @@ public class EnvironmentProfileServiceImpl implements EnvironmentProfileService 
     }
 
     @Override
+    public boolean isMaster() {
+        return isProfileActive(PROFILE_MASTER);
+    }
+
+    @Override
+    public boolean isFullErrorMessage() {
+        return isDevelop() || isMaster() || isTest();
+    }
+
+    @Override
     public boolean isTest() {
         return isProfileActive(PROFILE_TEST);
     }

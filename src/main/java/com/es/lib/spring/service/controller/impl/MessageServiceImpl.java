@@ -47,7 +47,12 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public String get(String code) {
-        return messageSource.getMessage(code, null, Constant.MESSAGE_NOT_SET_PREFIX + code, localeService.get());
+        return getWithDefault(code, Constant.MESSAGE_NOT_SET_PREFIX + code);
+    }
+
+    @Override
+    public String getWithDefault(String code, String defaultMessage) {
+        return messageSource.getMessage(code, null, defaultMessage, localeService.get());
     }
 
     /**

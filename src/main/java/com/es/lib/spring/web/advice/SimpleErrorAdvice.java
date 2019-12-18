@@ -70,8 +70,7 @@ public class SimpleErrorAdvice {
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", ErrorCodes.THROWABLE);
-        boolean isFullMessagePrint = environmentProfileService.isDevelop() || environmentProfileService.isTest();
-        if (isFullMessagePrint) {
+        if (environmentProfileService.isFullErrorMessage()) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             result.addObject("emessage", e.getMessage() + "\n" + sw.toString());

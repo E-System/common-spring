@@ -17,6 +17,7 @@
 package com.es.lib.spring.service.controller;
 
 import com.es.lib.spring.exception.ServiceException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSourceResolvable;
 
 /**
@@ -32,6 +33,14 @@ public interface MessageService {
      * @return сообщение
      */
     String get(String code);
+
+    /**
+     * Получить сообщение из ресурсного файла по коду
+     *
+     * @param code код сообщения
+     * @return сообщение
+     */
+    String getWithDefault(String code, String defaultMessage);
 
     /**
      * Получить сообщение из ресурсного файла по коду и интерполировать параметры
