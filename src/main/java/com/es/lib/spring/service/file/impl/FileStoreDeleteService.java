@@ -22,6 +22,7 @@ import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.event.file.DeleteFileEvent;
 import com.es.lib.spring.event.file.DeleteFileStoreEvent;
 import com.es.lib.spring.service.file.FileStorePathService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,12 @@ import org.springframework.stereotype.Service;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.02.16
  */
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class FileStoreDeleteService {
 
-    private FileStorePathService fileStorePathService;
-    private ApplicationEventPublisher eventPublisher;
+    private final FileStorePathService fileStorePathService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void delete(IFileStore file) {
         eventPublisher.publishEvent(
@@ -50,15 +52,5 @@ public class FileStoreDeleteService {
 
     public void delete(TemporaryFileStore file) {
         eventPublisher.publishEvent(new DeleteFileEvent(this, file.getPath()));
-    }
-
-    @Autowired
-    public void setFileStorePathService(FileStorePathService fileStorePathService) {
-        this.fileStorePathService = fileStorePathService;
-    }
-
-    @Autowired
-    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
     }
 }

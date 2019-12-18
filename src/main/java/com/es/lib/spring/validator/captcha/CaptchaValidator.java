@@ -18,8 +18,8 @@ package com.es.lib.spring.validator.captcha;
 
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.CaptchaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,11 +30,12 @@ import javax.validation.ConstraintValidatorContext;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 13.09.14
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Component
 public class CaptchaValidator implements ConstraintValidator<Captcha, String> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CaptchaValidator.class);
-    private CaptchaService captchaService;
+    private final CaptchaService captchaService;
 
     @Override
     public void initialize(Captcha constraintAnnotation) {
@@ -47,13 +48,8 @@ public class CaptchaValidator implements ConstraintValidator<Captcha, String> {
             captchaService.check(value);
             return true;
         } catch (ServiceException e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
             return false;
         }
-    }
-
-    @Autowired
-    public void setCaptchaService(CaptchaService captchaService) {
-        this.captchaService = captchaService;
     }
 }

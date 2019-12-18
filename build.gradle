@@ -30,7 +30,7 @@ buildscript {
 }
 
 wrapper {
-    gradleVersion = '5.6.4'
+    gradleVersion = '6.0.1'
 }
 
 apply from: "build-${profile}.gradle"
@@ -154,6 +154,9 @@ dependencies {
     compile "net.coobird:thumbnailator:0.4.8"
     compile "org.apache.httpcomponents:httpclient:4.5.5"
 
+    compileOnly "org.projectlombok:lombok:1.18.10"
+    annotationProcessor "org.projectlombok:lombok:1.18.10"
+
     compileOnly "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springVersion}"
 
@@ -166,7 +169,8 @@ dependencies {
 
     testCompile "org.hibernate:hibernate-validator:5.2.5.Final"
     testCompile "javax.el:javax.el-api:3.0.0"
-
+    testCompileOnly "org.projectlombok:lombok:1.18.10"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.10"
 }
 
 test {

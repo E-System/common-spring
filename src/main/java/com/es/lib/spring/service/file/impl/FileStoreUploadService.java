@@ -27,10 +27,10 @@ import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,13 +45,13 @@ import java.util.zip.CheckedInputStream;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 10.04.15
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class FileStoreUploadService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileStoreUploadService.class);
-
-    private FileStoreService fileStoreSaveService;
-    private FileStorePathService fileStorePathService;
+    private final FileStoreService fileStoreService;
+    private final FileStorePathService fileStorePathService;
 
     /**
      * Обработать событие загрузки файла
@@ -63,7 +63,7 @@ public class FileStoreUploadService {
         final String basename = FilenameUtils.getBaseName(file.getOriginalFilename());
         final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
         try {
-            return fileStoreSaveService.toStore(
+            return fileStoreService.toStore(
                 FileUtil.crc32(file.getBytes()),
                 file.getSize(),
                 basename,
@@ -72,7 +72,7 @@ public class FileStoreUploadService {
                 file.getBytes()
             );
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new ESRuntimeException(e.getMessage());
         }
     }
@@ -97,7 +97,7 @@ public class FileStoreUploadService {
                 ThumbUtil.generate(resultFile, new Thumb(), null, new ThumbnailatorThumbGenerator());
             }
         } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new ESRuntimeException(e.getMessage());
         }
         return new TemporaryFileStore(
@@ -109,15 +109,5 @@ public class FileStoreUploadService {
             file.getContentType(),
             crc32
         );
-    }
-
-    @Autowired
-    public void setFileStoreSaveService(FileStoreService fileStoreSaveService) {
-        this.fileStoreSaveService = fileStoreSaveService;
-    }
-
-    @Autowired
-    public void setFileStorePathService(FileStorePathService fileStorePathService) {
-        this.fileStorePathService = fileStorePathService;
     }
 }

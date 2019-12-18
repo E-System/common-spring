@@ -23,10 +23,10 @@ import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 06.01.16
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class FileStoreFetchService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileStoreFetchService.class);
-
-    private FileStorePathService fileStorePathService;
-    private FileStoreService fileStoreService;
+    private final FileStorePathService fileStorePathService;
+    private final FileStoreService fileStoreService;
 
     public File getFile(long id, Thumb thumb) {
         IFileStore fileStore = fileStoreService.fromStore(id);
@@ -101,15 +101,5 @@ public class FileStoreFetchService {
                 v -> v
             )
         );
-    }
-
-    @Autowired
-    public void setFileStorePathService(FileStorePathService fileStorePathService) {
-        this.fileStorePathService = fileStorePathService;
-    }
-
-    @Autowired
-    public void setFileStoreService(FileStoreService fileStoreService) {
-        this.fileStoreService = fileStoreService;
     }
 }

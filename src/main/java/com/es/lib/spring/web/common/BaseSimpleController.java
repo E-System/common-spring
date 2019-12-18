@@ -17,8 +17,6 @@
 package com.es.lib.spring.web.common;
 
 import com.es.lib.spring.exception.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,8 +27,6 @@ import java.util.Collections;
  * @since 28.08.14
  */
 public class BaseSimpleController extends BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BaseSimpleController.class);
 
     /**
      * Add flash RA error string {@link ServiceException}

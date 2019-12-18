@@ -16,12 +16,11 @@
 
 package com.es.lib.spring.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -42,12 +41,10 @@ import java.util.List;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 05.07.16
  */
+@Slf4j
 public class RestConfigurator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RestConfigurator.class);
-
-    private RestConfigurator() {
-    }
+    private RestConfigurator() { }
 
     public static RestTemplate create(boolean allTrusted) {
         RestTemplate result = new RestTemplate();
@@ -58,7 +55,7 @@ public class RestConfigurator {
         try {
             httpClient = createClient(allTrusted);
         } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | KeyManagementException | IOException | NoSuchAlgorithmException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
             httpClient != null ?
@@ -82,7 +79,7 @@ public class RestConfigurator {
             .disableCookieManagement();
         if (allTrusted) {
             builder.setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .setSSLContext(createSSLContext());
+                   .setSSLContext(createSSLContext());
         }
         return builder.build();
     }

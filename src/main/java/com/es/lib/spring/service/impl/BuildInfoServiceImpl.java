@@ -19,6 +19,7 @@ package com.es.lib.spring.service.impl;
 import com.es.lib.common.version.BuildInfo;
 import com.es.lib.common.version.VersionLoader;
 import com.es.lib.spring.service.BuildInfoService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

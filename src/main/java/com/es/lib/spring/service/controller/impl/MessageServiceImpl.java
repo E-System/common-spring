@@ -20,8 +20,8 @@ import com.es.lib.spring.config.Constant;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.LocaleService;
 import com.es.lib.spring.service.controller.MessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
@@ -31,13 +31,13 @@ import org.springframework.stereotype.Service;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class MessageServiceImpl implements MessageService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MessageServiceImpl.class);
-
-    private MessageSource messageSource;
-    private LocaleService localeService;
+    private final MessageSource messageSource;
+    private final LocaleService localeService;
 
     /**
      * Получить сообщение из ресурсного файла по коду
@@ -91,22 +91,11 @@ public class MessageServiceImpl implements MessageService {
         String result;
         if (e.isNeedLocalize()) {
             result = get(e);
-            LOG.error("Service exception: " + result + " (" + e.getMessage() + ")", e);
+            log.error("Service exception: " + result + " (" + e.getMessage() + ")", e);
         } else {
             result = e.getMessage();
-            LOG.error("Service exception: " + result, e);
+            log.error("Service exception: " + result, e);
         }
         return result;
-    }
-
-
-    @Autowired
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
-    @Autowired
-    public void setLocaleService(LocaleService localeService) {
-        this.localeService = localeService;
     }
 }

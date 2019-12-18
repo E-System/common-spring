@@ -23,6 +23,7 @@ import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.dto.validation.DTOValidationStatus;
 import com.es.lib.spring.config.Constant;
 import com.es.lib.spring.exception.ServiceValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
@@ -37,9 +38,8 @@ import java.util.LinkedList;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 24.06.16
  */
+@Slf4j
 public class BaseRestController extends BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BaseRestController.class);
 
     protected DTOResponse ok() {
         return new ResponseBuilder<>()
@@ -78,7 +78,7 @@ public class BaseRestController extends BaseController {
         Collection<DTOValidationField> fields = new LinkedList<>();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             String message = messageService.get(fieldError);
-            LOG.error("BaseRestController::checkError - {}, {}", message, fieldError);
+            log.error("BaseRestController::checkError - {}, {}", message, fieldError);
             fields.add(new DTOValidationField(fieldError.getField(), message));
         }
         throw new ServiceValidationException(new DTOValidationStatus(DTOValidationStatus.Type.Error, fields), messageCode);

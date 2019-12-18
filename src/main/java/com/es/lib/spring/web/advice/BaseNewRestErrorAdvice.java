@@ -25,8 +25,8 @@ import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
 import com.es.lib.spring.web.common.BaseNewRestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,19 +44,19 @@ import java.util.stream.Collectors;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 03.11.19
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @ControllerAdvice(assignableTypes = BaseNewRestController.class)
 public class BaseNewRestErrorAdvice {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BaseNewRestErrorAdvice.class);
-
-    private MessageService messageService;
-    private EnvironmentProfileService environmentProfileService;
+    private final MessageService messageService;
+    private final EnvironmentProfileService environmentProfileService;
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOValidationResult validation(ServiceValidationException e) {
-        LOG.error(e.getCode(), e);
+        log.error(e.getCode(), e);
         return new DTOValidationResult(
             messageService.get(e.getCode(), e.getArgs()),
             e.getErrorCode(),
@@ -96,7 +96,7 @@ public class BaseNewRestErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult throwable(Throwable e) {
-        LOG.error("Service exception: " + e.getMessage(), e);
+        log.error("Service exception: " + e.getMessage(), e);
         String message;
         if (environmentProfileService.isDevelop()) {
             StringWriter sw = new StringWriter();
@@ -110,15 +110,5 @@ public class BaseNewRestErrorAdvice {
             message,
             ErrorCodes.THROWABLE
         );
-    }
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
-    public void setEnvironmentProfileService(EnvironmentProfileService environmentProfileService) {
-        this.environmentProfileService = environmentProfileService;
     }
 }

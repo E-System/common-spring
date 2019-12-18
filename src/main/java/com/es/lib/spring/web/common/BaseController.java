@@ -19,8 +19,6 @@ package com.es.lib.spring.web.common;
 
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.MessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -28,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 24.06.16
  */
 public class BaseController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
     protected MessageService messageService;
 

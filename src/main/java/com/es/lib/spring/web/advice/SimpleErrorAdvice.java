@@ -22,8 +22,8 @@ import com.es.lib.spring.service.controller.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
 import com.es.lib.spring.web.common.BaseSimpleController;
 import com.es.lib.spring.web.service.TemplateToolService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,14 +40,14 @@ import java.util.Map;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 28.06.16
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @ControllerAdvice(assignableTypes = BaseSimpleController.class)
 public class SimpleErrorAdvice {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SimpleErrorAdvice.class);
-
-    private MessageService messageService;
-    private EnvironmentProfileService environmentProfileService;
-    private TemplateToolService templateToolService;
+    private final MessageService messageService;
+    private final EnvironmentProfileService environmentProfileService;
+    private final TemplateToolService templateToolService;
 
     @ExceptionHandler
     public ModelAndView serviceExceptionHandler(ServiceException e, Locale locale) {
@@ -63,10 +63,10 @@ public class SimpleErrorAdvice {
     @ExceptionHandler(value = {Throwable.class})
     public ModelAndView exceptionHandler(Throwable e, Locale locale) throws Throwable {
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
-            LOG.trace("Exception annotated with @ResponseStatus. Skip processing");
+            log.trace("Exception annotated with @ResponseStatus. Skip processing");
             throw e;
         }
-        LOG.error("Runtime exception: " + e.getMessage(), e);
+        log.error("Runtime exception: " + e.getMessage(), e);
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", ErrorCodes.THROWABLE);
@@ -84,20 +84,5 @@ public class SimpleErrorAdvice {
 
     private void fillGlobals(Map<String, Object> model, Locale locale) {
         templateToolService.fillModel(model, locale);
-    }
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
-    public void setEnvironmentProfileService(EnvironmentProfileService environmentProfileService) {
-        this.environmentProfileService = environmentProfileService;
-    }
-
-    @Autowired
-    public void setTemplateToolService(TemplateToolService templateToolService) {
-        this.templateToolService = templateToolService;
     }
 }

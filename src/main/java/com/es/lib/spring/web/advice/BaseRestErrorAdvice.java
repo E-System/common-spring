@@ -27,8 +27,8 @@ import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
 import com.es.lib.spring.web.common.BaseRestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -45,19 +45,19 @@ import java.util.stream.Collectors;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 28.06.16
  */
+@Slf4j
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @ControllerAdvice(assignableTypes = BaseRestController.class)
 public class BaseRestErrorAdvice {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BaseRestErrorAdvice.class);
-
-    private MessageService messageService;
-    private EnvironmentProfileService environmentProfileService;
+    private final MessageService messageService;
+    private final EnvironmentProfileService environmentProfileService;
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     private DTOResponse<DTOValidationStatus> validation(ServiceValidationException e) {
-        LOG.error(e.getCode(), e);
+        log.error(e.getCode(), e);
         return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
             .message(e.getErrorCode(), messageService.get(e.getCode(), e.getArgs()))
             .data(e.getStatus())
@@ -95,7 +95,7 @@ public class BaseRestErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResponse throwable(Throwable e) {
-        LOG.error("Service exception: " + e.getMessage(), e);
+        log.error("Service exception: " + e.getMessage(), e);
         String message;
         if (environmentProfileService.isDevelop()) {
             StringWriter sw = new StringWriter();
@@ -108,15 +108,5 @@ public class BaseRestErrorAdvice {
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
             .message(ErrorCodes.THROWABLE, message)
             .build();
-    }
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
-    public void setEnvironmentProfileService(EnvironmentProfileService environmentProfileService) {
-        this.environmentProfileService = environmentProfileService;
     }
 }
