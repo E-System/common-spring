@@ -1,4 +1,4 @@
-package com.es.lib.spring.config.provider;
+package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileStorePath;
@@ -41,7 +41,7 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    public String fromStore(String base64) {
+    public IFileStore fromStore(String base64) {
         log.error("---USE DEFAULT FileStoreService::fromStore({})---", base64);
         return null;
     }

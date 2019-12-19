@@ -16,8 +16,12 @@
 
 package com.es.lib.spring.service.file;
 
+import com.es.lib.common.FileUtil;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileParts;
+import com.es.lib.entity.model.file.FileStoreData;
 import com.es.lib.entity.model.file.TemporaryFileStore;
+import com.es.lib.entity.util.FileStoreUtil;
 
 import java.util.Collection;
 
@@ -38,11 +42,60 @@ public interface FileStoreService {
         byte[] data
     );
 
+    default IFileStore toStore(String data, String fileName, String ext, String mime) {
+        return toStore(
+            data.getBytes(),
+            fileName,
+            ext,
+            mime
+        );
+    }
+
+    default IFileStore toStore(String data, String fileNameWithExt, String mime) {
+        return toStore(
+            data.getBytes(),
+            fileNameWithExt,
+            mime
+        );
+    }
+
+    default IFileStore toStore(byte[] data, String fileName, String ext, String mime) {
+        return toStore(
+            FileUtil.crc32(data),
+            data.length,
+            fileName,
+            ext,
+            mime,
+            data
+        );
+    }
+
+    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime) {
+        FileParts fileParts = FileStoreUtil.extractFileParts(fileNameWithExt);
+        return toStore(
+            FileUtil.crc32(data),
+            data.length,
+            fileParts.getFileName(),
+            fileParts.getExt(),
+            mime,
+            data
+        );
+    }
+
+    default IFileStore toStore(FileStoreData data) {
+        return toStore(
+            data.getBytes(),
+            data.getFileName(),
+            data.getExt(),
+            data.getMime()
+        );
+    }
+
     IFileStore fromStore(long id);
 
-    IFileStore copyInStore(long id);
+    IFileStore fromStore(String base64);
 
-    String fromStore(String base64);
+    IFileStore copyInStore(long id);
 
     Collection<? extends IFileStore> list(Collection<? extends Number> ids);
 }

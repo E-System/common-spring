@@ -1,6 +1,7 @@
 package com.es.lib.spring.config.provider;
 
 import com.es.lib.spring.service.file.FileStoreService;
+import com.es.lib.spring.service.file.impl.DefaultFileStoreServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

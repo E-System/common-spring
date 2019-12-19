@@ -85,27 +85,6 @@ public abstract class BaseStoreController extends BaseController {
         String encoded = URLEncoder.encode(fileName, Charset.defaultCharset().name()).replace("+", "%20");
         return (attachment ? "attachment" : "inline") + "; filename=\"" + fileName + "\"; filename*=UTF-8''" + encoded;
     }
-/*
-    protected boolean writeFile(OutputFileData data, HttpServletResponse response) throws Exception {
-        if (data == null) {
-            return false;
-        }
-        return writeExistFile(data.getFile(), data.getFileName(), response);
-    }
-
-    protected boolean writeExistFile(File file, String fileName, HttpServletResponse response) throws Exception {
-        if (file == null || !file.exists() || !file.canRead()) {
-            return false;
-        }
-        addFileName(fileName, response);
-        response.setContentType(servletContext.getMimeType(file.getAbsolutePath()));
-        FileStoreUtil.copyContent(
-            file,
-            response.getOutputStream()
-        );
-        return true;
-    }*/
-
 
     @Autowired
     public void setServletContext(ServletContext servletContext) {
