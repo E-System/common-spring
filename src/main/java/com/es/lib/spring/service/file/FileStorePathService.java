@@ -19,6 +19,8 @@ package com.es.lib.spring.service.file;
 
 import com.es.lib.entity.model.file.FileStorePath;
 
+import java.util.UUID;
+
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 31.01.16
@@ -41,6 +43,8 @@ public interface FileStorePathService {
      */
     FileStorePath getPath(String name, String ext);
 
-    FileStorePath uniquePath(String ext);
+    default FileStorePath uniquePath(String ext) {
+        return getPath(UUID.randomUUID().toString(), ext);
+    }
 
 }

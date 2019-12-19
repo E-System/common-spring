@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.UUID;
-
 @Configuration
 public class FileStorePathServiceDefaultProvider {
 
@@ -54,11 +52,6 @@ public class FileStorePathServiceDefaultProvider {
                         ext
                     )
                 );
-            }
-
-            @Override
-            public FileStorePath uniquePath(String ext) {
-                return this.getPath(UUID.randomUUID().toString(), ext);
             }
         };
     }
