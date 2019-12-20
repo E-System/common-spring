@@ -31,10 +31,10 @@ public class FileStoreController extends BaseStoreController {
     private final FileStoreControllerService service;
 
     @GetMapping(value = PATH + "*")
-    public void files(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void files(HttpServletRequest req, HttpServletResponse resp) {
         FileStoreRequest attributes = extractAttributes(req);
         if (attributes == null) {
-            resp.sendError(400, "Bad request parameters");
+            sendError(resp);
             return;
         }
 
@@ -43,19 +43,25 @@ public class FileStoreController extends BaseStoreController {
             () -> service.getOutputData(attributes),
             () -> {
                 if (!attributes.isGenerateEmpty()) {
+                    sendError(resp);
                     return;
                 }
                 resp.setContentType("image/png");
                 try {
                     Thumb thumb = attributes.getThumb() != null ? attributes.getThumb() : new Thumb();
                     ImageUtil.writeDefaultEmptyImage(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream());
-                } catch (IOException ignored) {
-
-                }
+                } catch (IOException ignored) { }
             }
         );
     }
 
+    private void sendError(HttpServletResponse resp) {
+        try {
+            resp.sendError(400, "Bad request parameters");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 
     private FileStoreRequest extractAttributes(HttpServletRequest req) {
         Map<String, String[]> params = req.getParameterMap();
