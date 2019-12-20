@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Controller
 @ConditionalOnProperty("common.fileStore.path")
+@ConditionalOnExpression("not ${common.fileStore.disabled:false}")
 public class FileStoreController extends BaseStoreController {
 
     private static final String SHORT_PATH = "/files";
