@@ -1,3 +1,5 @@
 common:
   fileStore:
     path: /tmp/file-store
+  templates:
+    path: /tmp/templates

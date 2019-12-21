@@ -46,5 +46,4 @@ public interface FileStorePathService {
     default FileStorePath uniquePath(String ext) {
         return getPath(UUID.randomUUID().toString(), ext);
     }
-
 }

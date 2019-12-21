@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired
 
 class FileStorePathServiceSpec extends BaseSpringSpec {
 
-    static STORE_PATH = '/tmp/file-store'
+    static PATH = '/tmp/file-store'
     @Autowired
     FileStorePathService fileStorePathService
 
     def "GetBasePath"() {
         expect:
-        fileStorePathService.basePath == STORE_PATH
+        fileStorePathService.basePath == PATH
     }
 
     def "GetPath"() {
@@ -22,9 +22,9 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath(name, ext)
         expect:
-        result.basePath == STORE_PATH
+        result.basePath == PATH
         result.path.endsWith(fileName)
-        result.fullPath.startsWith(STORE_PATH)
+        result.fullPath.startsWith(PATH)
         result.fullPath.endsWith(fileName)
     }
 }
