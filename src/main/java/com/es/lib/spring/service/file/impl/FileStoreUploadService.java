@@ -27,7 +27,7 @@ import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
-import com.es.lib.spring.service.file.FileStoreUploadChecker;
+import com.es.lib.spring.service.file.FileStoreUploadCheckService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +53,7 @@ public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
     private final FileStorePathService fileStorePathService;
-    private Collection<FileStoreUploadChecker> uploadCheckers;
+    private Collection<FileStoreUploadCheckService> uploadCheckServices;
 
     /**
      * Обработать событие загрузки файла
@@ -117,16 +117,16 @@ public class FileStoreUploadService {
     }
 
     private void check(MultipartFile file, FileParts fileParts) {
-        if (uploadCheckers == null) {
+        if (uploadCheckServices == null) {
             return;
         }
-        for (FileStoreUploadChecker uploadChecker : uploadCheckers) {
+        for (FileStoreUploadCheckService uploadChecker : uploadCheckServices) {
             uploadChecker.check(file, fileParts);
         }
     }
 
     @Autowired(required = false)
-    public void setUploadCheckers(Collection<FileStoreUploadChecker> uploadCheckers) {
-        this.uploadCheckers = uploadCheckers;
+    public void setUploadCheckServices(Collection<FileStoreUploadCheckService> uploadCheckServices) {
+        this.uploadCheckServices = uploadCheckServices;
     }
 }
