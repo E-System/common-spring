@@ -53,7 +53,7 @@ public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
     private final FileStorePathService fileStorePathService;
-    private final Collection<FileStoreUploadChecker> uploadCheckers;
+    private Collection<FileStoreUploadChecker> uploadCheckers;
 
     /**
      * Обработать событие загрузки файла
@@ -117,8 +117,16 @@ public class FileStoreUploadService {
     }
 
     private void check(MultipartFile file, FileParts fileParts) {
+        if (uploadCheckers == null) {
+            return;
+        }
         for (FileStoreUploadChecker uploadChecker : uploadCheckers) {
             uploadChecker.check(file, fileParts);
         }
+    }
+
+    @Autowired(required = false)
+    public void setUploadCheckers(Collection<FileStoreUploadChecker> uploadCheckers) {
+        this.uploadCheckers = uploadCheckers;
     }
 }
