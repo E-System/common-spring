@@ -22,7 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Controller
 @ConditionalOnProperty("common.fileStore.path")
-@ConditionalOnExpression("not ${common.fileStore.disabled:false}")
+@ConditionalOnExpression("${common.fileStore.enabled:true}")
 public class FileStoreController extends BaseStoreController {
 
     private static final String SHORT_PATH = "/files";

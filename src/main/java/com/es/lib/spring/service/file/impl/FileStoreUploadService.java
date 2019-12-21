@@ -19,6 +19,7 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileParts;
 import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.entity.model.file.Thumb;
@@ -26,17 +27,18 @@ import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
+import com.es.lib.spring.service.file.FileStoreUploadChecker;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
@@ -51,6 +53,7 @@ public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
     private final FileStorePathService fileStorePathService;
+    private final Collection<FileStoreUploadChecker> uploadCheckers;
 
     /**
      * Обработать событие загрузки файла
@@ -59,14 +62,17 @@ public class FileStoreUploadService {
      * @return объект сохраненного файла
      */
     public IFileStore load(MultipartFile file) {
-        final String basename = FilenameUtils.getBaseName(file.getOriginalFilename());
-        final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+        FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
+        check(file, fileParts);
         try {
             return fileStoreService.toStore(
                 FileUtil.crc32(file.getBytes()),
                 file.getSize(),
-                basename,
-                ext,
+                fileParts.getFileName(),
+                fileParts.getExt(),
                 file.getContentType(),
                 file.getBytes()
             );
@@ -77,9 +83,12 @@ public class FileStoreUploadService {
     }
 
     public TemporaryFileStore loadTemporary(MultipartFile file) {
-        final String baseName = FilenameUtils.getBaseName(file.getOriginalFilename());
-        final String ext = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
-        FileStorePath path = fileStorePathService.uniquePath(ext);
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+        FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
+        check(file, fileParts);
+        FileStorePath path = fileStorePathService.uniquePath(fileParts.getExt());
         File resultFile = new File(path.getFullPath());
         long crc32;
         try {
@@ -99,11 +108,17 @@ public class FileStoreUploadService {
         return new TemporaryFileStore(
             resultFile,
             path.getPath(),
-            baseName,
-            ext,
+            fileParts.getFileName(),
+            fileParts.getExt(),
             file.getSize(),
             file.getContentType(),
             crc32
         );
+    }
+
+    private void check(MultipartFile file, FileParts fileParts) {
+        for (FileStoreUploadChecker uploadChecker : uploadCheckers) {
+            uploadChecker.check(file, fileParts);
+        }
     }
 }
