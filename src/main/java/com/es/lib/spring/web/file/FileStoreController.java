@@ -25,7 +25,7 @@ import java.util.Map;
 @ConditionalOnExpression("${common.fileStore.enabled:true}")
 public class FileStoreController extends BaseStoreController {
 
-    private static final String SHORT_PATH = "/files";
+    public static final String SHORT_PATH = "/files";
     public static final String PATH = SHORT_PATH + "/";
 
     private final FileStoreControllerService service;
