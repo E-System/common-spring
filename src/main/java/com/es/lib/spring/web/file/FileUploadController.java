@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.es.lib.spring.web.file.FileStoreController.SHORT_PATH;
+import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -24,7 +24,7 @@ public class FileUploadController extends BaseNewRestController {
 
     private final FileStoreUploadService fileStoreUploadService;
 
-    @PostMapping(value = SHORT_PATH)
+    @PostMapping(value = PATH)
     public DTOResponse<Long> upload(@RequestParam(value = "file") MultipartFile file) {
         return ok(fileStoreUploadService.load(file).getId());
     }

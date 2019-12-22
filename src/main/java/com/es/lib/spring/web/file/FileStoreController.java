@@ -25,12 +25,12 @@ import java.util.Map;
 @ConditionalOnExpression("${common.fileStore.enabled:true}")
 public class FileStoreController extends BaseStoreController {
 
-    public static final String SHORT_PATH = "/files";
-    public static final String PATH = SHORT_PATH + "/";
+    public static final String PATH = "/files";
+    private static final String FULL_PATH = PATH + "/";
 
     private final FileStoreControllerService service;
 
-    @GetMapping(value = PATH + "*")
+    @GetMapping(value = FULL_PATH + "*")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
         FileStoreRequest attributes = extractAttributes(req);
         if (attributes == null) {
@@ -69,9 +69,9 @@ public class FileStoreController extends BaseStoreController {
         if (StringUtils.isBlank(id)) {
             final String path = req.getRequestURI().substring(req.getContextPath().length());
             if (StringUtils.isNotEmpty(path)) {
-                id = path.replace(PATH, "");
+                id = path.replace(FULL_PATH, "");
             }
-            if (id.startsWith(SHORT_PATH)) {
+            if (id.startsWith(PATH)) {
                 return null;
             }
             log.trace("Request parameter [id] is empty. Find from path: {} - {}", path, id);
