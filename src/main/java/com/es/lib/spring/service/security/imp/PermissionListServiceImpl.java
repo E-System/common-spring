@@ -8,6 +8,7 @@ import com.es.lib.spring.service.security.PermissionListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class PermissionListServiceImpl implements PermissionListService {
     private Collection<String> allKeys;
 
     @EventListener
-    public void handleContextStartedEvent(ContextStartedEvent ctxStartEvt) {
+    public void handleContextStartedEvent(ContextRefreshedEvent event) {
         PermissionListBuilder builder = new PermissionListBuilder();
         eventPublisher.publishEvent(new PermissionListInitEvent(builder));
         log.trace("Init permission: " + builder);
