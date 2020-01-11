@@ -8,9 +8,10 @@ import com.es.lib.spring.service.security.PermissionListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 
 @Slf4j
@@ -23,13 +24,11 @@ public class PermissionListServiceImpl implements PermissionListService {
     private Groups groups;
     private Collection<String> allKeys;
 
-    @PostConstruct
-    public void postConstruct() {
+    @EventListener
+    public void handleContextStartedEvent(ContextStartedEvent ctxStartEvt) {
         PermissionListBuilder builder = new PermissionListBuilder();
-        // Fire collect all event
         eventPublisher.publishEvent(new PermissionListInitEvent(builder));
         log.trace("Init permission: " + builder);
-        // Fire post process event (for exclude)
         eventPublisher.publishEvent(new PermissionListPostProcessEvent(builder));
         log.trace("Post process permission: " + builder);
 
