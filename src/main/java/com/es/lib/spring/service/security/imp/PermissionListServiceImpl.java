@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 
 @Slf4j
@@ -22,10 +23,13 @@ public class PermissionListServiceImpl implements PermissionListService {
     private Groups groups;
     private Collection<String> allKeys;
 
-    private void init() {
+    @PostConstruct
+    public void postConstruct() {
         PermissionListBuilder builder = new PermissionListBuilder();
+        // Fire collect all event
         eventPublisher.publishEvent(new PermissionListInitEvent(builder));
         log.trace("Init permission: " + builder);
+        // Fire post process event (for exclude)
         eventPublisher.publishEvent(new PermissionListPostProcessEvent(builder));
         log.trace("Post process permission: " + builder);
 
@@ -38,19 +42,13 @@ public class PermissionListServiceImpl implements PermissionListService {
     @Override
     public Groups getGroups() {
         if (groups == null) {
-            init();
-            if (groups == null) {
-                return new Groups();
-            }
+            return new Groups();
         }
         return new Groups(groups);
     }
 
     @Override
     public Collection<String> getAllKeys() {
-        if (allKeys == null) {
-            init();
-        }
         return allKeys;
     }
 
