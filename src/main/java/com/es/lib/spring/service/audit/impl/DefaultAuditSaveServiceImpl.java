@@ -22,7 +22,7 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
     @Transactional
     public void save(AuditEvent event) {
         try {
-            save(event, requestService.getRemoteIp());
+            save(event, getIp());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -30,6 +30,14 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
 
     protected void save(AuditEvent event, String ip) {
         log.error("---USE DEFAULT AuditSaveService::save({}, {})---", event, ip);
+    }
+
+    protected String getIp() {
+        String result = "";
+        try {
+            result = requestService.getRemoteIp();
+        } catch (Exception ignore) { }
+        return result;
     }
 
     @Autowired

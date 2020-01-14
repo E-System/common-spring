@@ -12,6 +12,10 @@ public class AuditSaveServiceDefaultProvider {
     @Bean
     @ConditionalOnMissingBean(AuditSaveService.class)
     public AuditSaveService auditSaveService() {
-        return new DefaultAuditSaveServiceImpl() {};
+        return new InternalDefaultAuditSaveServiceImpl();
+    }
+
+    public static class InternalDefaultAuditSaveServiceImpl extends DefaultAuditSaveServiceImpl {
+
     }
 }
