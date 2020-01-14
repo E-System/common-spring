@@ -2,6 +2,7 @@ package com.es.lib.spring.service.audit;
 
 import com.es.lib.entity.iface.audit.event.AuditEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 29.03.2018
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class AuditEventListener {
 
