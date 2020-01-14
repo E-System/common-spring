@@ -16,6 +16,8 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
 
     private RequestService requestService;
 
+    public DefaultAuditSaveServiceImpl() { }
+
     @Override
     @Transactional
     public void save(AuditEvent event) {
