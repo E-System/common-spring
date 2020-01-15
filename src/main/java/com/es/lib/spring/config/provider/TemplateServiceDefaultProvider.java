@@ -14,12 +14,17 @@ public class TemplateServiceDefaultProvider {
     @Bean
     @ConditionalOnMissingBean(TemplatePathService.class)
     public TemplatePathService templatePathService() {
-        return new DefaultTemplatePathServiceImpl() {};
+        return new InternalDefaultTemplatePathServiceImpl();
     }
 
     @Bean
     @ConditionalOnMissingBean(TemplateService.class)
     public TemplateService templateService() {
-        return new DefaultTemplateServiceImpl() {};
+        return new InternalDefaultTemplateServiceImpl();
     }
+
+    public static class InternalDefaultTemplatePathServiceImpl extends DefaultTemplatePathServiceImpl {}
+
+    public static class InternalDefaultTemplateServiceImpl extends DefaultTemplateServiceImpl {}
+
 }

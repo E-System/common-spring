@@ -65,7 +65,10 @@ public class RequestServiceImpl implements RequestService {
      */
     @Override
     public String getRemoteIp() {
-        HttpServletRequest request = get();
+        HttpServletRequest request = null;
+        try {
+            request = get();
+        } catch (Exception ignore) {}
         if (request == null) {
             return null;
         }

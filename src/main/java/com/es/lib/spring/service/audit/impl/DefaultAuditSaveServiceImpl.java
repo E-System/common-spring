@@ -4,6 +4,7 @@ import com.es.lib.entity.iface.audit.event.AuditEvent;
 import com.es.lib.spring.service.audit.AuditSaveService;
 import com.es.lib.spring.service.controller.RequestService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
     @Transactional
     public void save(AuditEvent event) {
         try {
-            save(event, getIp());
+            save(event, StringUtils.defaultIfEmpty(requestService.getRemoteIp(), ""));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -30,14 +31,6 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
 
     protected void save(AuditEvent event, String ip) {
         log.error("---USE DEFAULT AuditSaveService::save({}, {})---", event, ip);
-    }
-
-    protected String getIp() {
-        String result = "";
-        try {
-            result = requestService.getRemoteIp();
-        } catch (Exception ignore) { }
-        return result;
     }
 
     @Autowired

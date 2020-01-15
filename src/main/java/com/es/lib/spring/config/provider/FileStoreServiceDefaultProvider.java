@@ -14,12 +14,15 @@ public class FileStoreServiceDefaultProvider {
     @Bean
     @ConditionalOnMissingBean(FileStorePathService.class)
     public FileStorePathService fileStorePathService() {
-        return new DefaultFileStorePathServiceImpl() {};
+        return new InternalDefaultFileStorePathServiceImpl();
     }
 
     @Bean
     @ConditionalOnMissingBean(FileStoreService.class)
     public FileStoreService fileStoreService() {
-        return new DefaultFileStoreServiceImpl() {};
+        return new InternalDefaultFileStoreServiceImpl();
     }
+
+    public static class InternalDefaultFileStorePathServiceImpl extends DefaultFileStorePathServiceImpl {}
+    public static class InternalDefaultFileStoreServiceImpl extends DefaultFileStoreServiceImpl{}
 }
