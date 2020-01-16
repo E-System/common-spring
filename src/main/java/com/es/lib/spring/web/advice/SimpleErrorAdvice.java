@@ -75,7 +75,7 @@ public class SimpleErrorAdvice {
             e.printStackTrace(new PrintWriter(sw));
             result.addObject("emessage", e.getMessage() + "\n" + sw.toString());
         } else {
-            result.addObject("emessage", messageService.get("error.throwable.public"));
+            result.addObject("emessage", messageService.getThrowablePublicMessage());
         }
         fillGlobals(result.getModel(), locale);
         return result;

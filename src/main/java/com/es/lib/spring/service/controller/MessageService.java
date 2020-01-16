@@ -17,7 +17,6 @@
 package com.es.lib.spring.service.controller;
 
 import com.es.lib.spring.exception.ServiceException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSourceResolvable;
 
 /**
@@ -74,4 +73,13 @@ public interface MessageService {
      * @return Result message
      */
     String getWithLocalizationCheck(ServiceException e);
+
+    /**
+     * Get default throwable public message
+     *
+     * @return Throwable public message
+     */
+    default String getThrowablePublicMessage() {
+        return getWithDefault("error.throwable.public", "An error has occurred. Contact technical support");
+    }
 }

@@ -103,7 +103,7 @@ public class BaseRestErrorAdvice {
             message = e.getMessage();
             //+ "\n" + sw.toString();
         } else {
-            message = messageService.get("error.throwable.public", "Произошла ошибка. Обратитесь в техническую поддержку");
+            message = messageService.getThrowablePublicMessage();
         }
         return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
             .message(ErrorCodes.THROWABLE, message)
