@@ -63,15 +63,16 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
         return this.fileStorePathService.uniquePath(mode, ext);
     }
 
-    protected void moveTo(TemporaryFileStore temporaryFile, FileStoreMode mode, boolean deleteOriginal) throws IOException {
-        FileStorePath storePath = uniquePath(mode, temporaryFile.getExt());
+    protected FileStorePath moveTo(TemporaryFileStore temporaryFile, FileStoreMode mode, boolean deleteOriginal) throws IOException {
+        FileStorePath result = uniquePath(mode, temporaryFile.getExt());
         File source = new File(fileStorePathService.getBasePath(), temporaryFile.getPath());
         FileUtils.copyFile(
             source,
-            new File(storePath.getFullPath())
+            new File(result.getFullPath())
         );
         if (deleteOriginal) {
             FileUtils.deleteQuietly(source);
         }
+        return result;
     }
 }
