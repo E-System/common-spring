@@ -8,8 +8,11 @@ import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -58,5 +61,17 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     @Override
     public FileStorePath uniquePath(FileStoreMode mode, String ext) {
         return this.fileStorePathService.uniquePath(mode, ext);
+    }
+
+    protected void moveTo(TemporaryFileStore temporaryFile, FileStoreMode mode, boolean deleteOriginal) throws IOException {
+        FileStorePath storePath = uniquePath(mode, temporaryFile.getExt());
+        File source = new File(fileStorePathService.getBasePath(), temporaryFile.getPath());
+        FileUtils.copyFile(
+            source,
+            new File(storePath.getFullPath())
+        );
+        if (deleteOriginal) {
+            FileUtils.deleteQuietly(source);
+        }
     }
 }
