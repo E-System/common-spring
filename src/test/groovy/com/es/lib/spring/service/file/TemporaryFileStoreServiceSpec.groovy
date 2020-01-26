@@ -35,6 +35,9 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         file.baseName == 'original'
         file.ext == 'txt'
         file.mime == 'text/plain'
+        file.path.startsWith("/temporary")
+        !file.modeRelativePath.startsWith("/temporary")
+        file.path.replace("/temporary", "") == file.modeRelativePath
     }
 
     def "Create from bytes"() {
@@ -46,6 +49,9 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         file.mode == FileStoreMode.TEMPORARY
         file.ext == 'txt'
         file.mime == 'text/plain'
+        file.path.startsWith("/temporary")
+        !file.modeRelativePath.startsWith("/temporary")
+        file.path.replace("/temporary", "") == file.modeRelativePath
     }
 
     def "Create from input stream"() {
@@ -58,5 +64,8 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         file.mode == FileStoreMode.TEMPORARY
         file.ext == 'txt'
         file.mime == 'text/plain'
+        file.path.startsWith("/temporary")
+        !file.modeRelativePath.startsWith("/temporary")
+        file.path.replace("/temporary", "") == file.modeRelativePath
     }
 }

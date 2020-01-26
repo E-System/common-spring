@@ -6,6 +6,7 @@ import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +16,8 @@ import java.util.Collections;
 @Slf4j
 public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
 
-    private FileStorePathService fileStorePathService;
+    @Setter(onMethod_ = @Autowired)
+    protected FileStorePathService fileStorePathService;
 
     @Override
     public IFileStore toStore(TemporaryFileStore temporaryFile) {
@@ -56,10 +58,5 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     @Override
     public FileStorePath uniquePath(FileStoreMode mode, String ext) {
         return this.fileStorePathService.uniquePath(mode, ext);
-    }
-
-    @Autowired
-    public void setFileStorePathService(FileStorePathService fileStorePathService) {
-        this.fileStorePathService = fileStorePathService;
     }
 }
