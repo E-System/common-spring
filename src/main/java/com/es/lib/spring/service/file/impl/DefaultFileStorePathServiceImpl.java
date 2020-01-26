@@ -1,5 +1,6 @@
 package com.es.lib.spring.service.file.impl;
 
+import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.service.BuildInfoService;
@@ -25,11 +26,11 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     }
 
     @Override
-    public FileStorePath getPath(String name, String ext) {
+    public FileStorePath getPath(FileStoreMode mode, String name, String ext) {
         return new FileStorePath(
             getBasePath(),
             FileStoreUtil.getLocalPath(
-                null,
+                mode.getPrefix(),
                 name,
                 ext
             )

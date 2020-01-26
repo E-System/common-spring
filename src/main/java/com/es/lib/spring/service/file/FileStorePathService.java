@@ -17,6 +17,7 @@
 package com.es.lib.spring.service.file;
 
 
+import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
 
 import java.util.UUID;
@@ -28,22 +29,38 @@ import java.util.UUID;
 public interface FileStorePathService {
 
     /**
-     * Получить базовый путь хранилища
+     * Get base file store path
      *
-     * @return базовый путь хранилища
+     * @return base file store path
      */
     String getBasePath();
 
     /**
-     * Получить локальный и абсолютный путь до файлового хранилища
+     * Get relative and absolute file store path
      *
-     * @param name имя файла
-     * @param ext  расширение файла
-     * @return полный путь
+     * @param name file name
+     * @param ext  file extension
+     * @return relative and absolute file store path
      */
-    FileStorePath getPath(String name, String ext);
+    default FileStorePath getPath(String name, String ext) {
+        return getPath(FileStoreMode.PERSISTENT, name, ext);
+    }
+
+    /**
+     * Get relative and absolute file store path
+     *
+     * @param mode file store mode
+     * @param name file name
+     * @param ext  file extension
+     * @return relative and absolute file store path
+     */
+    FileStorePath getPath(FileStoreMode mode, String name, String ext);
 
     default FileStorePath uniquePath(String ext) {
-        return getPath(UUID.randomUUID().toString(), ext);
+        return uniquePath(FileStoreMode.PERSISTENT, ext);
+    }
+
+    default FileStorePath uniquePath(FileStoreMode mode, String ext) {
+        return getPath(mode, UUID.randomUUID().toString(), ext);
     }
 }

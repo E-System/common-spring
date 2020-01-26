@@ -19,13 +19,9 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.FileParts;
-import com.es.lib.entity.model.file.FileStorePath;
-import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.entity.model.file.Thumb;
+import com.es.lib.entity.model.file.*;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.entity.util.ThumbUtil;
-import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
@@ -52,7 +48,6 @@ import java.util.zip.CheckedInputStream;
 public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
-    private final FileStorePathService fileStorePathService;
     private Collection<FileStoreUploadCheckService> uploadCheckServices;
 
     /**
@@ -88,7 +83,7 @@ public class FileStoreUploadService {
         }
         FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
         check(file, fileParts);
-        FileStorePath path = fileStorePathService.uniquePath(fileParts.getExt());
+        FileStorePath path = fileStoreService.uniquePath(FileStoreMode.TEMPORARY, fileParts.getExt());
         File resultFile = new File(path.getFullPath());
         long crc32;
         try {

@@ -18,9 +18,7 @@ package com.es.lib.spring.service.file;
 
 import com.es.lib.common.FileUtil;
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.FileParts;
-import com.es.lib.entity.model.file.FileStoreData;
-import com.es.lib.entity.model.file.TemporaryFileStore;
+import com.es.lib.entity.model.file.*;
 import com.es.lib.entity.util.FileStoreUtil;
 
 import java.util.Collection;
@@ -98,4 +96,10 @@ public interface FileStoreService {
     IFileStore copyInStore(long id);
 
     Collection<? extends IFileStore> list(Collection<? extends Number> ids);
+
+    default FileStorePath uniquePath(String ext) {
+        return uniquePath(FileStoreMode.PERSISTENT, ext);
+    }
+
+    FileStorePath uniquePath(FileStoreMode mode, String ext);
 }

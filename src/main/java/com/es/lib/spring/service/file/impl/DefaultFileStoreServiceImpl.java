@@ -1,6 +1,7 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
@@ -52,8 +53,9 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
         return Collections.emptyList();
     }
 
-    protected FileStorePath uniquePath(String ext) {
-        return this.fileStorePathService.uniquePath(ext);
+    @Override
+    public FileStorePath uniquePath(FileStoreMode mode, String ext) {
+        return this.fileStorePathService.uniquePath(mode, ext);
     }
 
     @Autowired
