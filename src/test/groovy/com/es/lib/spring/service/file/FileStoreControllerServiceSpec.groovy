@@ -5,6 +5,7 @@ import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 
 class FileStoreControllerServiceSpec extends BaseSpringSpec {
+
     @Autowired
     FileStoreControllerService service
 

@@ -15,7 +15,5 @@ public class AuditSaveServiceDefaultProvider {
         return new InternalDefaultAuditSaveServiceImpl();
     }
 
-    public static class InternalDefaultAuditSaveServiceImpl extends DefaultAuditSaveServiceImpl {
-
-    }
+    public static class InternalDefaultAuditSaveServiceImpl extends DefaultAuditSaveServiceImpl {}
 }
