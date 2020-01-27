@@ -13,9 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 package com.es.lib.spring.validator.captcha;
-
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
