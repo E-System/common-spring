@@ -22,7 +22,7 @@ import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.entity.util.FileStoreUtil;
-import com.es.lib.spring.service.file.FileStoreService;
+import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.TemporaryFileStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ import java.util.zip.CheckedInputStream;
 @Service
 public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService {
 
-    private final FileStoreService fileStoreService;
+    private final FileStorePathService fileStorePathService;
 
     @Override
     public TemporaryFileStore create(Path from, FileStoreMode mode) {
@@ -53,7 +53,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
         }
         String fileName = from.getFileName().toString();
         FileParts fileParts = FileStoreUtil.extractFileParts(fileName);
-        FileStorePath path = fileStoreService.uniquePath(mode, fileParts.getExt());
+        FileStorePath path = fileStorePathService.uniquePath(mode, fileParts.getExt());
         File resultFile = new File(path.getFullPath());
         long crc32;
         try (InputStream is = Files.newInputStream(from)) {
@@ -84,7 +84,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
         if (from == null) {
             return null;
         }
-        FileStorePath path = fileStoreService.uniquePath(mode, ext);
+        FileStorePath path = fileStorePathService.uniquePath(mode, ext);
         FileParts fileParts = FileStoreUtil.extractFileParts(path.getPath());
         File resultFile = new File(path.getFullPath());
         long crc32;
@@ -116,7 +116,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
         if (from == null) {
             return null;
         }
-        FileStorePath path = fileStoreService.uniquePath(mode, ext);
+        FileStorePath path = fileStorePathService.uniquePath(mode, ext);
         FileParts fileParts = FileStoreUtil.extractFileParts(path.getPath());
         File resultFile = new File(path.getFullPath());
         long crc32;
