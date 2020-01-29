@@ -18,25 +18,21 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.*;
+import com.es.lib.entity.model.file.FileParts;
+import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.entity.util.FileStoreUtil;
-import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -73,8 +69,7 @@ public class FileStoreUploadService {
                 file.getBytes()
             );
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new ESRuntimeException(e.getMessage());
+            throw new ESRuntimeException(e);
         }
     }
 
@@ -84,32 +79,19 @@ public class FileStoreUploadService {
         }
         FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
         check(file, fileParts);
-        FileStorePath path = fileStorePathService.uniquePath(FileStoreMode.TEMPORARY, fileParts.getExt());
-        File resultFile = new File(path.getFullPath());
-        long crc32;
         try {
-            CheckedInputStream checkedInputStream = new CheckedInputStream(file.getInputStream(), new CRC32());
-            FileUtils.copyInputStreamToFile(
-                checkedInputStream,
-                resultFile
+            return FileStoreUtil.createTemporary(
+                fileStorePathService.getBasePath(),
+                file.getInputStream(),
+                fileParts,
+                file.getSize(),
+                file.getContentType(),
+                new ThumbnailatorThumbGenerator(),
+                null
             );
-            crc32 = checkedInputStream.getChecksum().getValue();
-            if (FileStoreUtil.isImage(file.getContentType())) {
-                ThumbUtil.generate(resultFile, new Thumb(), null, new ThumbnailatorThumbGenerator());
-            }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new ESRuntimeException(e.getMessage());
+            throw new ESRuntimeException(e);
         }
-        return new TemporaryFileStore(
-            resultFile,
-            path.getPath(),
-            fileParts.getFileName(),
-            fileParts.getExt(),
-            file.getSize(),
-            file.getContentType(),
-            crc32
-        );
     }
 
     private void check(MultipartFile file, FileParts fileParts) {
