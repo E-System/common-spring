@@ -16,18 +16,13 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.FileStoreMode;
-import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -71,23 +66,5 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     public Collection<? extends IFileStore> list(Collection<? extends Number> ids) {
         log.error("---USE DEFAULT FileStoreService::list({})---", ids);
         return Collections.emptyList();
-    }
-
-    @Override
-    public FileStorePath uniquePath(FileStoreMode mode, String ext) {
-        return this.fileStorePathService.uniquePath(mode, ext);
-    }
-
-    protected FileStorePath moveTo(TemporaryFileStore temporaryFile, FileStoreMode mode, boolean deleteOriginal) throws IOException {
-        FileStorePath result = uniquePath(mode, temporaryFile.getExt());
-        File source = new File(fileStorePathService.getBasePath(), temporaryFile.getPath());
-        FileUtils.copyFile(
-            source,
-            new File(result.getFullPath())
-        );
-        if (deleteOriginal) {
-            FileUtils.deleteQuietly(source);
-        }
-        return result;
     }
 }

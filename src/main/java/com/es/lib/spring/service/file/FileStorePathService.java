@@ -17,8 +17,7 @@ package com.es.lib.spring.service.file;
 
 import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
-
-import java.util.UUID;
+import com.es.lib.entity.util.FileStoreUtil;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -52,13 +51,15 @@ public interface FileStorePathService {
      * @param ext  file extension
      * @return relative and absolute file store path
      */
-    FileStorePath getPath(FileStoreMode mode, String name, String ext);
+    default FileStorePath getPath(FileStoreMode mode, String name, String ext) {
+        return FileStoreUtil.getPath(getBasePath(), mode, name, ext);
+    }
 
     default FileStorePath uniquePath(String ext) {
         return uniquePath(FileStoreMode.PERSISTENT, ext);
     }
 
     default FileStorePath uniquePath(FileStoreMode mode, String ext) {
-        return getPath(mode, UUID.randomUUID().toString(), ext);
+        return FileStoreUtil.getUniquePath(getBasePath(), mode, ext);
     }
 }

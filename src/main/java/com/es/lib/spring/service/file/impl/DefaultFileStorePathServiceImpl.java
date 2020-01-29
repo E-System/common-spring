@@ -15,9 +15,6 @@
  */
 package com.es.lib.spring.service.file.impl;
 
-import com.es.lib.entity.model.file.FileStoreMode;
-import com.es.lib.entity.model.file.FileStorePath;
-import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.file.FileStorePathService;
@@ -38,18 +35,6 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     public String getBasePath() {
         String path = StringUtils.isNoneBlank(basePath) ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/file-store";
         return environmentProfileService.isDevelop() ? (projectRoot + path) : path;
-    }
-
-    @Override
-    public FileStorePath getPath(FileStoreMode mode, String name, String ext) {
-        return new FileStorePath(
-            getBasePath(),
-            FileStoreUtil.getLocalPath(
-                mode.getPrefix(),
-                name,
-                ext
-            )
-        );
     }
 
     @Autowired
