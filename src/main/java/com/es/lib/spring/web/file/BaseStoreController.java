@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,8 @@ import java.util.function.Supplier;
 public abstract class BaseStoreController extends BaseController {
 
     private ServletContext servletContext;
+    @Value("${common.fileStore.x-send-url:#{null}}")
+    private String xSendPath;
 
     protected void process(HttpServletResponse resp, Supplier<? extends OutputData> dataFetcher, Runnable notFoundProcessor) {
         try {
@@ -57,7 +60,14 @@ public abstract class BaseStoreController extends BaseController {
         if (data.isStream()) {
             return writeStream((OutputStreamData) data, response);
         }
-        return writeFile((OutputFileData) data, response);
+        OutputFileData fileData = (OutputFileData) data;
+        if (StringUtils.isNotBlank(xSendPath)) {
+            addFileName(data.getFileName(), response);
+            response.setContentType(servletContext.getMimeType(fileData.getFile().getAbsolutePath()));
+            response.addHeader("X-Accel-Redirect", xSendPath + fileData.getRelativePath());
+            return true;
+        }
+        return writeFile(fileData, response);
     }
 
     protected boolean writeStream(OutputStreamData data, HttpServletResponse response) throws Exception {

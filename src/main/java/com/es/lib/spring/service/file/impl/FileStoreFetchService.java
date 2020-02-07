@@ -17,6 +17,7 @@ package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.FileStoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
@@ -25,6 +26,7 @@ import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,14 @@ public class FileStoreFetchService {
 
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
+
+    public Map.Entry<File, ? extends IFileStore> getFile(FileStoreRequest request) {
+        long value = NumberUtils.toLong(request.getId(), 0);
+        if (value > 0) {
+            return getFile(value, request.getThumb());
+        }
+        return getFile(request.getId(), request.getThumb());
+    }
 
     public Map.Entry<File, ? extends IFileStore> getFile(long id, Thumb thumb) {
         return getFile(fileStoreService.fromStore(id), thumb);
