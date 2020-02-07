@@ -20,6 +20,7 @@ import com.es.lib.entity.model.file.output.OutputFileData;
 import com.es.lib.entity.model.file.output.OutputStreamData;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.web.common.BaseController;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,8 +38,10 @@ import java.util.function.Supplier;
 @Slf4j
 public abstract class BaseStoreController extends BaseController {
 
+    @Setter(onMethod_ = @Autowired)
     private ServletContext servletContext;
-    private String sendPath;
+    @Setter(onMethod_ = @Value("${common.fileStore.x-send-url:#{null}}"))
+    private String sendUrl;
 
     protected void process(HttpServletResponse resp, Supplier<? extends OutputData> dataFetcher, Runnable notFoundProcessor) {
         try {
@@ -60,10 +63,10 @@ public abstract class BaseStoreController extends BaseController {
             return writeStream((OutputStreamData) data, response);
         }
         OutputFileData fileData = (OutputFileData) data;
-        if (StringUtils.isNotBlank(sendPath)) {
+        if (StringUtils.isNotBlank(sendUrl)) {
             addFileName(data.getFileName(), response);
             response.setContentType(servletContext.getMimeType(fileData.getFile().getAbsolutePath()));
-            response.addHeader("X-Accel-Redirect", sendPath + fileData.getRelativePath());
+            response.addHeader("X-Accel-Redirect", sendUrl + fileData.getRelativePath());
             return true;
         }
         return writeFile(fileData, response);
@@ -108,15 +111,5 @@ public abstract class BaseStoreController extends BaseController {
     public static String generateContentDisposition(boolean attachment, String fileName) throws UnsupportedEncodingException {
         String encoded = URLEncoder.encode(fileName, Charset.defaultCharset().name()).replace("+", "%20");
         return (attachment ? "attachment" : "inline") + "; filename=\"" + fileName + "\"; filename*=UTF-8''" + encoded;
-    }
-
-    @Autowired
-    public void setServletContext(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
-
-    @Value("${common.fileStore.x-send-url:#{null}}")
-    public void setSendPath(String sendPath) {
-        this.sendPath = sendPath;
     }
 }
