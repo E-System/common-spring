@@ -40,7 +40,7 @@ public abstract class BaseStoreController extends BaseController {
 
     @Setter(onMethod_ = @Autowired)
     private ServletContext servletContext;
-    @Setter(onMethod_ = @Value("${common.fileStore.x-send-url:#{null}}"))
+    @Setter(onMethod_ = @Value("${common.fileStore.xSendUrl:#{null}}"))
     private String sendUrl;
 
     protected void process(HttpServletResponse resp, Supplier<? extends OutputData> dataFetcher, Runnable notFoundProcessor) {
