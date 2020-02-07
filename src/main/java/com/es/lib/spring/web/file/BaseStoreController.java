@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.web.file;
 
+import com.es.lib.common.MimeUtil;
 import com.es.lib.entity.model.file.output.OutputData;
 import com.es.lib.entity.model.file.output.OutputFileData;
 import com.es.lib.entity.model.file.output.OutputStreamData;
@@ -104,12 +105,7 @@ public abstract class BaseStoreController extends BaseController {
 
     private void addFileName(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
         if (StringUtils.isNotBlank(fileName)) {
-            response.setHeader("Content-Disposition", generateContentDisposition(false, fileName));
+            response.setHeader("Content-Disposition", MimeUtil.contentDisposition(false, fileName));
         }
-    }
-
-    public static String generateContentDisposition(boolean attachment, String fileName) throws UnsupportedEncodingException {
-        String encoded = URLEncoder.encode(fileName, Charset.defaultCharset().name()).replace("+", "%20");
-        return (attachment ? "attachment" : "inline") + "; filename=\"" + fileName + "\"; filename*=UTF-8''" + encoded;
     }
 }
