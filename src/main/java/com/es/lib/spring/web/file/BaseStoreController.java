@@ -38,8 +38,7 @@ import java.util.function.Supplier;
 public abstract class BaseStoreController extends BaseController {
 
     private ServletContext servletContext;
-    @Value("${common.fileStore.x-send-url:#{null}}")
-    private String xSendPath;
+    private String sendPath;
 
     protected void process(HttpServletResponse resp, Supplier<? extends OutputData> dataFetcher, Runnable notFoundProcessor) {
         try {
@@ -61,10 +60,10 @@ public abstract class BaseStoreController extends BaseController {
             return writeStream((OutputStreamData) data, response);
         }
         OutputFileData fileData = (OutputFileData) data;
-        if (StringUtils.isNotBlank(xSendPath)) {
+        if (StringUtils.isNotBlank(sendPath)) {
             addFileName(data.getFileName(), response);
             response.setContentType(servletContext.getMimeType(fileData.getFile().getAbsolutePath()));
-            response.addHeader("X-Accel-Redirect", xSendPath + fileData.getRelativePath());
+            response.addHeader("X-Accel-Redirect", sendPath + fileData.getRelativePath());
             return true;
         }
         return writeFile(fileData, response);
@@ -114,5 +113,10 @@ public abstract class BaseStoreController extends BaseController {
     @Autowired
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
+    }
+
+    @Value("${common.fileStore.x-send-url:#{null}}")
+    public void setSendPath(String sendPath) {
+        this.sendPath = sendPath;
     }
 }
