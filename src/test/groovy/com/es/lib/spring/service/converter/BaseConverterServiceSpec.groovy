@@ -22,6 +22,7 @@ import spock.lang.Specification
  * @since 15.02.2018
  */
 class BaseConverterServiceSpec extends Specification {
+
     class Input {
         String value
 

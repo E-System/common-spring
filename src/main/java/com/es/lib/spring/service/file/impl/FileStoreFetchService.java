@@ -31,7 +31,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class FileStoreFetchService {
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
 
-    public Map.Entry<File, ? extends IFileStore> getFile(FileStoreRequest request) {
+    public Map.Entry<Path, ? extends IFileStore> getFile(FileStoreRequest request) {
         long value = NumberUtils.toLong(request.getId(), 0);
         if (value > 0) {
             return getFile(value, request.getThumb());
@@ -57,18 +58,18 @@ public class FileStoreFetchService {
         return getFile(request.getId(), request.getThumb());
     }
 
-    public Map.Entry<File, ? extends IFileStore> getFile(long id, Thumb thumb) {
+    public Map.Entry<Path, ? extends IFileStore> getFile(long id, Thumb thumb) {
         return getFile(fileStoreService.fromStore(id), thumb);
     }
 
-    public Map.Entry<File, ? extends IFileStore> getFile(String base64, Thumb thumb) {
+    public Map.Entry<Path, ? extends IFileStore> getFile(String base64, Thumb thumb) {
         if (StringUtils.isBlank(base64)) {
             return null;
         }
         return getFile(fileStoreService.fromStore(base64), thumb);
     }
 
-    protected Map.Entry<File, ? extends IFileStore> getFile(IFileStore fileStore, Thumb thumb) {
+    protected Map.Entry<Path, ? extends IFileStore> getFile(IFileStore fileStore, Thumb thumb) {
         if (fileStore == null || fileStore.getFilePath() == null) {
             return null;
         }
@@ -78,8 +79,8 @@ public class FileStoreFetchService {
         );
     }
 
-    protected File getRealFile(String path, Thumb thumb, IFileStore fileStore) {
-        File originalFile = new File(fileStorePathService.getBasePath() + path);
+    protected Path getRealFile(String path, Thumb thumb, IFileStore fileStore) {
+        Path originalFile = Paths.get(fileStorePathService.getBasePath() + path);
         if (thumb != null) {
             return ThumbUtil.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }

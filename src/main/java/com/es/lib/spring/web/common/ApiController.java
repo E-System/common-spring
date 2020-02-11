@@ -16,14 +16,10 @@
 package com.es.lib.spring.web.common;
 
 import com.es.lib.dto.DTOResponse;
-import com.es.lib.dto.ResponseBuilder;
 import com.es.lib.dto.validation.DTOValidationField;
-import com.es.lib.dto.validation.DTOValidationStatus;
 import com.es.lib.spring.config.Constant;
 import com.es.lib.spring.exception.ServiceValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -37,43 +33,43 @@ import java.util.LinkedList;
  * @since 03.11.19
  */
 @Slf4j
-public abstract class BaseNewRestController extends BaseController {
+public abstract class ApiController extends BaseController {
 
-    protected DTOResponse ok() {
-        return new ResponseBuilder<>(null).build();
+    protected DTOResponse<?> ok() {
+        return new DTOResponse<>(null);
     }
 
     protected <T> DTOResponse<T> ok(T data) {
-        return new ResponseBuilder<T>(null).data(data).build();
+        return new DTOResponse<>(data);
     }
 
     protected void checkError(BindingResult bindingResult, Object request, Validator... validators) {
         checkError(Constant.System.VALIDATION_ERROR_CODE, bindingResult, request, validators);
     }
 
-    protected void checkError(String messageCode, BindingResult bindingResult, Object request, Validator... validators) {
+    protected void checkError(String code, BindingResult bindingResult, Object request, Validator... validators) {
         if (!bindingResult.hasErrors()) {
             for (Validator validator : validators) {
                 validator.validate(request, bindingResult);
             }
         }
-        checkError(messageCode, bindingResult);
+        checkError(code, bindingResult);
     }
 
     protected void checkError(Errors bindingResult) {
         checkError(Constant.System.VALIDATION_ERROR_CODE, bindingResult);
     }
 
-    protected void checkError(String messageCode, Errors bindingResult) {
+    protected void checkError(String code, Errors bindingResult) {
         if (!bindingResult.hasErrors()) {
             return;
         }
         Collection<DTOValidationField> fields = new LinkedList<>();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             String message = messageService.get(fieldError);
-            log.error("BaseRestController::checkError - {}, {}", message, fieldError);
+            log.error("ApiController::checkError - {}, {}", message, fieldError);
             fields.add(new DTOValidationField(fieldError.getField(), message));
         }
-        throw new ServiceValidationException(new DTOValidationStatus(fields), messageCode);
+        throw new ServiceValidationException(code, fields, messageService.get(code));
     }
 }

@@ -15,7 +15,6 @@
  */
 package com.es.lib.spring.web.common;
 
-import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,10 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseController {
 
     protected MessageService messageService;
-
-    protected String exceptionMessage(ServiceException e) {
-        return messageService.get(e);
-    }
 
     @Autowired
     public void setMessageService(MessageService messageService) {

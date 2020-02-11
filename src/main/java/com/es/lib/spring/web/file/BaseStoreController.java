@@ -16,9 +16,9 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.common.MimeUtil;
-import com.es.lib.entity.model.file.output.OutputData;
-import com.es.lib.entity.model.file.output.OutputFileData;
-import com.es.lib.entity.model.file.output.OutputStreamData;
+import com.es.lib.common.file.output.FileData;
+import com.es.lib.common.file.output.OutputData;
+import com.es.lib.common.file.output.StreamData;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.web.common.BaseController;
 import lombok.Setter;
@@ -30,10 +30,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -61,41 +60,41 @@ public abstract class BaseStoreController extends BaseController {
             return false;
         }
         if (data.isStream()) {
-            return writeStream((OutputStreamData) data, response);
+            return writeStream((StreamData) data, response);
         }
-        OutputFileData fileData = (OutputFileData) data;
+        FileData fileData = (FileData) data;
         if (StringUtils.isNotBlank(sendUrl)) {
             addFileName(data.getFileName(), response);
-            response.setContentType(servletContext.getMimeType(fileData.getFile().getAbsolutePath()));
+            response.setContentType(servletContext.getMimeType(fileData.getContent().toString()));
             response.addHeader("X-Accel-Redirect", sendUrl + fileData.getRelativePath());
             return true;
         }
         return writeFile(fileData, response);
     }
 
-    protected boolean writeStream(OutputStreamData data, HttpServletResponse response) throws Exception {
-        if (data == null || data.getStream() == null || data.getContentType() == null) {
+    protected boolean writeStream(StreamData data, HttpServletResponse response) throws Exception {
+        if (data == null || data.getContent() == null || data.getContentType() == null) {
             return false;
         }
         addFileName(data.getFileName(), response);
         response.setContentType(data.getContentType());
-        IOUtils.copy(data.getStream(), response.getOutputStream());
+        IOUtils.copy(data.getContent(), response.getOutputStream());
         return true;
     }
 
-    protected boolean writeFile(OutputFileData data, HttpServletResponse response) throws Exception {
+    protected boolean writeFile(FileData data, HttpServletResponse response) throws Exception {
         if (data == null) {
             return false;
         }
-        return writeExistFile(data.getFile(), data.getFileName(), response);
+        return writeExistFile(data.getContent(), data.getFileName(), response);
     }
 
-    protected boolean writeExistFile(File file, String fileName, HttpServletResponse response) throws Exception {
-        if (file == null || !file.exists() || !file.canRead()) {
+    protected boolean writeExistFile(Path file, String fileName, HttpServletResponse response) throws Exception {
+        if (file == null || !Files.exists(file)) {
             return false;
         }
         addFileName(fileName, response);
-        response.setContentType(servletContext.getMimeType(file.getAbsolutePath()));
+        response.setContentType(servletContext.getMimeType(file.toString()));
         FileStoreUtil.copyContent(
             file,
             response.getOutputStream()

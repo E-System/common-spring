@@ -15,79 +15,28 @@
  */
 package com.es.lib.spring.exception;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
+@Getter
+@ToString
 public class ServiceException extends RuntimeException {
 
     private String code;
-    private String errorCode;
-    private Object[] args;
 
     public ServiceException(String code) {
-        this(code, (Object) null);
-    }
-
-    public ServiceException(String code, Object... args) {
-        super(formatMessage(code, args));
+        super(code);
         this.code = code;
-        this.args = args;
     }
 
-    public ServiceException(boolean simple, String message, Object... args) {
+    public ServiceException(String code, String message, Object... args) {
         super(args == null ? message : MessageFormat.format(message, args));
-    }
-
-    private static String formatMessage(String code, Object[] args) {
-        if (args == null) {
-            return code;
-        }
-        return code + ": [" + joinArgs(args) + "]";
-    }
-
-    private static String joinArgs(Object[] args) {
-        if (args == null) {
-            return "";
-        }
-        return Stream.of(args)
-            .filter(Objects::nonNull)
-            .map(Object::toString)
-            .collect(Collectors.joining(","));
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public Object[] getArgs() {
-        return args;
-    }
-
-    public boolean isNeedLocalize() {
-        return getCode() != null;
-    }
-
-    @Override
-    public String toString() {
-        return "ServiceException{" +
-               "code='" + code + '\'' +
-               ", errorCode='" + errorCode + '\'' +
-               ", args=" + Arrays.toString(args) +
-               '}';
+        this.code = code;
     }
 }

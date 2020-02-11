@@ -15,7 +15,6 @@
  */
 package com.es.lib.spring.service.controller;
 
-import com.es.lib.spring.exception.ServiceException;
 import org.springframework.context.MessageSourceResolvable;
 
 /**
@@ -56,22 +55,6 @@ public interface MessageService {
      * @return сообщение
      */
     String get(MessageSourceResolvable msr);
-
-    /**
-     * Get message from service exception
-     *
-     * @param e Exception object
-     * @return Result message
-     */
-    String get(ServiceException e);
-
-    /**
-     * Get message from service exception with localization check
-     *
-     * @param e Exception object
-     * @return Result message
-     */
-    String getWithLocalizationCheck(ServiceException e);
 
     /**
      * Get default throwable public message

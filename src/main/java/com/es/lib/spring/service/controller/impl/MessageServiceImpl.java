@@ -16,7 +16,6 @@
 package com.es.lib.spring.service.controller.impl;
 
 import com.es.lib.spring.config.Constant;
-import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.controller.LocaleService;
 import com.es.lib.spring.service.controller.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -75,31 +74,5 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public String get(MessageSourceResolvable msr) {
         return messageSource.getMessage(msr, localeService.get());
-    }
-
-    /**
-     * Get message from service exception
-     *
-     * @param e Exception object
-     * @return Result message
-     */
-    public String get(ServiceException e) {
-        if (e.getArgs() != null) {
-            return get(e.getCode(), e.getArgs());
-        }
-        return get(e.getCode());
-    }
-
-    @Override
-    public String getWithLocalizationCheck(ServiceException e) {
-        String result;
-        if (e.isNeedLocalize()) {
-            result = get(e);
-            log.error("Service exception: " + result + " (" + e.getMessage() + ")", e);
-        } else {
-            result = e.getMessage();
-            log.error("Service exception: " + result, e);
-        }
-        return result;
     }
 }

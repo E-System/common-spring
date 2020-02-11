@@ -19,7 +19,7 @@ import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
-import com.es.lib.spring.web.common.BaseSimpleController;
+import com.es.lib.spring.web.common.WebController;
 import com.es.lib.spring.web.service.TemplateToolService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +41,8 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@ControllerAdvice(assignableTypes = BaseSimpleController.class)
-public class SimpleErrorAdvice {
+@ControllerAdvice(assignableTypes = WebController.class)
+public class WebErrorAdvice {
 
     private final MessageService messageService;
     private final EnvironmentProfileService environmentProfileService;
@@ -50,11 +50,10 @@ public class SimpleErrorAdvice {
 
     @ExceptionHandler
     public ModelAndView serviceExceptionHandler(ServiceException e, Locale locale) {
-        String message = messageService.getWithLocalizationCheck(e);
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
-            .addObject("emessage", message)
-            .addObject("ecode", e.getErrorCode());
+            .addObject("ecode", e.getCode())
+            .addObject("emessage", e.getMessage());
         fillGlobals(result.getModel(), locale);
         return result;
     }

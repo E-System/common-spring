@@ -15,9 +15,9 @@
  */
 package com.es.lib.spring.service.file;
 
+import com.es.lib.common.file.output.OutputData;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileStoreRequest;
-import com.es.lib.entity.model.file.output.OutputData;
 import com.es.lib.spring.event.file.FileStoreNotFoundEvent;
 import com.es.lib.spring.service.BaseService;
 import com.es.lib.spring.service.file.impl.FileStoreFetchService;
@@ -27,7 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 @Slf4j
@@ -39,7 +40,7 @@ public class FileStoreControllerService extends BaseService {
     private final ApplicationEventPublisher eventPublisher;
 
     public OutputData getOutputData(FileStoreRequest request) {
-        Map.Entry<File, ? extends IFileStore> entry = service.getFile(request);
+        Map.Entry<Path, ? extends IFileStore> entry = service.getFile(request);
         if (entry == null) {
             FileStoreNotFoundEvent event = new FileStoreNotFoundEvent(request);
             eventPublisher.publishEvent(event);
@@ -48,7 +49,7 @@ public class FileStoreControllerService extends BaseService {
             }
             return null;
         }
-        log.info("FileStore entry = {}, fileExist = {}", entry, entry.getKey() != null && entry.getKey().exists());
+        log.info("FileStore entry = {}, fileExist = {}", entry, entry.getKey() != null && Files.exists(entry.getKey()));
         return OutputData.create(
             entry.getValue().getFileName(),
             entry.getValue().getFilePath(),

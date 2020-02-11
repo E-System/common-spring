@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import java.text.MessageFormat
 import java.util.function.Function
-import java.util.function.Supplier
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -32,61 +31,28 @@ class TestBaseServiceSpec extends BaseSpringSpec {
     @Autowired
     DefaultBaseService service
 
-    def "FetchEntity with null result need throw service exception"() {
-        given:
-        def errorCode = 'error.code'
-        when:
-        service.fetchEntity(errorCode, new Supplier() {
-
-            @Override
-            Object get() {
-                return null
-            }
-        })
-        then:
-        def ex = thrown(ServiceException)
-        ex.code == errorCode
-    }
-
-    def "FetchEntity with not null result not throw service exception"() {
-        given:
-        def errorCode = 'error.code'
-        def obj = new Object()
-        when:
-        def res = service.fetchEntity(errorCode, new Supplier() {
-
-            @Override
-            Object get() {
-                return obj
-            }
-        })
-        then:
-        res == obj
-    }
-
     def "Error without args"() {
         given:
-        def errorCode = 'error.code'
+        def code = 'error.code'
         when:
-        def ex = service.serviceException(errorCode, "Message")
+        def ex = service.serviceException(code, "Message")
         then:
-        ex.errorCode == errorCode
-        ex.args == null
+        ex.code == code
     }
 
     def "Error with args"() {
         given:
-        def errorCode = 'error.code'
+        def code = 'error.code'
         when:
-        def ex = service.serviceException(errorCode, "{error}", 'arg1')
+        def ex = service.serviceException(code, "{error}", 'arg1')
         then:
-        ex.errorCode == errorCode
-        ex.code == 'error'
-        Arrays.asList(ex.args) == ['arg1']
+        ex.code == code
+        ex.message == 'error'
     }
 
     def "Fetch by id with null result (with simple message)"() {
         given:
+        def code = "not-found"
         def errorMessage = "Error message {0}"
         def id = 1L
         when:
@@ -95,16 +61,17 @@ class TestBaseServiceSpec extends BaseSpringSpec {
             Object apply(Long o) {
                 return null
             }
-        }, id, errorMessage)
+        }, id, code, errorMessage)
         then:
         def ex = thrown(ServiceException)
+        ex.code == code
         ex.message == MessageFormat.format(errorMessage, id)
     }
 
     def "Fetch by id with null result (with code message)"() {
         given:
-        def errorCode = 'fetch.error'
-        def errorMessage = "{${errorCode}}"
+        def code = 'fetch.error'
+        def errorMessage = "{${code}}"
         def id = 1L
         when:
         service.fetchById(new Function<Long, Object>() {
@@ -112,12 +79,10 @@ class TestBaseServiceSpec extends BaseSpringSpec {
             Object apply(Long o) {
                 return null
             }
-        }, id, errorMessage.toString())
+        }, id, code, errorMessage.toString())
         then:
         def ex = thrown(ServiceException)
-        ex.code == errorCode
-        ex.args.length == 1
-        ex.args[0] == id
+        ex.code == code
     }
 
     def "Fetch with null result need throw service exception"() {
@@ -129,7 +94,7 @@ class TestBaseServiceSpec extends BaseSpringSpec {
         service.fetch({ null }, errorCode, errorMessage, errorOs)
         then:
         def ex = thrown(ServiceException)
-        ex.errorCode == errorCode
+        ex.code == errorCode
         ex.message == 'errorMessage os'
     }
 

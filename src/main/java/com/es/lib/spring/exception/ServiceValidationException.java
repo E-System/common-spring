@@ -16,7 +16,8 @@
 package com.es.lib.spring.exception;
 
 import com.es.lib.dto.validation.DTOValidationField;
-import com.es.lib.dto.validation.DTOValidationStatus;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Collection;
 
@@ -24,27 +25,14 @@ import java.util.Collection;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 29.08.14
  */
+@Getter
+@ToString(callSuper = true)
 public class ServiceValidationException extends ServiceException {
 
-    private final DTOValidationStatus status;
+    private Collection<DTOValidationField> fields;
 
-    public ServiceValidationException(DTOValidationStatus status, String messageCode) {
-        super(messageCode);
-        this.status = status;
-    }
-
-    public DTOValidationStatus getStatus() {
-        return status;
-    }
-
-    public Collection<DTOValidationField> getFields() {
-        return status != null ? status.getFields() : null;
-    }
-
-    @Override
-    public String toString() {
-        return "ServiceValidationException{" +
-               "status=" + status +
-               "} " + super.toString();
+    public ServiceValidationException(String code, Collection<DTOValidationField> fields, String message, Object... args) {
+        super(code, message, args);
+        this.fields = fields;
     }
 }

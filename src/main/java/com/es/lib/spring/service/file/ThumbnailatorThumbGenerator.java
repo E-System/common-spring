@@ -22,6 +22,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -30,11 +31,11 @@ import java.io.IOException;
 public class ThumbnailatorThumbGenerator implements ThumbUtil.Generator {
 
     @Override
-    public void process(File source, String extension, File target, Thumb thumb) throws IOException {
-        Thumbnails.Builder<File> builder = Thumbnails.of(source).size(thumb.getWidth(), thumb.getHeight());
+    public void process(Path source, String extension, Path target, Thumb thumb) throws IOException {
+        Thumbnails.Builder<File> builder = Thumbnails.of(source.toFile()).size(thumb.getWidth(), thumb.getHeight());
         if (extension.equals("png")) {
             builder.imageType(BufferedImage.TYPE_INT_ARGB);
         }
-        builder.toFile(target);
+        builder.toFile(target.toFile());
     }
 }

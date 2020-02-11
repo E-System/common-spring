@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.controller.impl;
 
-import com.es.lib.spring.exception.ServiceException;
+import com.es.lib.spring.service.BaseService;
 import com.es.lib.spring.service.controller.CaptchaService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @since 02.08.15
  */
 @Slf4j
-public abstract class DefaultCaptchaServiceImpl implements CaptchaService {
+public abstract class DefaultCaptchaServiceImpl extends BaseService implements CaptchaService {
 
     @Value("${es.captcha.defaultCode:null}")
     private String defaultCode;
@@ -39,7 +39,7 @@ public abstract class DefaultCaptchaServiceImpl implements CaptchaService {
     @Override
     public void check(String code) {
         if (StringUtils.isEmpty(code)) {
-            throw new ServiceException("captcha.error");
+            throw serviceException("captcha.error", "{captcha.error}");
         }
         if (StringUtils.isNotEmpty(defaultCode) && code.equals(defaultCode)) {
             return;
@@ -48,6 +48,6 @@ public abstract class DefaultCaptchaServiceImpl implements CaptchaService {
     }
 
     protected void checkValue(String code) {
-        log.error("---USE DEFAULT CaptchaService::checkValue({})---", code);
+        log.warn("---USE DEFAULT CaptchaService::checkValue({})---", code);
     }
 }

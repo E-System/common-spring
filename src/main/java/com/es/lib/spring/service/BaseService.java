@@ -16,6 +16,8 @@
 package com.es.lib.spring.service;
 
 import com.es.lib.spring.exception.ServiceException;
+import com.es.lib.spring.service.controller.MessageService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.function.Function;
@@ -27,23 +29,8 @@ import java.util.function.Supplier;
  */
 public abstract class BaseService {
 
-    protected ExceptionService exceptionService;
-
-    /**
-     * Получить объект и проверить на то что он существует
-     *
-     * @param errorCode код сообщения в случае если объект == null
-     * @param supplier  лямбда получения объекта
-     * @param <T>       тип получаемого объекта
-     * @return объект
-     */
-    protected <T> T fetchEntity(String errorCode, Supplier<T> supplier) {
-        T result = supplier.get();
-        if (result == null) {
-            throw error(errorCode);
-        }
-        return result;
-    }
+    @Setter(onMethod_ = @Autowired)
+    protected MessageService messageService;
 
     /**
      * Fetch entity by id, and throw messageException if entity is null
@@ -55,10 +42,10 @@ public abstract class BaseService {
      * @param <R>     Entity type
      * @return Entity instance
      */
-    protected <T, R> R fetchById(Function<T, R> fetcher, T id, String message) {
+    protected <T, R> R fetchById(Function<T, R> fetcher, T id, String code, String message) {
         R result = fetcher.apply(id);
         if (result == null) {
-            throw exception(message, id);
+            throw serviceException(code, message, id);
         }
         return result;
     }
@@ -69,67 +56,31 @@ public abstract class BaseService {
      * @param supplier  лямбда получения объекта
      * @param errorCode код сообщения в случае если объект == null
      * @param message   текст сообщения в случае если объект == null
-     * @param os        атрибуты для форматирования теста сообщения
+     * @param args      атрибуты для форматирования теста сообщения
      * @param <T>       тип получаемого объекта
      * @return объект
      */
-    protected <T> T fetch(Supplier<T> supplier, String errorCode, String message, Object... os) {
+    protected <T> T fetch(Supplier<T> supplier, String errorCode, String message, Object... args) {
         T result = supplier.get();
         if (result == null) {
-            throw serviceException(errorCode, message, os);
+            throw serviceException(errorCode, message, args);
         }
         return result;
     }
 
     /**
-     * Сконструировать объект исключения
-     *
-     * @param code код сообщения для исключения
-     * @return исключение
-     */
-    @Deprecated
-    protected ServiceException error(String code) {
-        return exceptionService.create(code);
-    }
-
-    /**
-     * Сконструировать объект исключения
-     *
-     * @param code код сообщения для исключения
-     * @param os   атрибуты для формирования сообщения
-     * @return исключение
-     */
-    @Deprecated
-    protected ServiceException error(String code, Object... os) {
-        return exceptionService.create(code, os);
-    }
-
-    /**
      * Create ServiceException (if message in {} then resolve message from message resource)
      *
+     * @param code    Error code
      * @param message Simple message or message code in {} symbols
-     * @param os      Attributes to format message
+     * @param args    Attributes to format message
      * @return исключение
      */
-    @Deprecated
-    protected ServiceException exception(String message, Object... os) {
-        return serviceException(null, message, os);
-    }
-
-    /**
-     * Create ServiceException (if message in {} then resolve message from message resource)
-     *
-     * @param errorCode Error code
-     * @param message   Simple message or message code in {} symbols
-     * @param os        Attributes to format message
-     * @return исключение
-     */
-    protected ServiceException serviceException(String errorCode, String message, Object... os) {
-        return exceptionService.serviceException(errorCode, message, os);
-    }
-
-    @Autowired
-    public void setExceptionService(ExceptionService exceptionService) {
-        this.exceptionService = exceptionService;
+    protected ServiceException serviceException(String code, String message, Object... args) {
+        if (message.startsWith("{") && message.endsWith("}")) {
+            message = messageService.get(message.substring(1).substring(0, message.length() - 2), args);
+            return new ServiceException(code, message);
+        }
+        return new ServiceException(code, message, args);
     }
 }

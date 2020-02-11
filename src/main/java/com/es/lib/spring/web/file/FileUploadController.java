@@ -17,7 +17,7 @@ package com.es.lib.spring.web.file;
 
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.spring.service.file.impl.FileStoreUploadService;
-import com.es.lib.spring.web.common.BaseNewRestController;
+import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import static com.es.lib.spring.web.file.FileStoreController.PATH;
 @RestController
 @ConditionalOnProperty("common.fileStore.path")
 @ConditionalOnExpression("${common.fileStore.enabled:true}")
-public class FileUploadController extends BaseNewRestController {
+public class FileUploadController extends ApiController {
 
     private final FileStoreUploadService fileStoreUploadService;
 

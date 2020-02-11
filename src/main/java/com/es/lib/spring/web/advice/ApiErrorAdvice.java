@@ -15,17 +15,15 @@
  */
 package com.es.lib.spring.web.advice;
 
-import com.es.lib.dto.DTOResponse;
 import com.es.lib.dto.DTOResult;
-import com.es.lib.dto.ResponseBuilder;
+import com.es.lib.dto.DTOValidationResult;
 import com.es.lib.dto.validation.DTOValidationField;
-import com.es.lib.dto.validation.DTOValidationStatus;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.controller.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
-import com.es.lib.spring.web.common.BaseRestController;
+import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +36,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
- * @since 28.06.16
+ * @since 03.11.19
  */
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@ControllerAdvice(assignableTypes = BaseRestController.class)
-public class BaseRestErrorAdvice {
+@ControllerAdvice(assignableTypes = ApiController.class)
+public class ApiErrorAdvice {
 
     private final MessageService messageService;
     private final EnvironmentProfileService environmentProfileService;
@@ -55,45 +54,46 @@ public class BaseRestErrorAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    private DTOResponse<DTOValidationStatus> validation(ServiceValidationException e) {
+    public DTOValidationResult validation(ServiceValidationException e) {
         log.error(e.getCode(), e);
-        return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
-            .message(e.getErrorCode(), messageService.get(e.getCode(), e.getArgs()))
-            .data(e.getStatus())
-            .build();
+        return new DTOValidationResult(
+            e.getCode(),
+            e.getMessage(),
+            e.getFields()
+        );
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    public DTOResponse<DTOValidationStatus> violations(ConstraintViolationException e) {
-        return new ResponseBuilder<DTOValidationStatus>(DTOResult.UNPROCESSABLE_ENTITY)
-            .message(ErrorCodes.VALIDATION, "Invalid parameters")
-            .data(convert(e))
-            .build();
+    public DTOValidationResult violations(ConstraintViolationException e) {
+        return new DTOValidationResult(
+            ErrorCodes.VALIDATION,
+            "Invalid parameters",
+            convert(e)
+        );
     }
 
-    private DTOValidationStatus convert(ConstraintViolationException e) {
-        return new DTOValidationStatus(
-            DTOValidationStatus.Type.Error,
-            e.getConstraintViolations().stream().map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toList())
-        );
+    private Collection<DTOValidationField> convert(ConstraintViolationException e) {
+        return e.getConstraintViolations().stream()
+                .map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage()))
+                .collect(Collectors.toList());
     }
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public DTOResponse serviceException(ServiceException e) {
-        String message = messageService.getWithLocalizationCheck(e);
-        return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(e.getErrorCode(), message)
-            .build();
+    public DTOResult serviceException(ServiceException e) {
+        return new DTOResult(
+            e.getCode(),
+            e.getMessage()
+        );
     }
 
     @ExceptionHandler(value = {Throwable.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public DTOResponse throwable(Throwable e) {
+    public DTOResult throwable(Throwable e) {
         log.error("Runtime exception: " + e.getMessage(), e);
         String message;
         if (environmentProfileService.isFullErrorMessage()) {
@@ -104,8 +104,9 @@ public class BaseRestErrorAdvice {
         } else {
             message = messageService.getThrowablePublicMessage();
         }
-        return new ResponseBuilder<>(DTOResult.INTERNAL_SERVER_ERROR)
-            .message(ErrorCodes.THROWABLE, message)
-            .build();
+        return new DTOResult(
+            ErrorCodes.THROWABLE,
+            message
+        );
     }
 }

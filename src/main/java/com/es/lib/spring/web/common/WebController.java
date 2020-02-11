@@ -25,7 +25,7 @@ import java.util.Collections;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 28.08.14
  */
-public abstract class BaseSimpleController extends BaseController {
+public abstract class WebController extends BaseController {
 
     /**
      * Add flash RA error string {@link ServiceException}
@@ -55,7 +55,7 @@ public abstract class BaseSimpleController extends BaseController {
      * @param e    Exception
      */
     protected void flashMessages(RedirectAttributes ra, String code, ServiceException e) {
-        ra.addFlashAttribute(code, Collections.singletonList(this.exceptionMessage(e)));
+        ra.addFlashAttribute(code, Collections.singletonList(e.getMessage()));
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class BaseSimpleController extends BaseController {
      * @param e    Exception
      */
     protected void flashMessage(RedirectAttributes ra, String code, ServiceException e) {
-        flash(ra, code, this.exceptionMessage(e));
+        flash(ra, code, e.getMessage());
     }
 
     private void flash(RedirectAttributes redirectAttributes, String code, Object object) {
