@@ -16,6 +16,7 @@
 package com.es.lib.spring.web.common;
 
 import com.es.lib.spring.service.controller.MessageService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -24,10 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class BaseController {
 
+    @Setter(onMethod_ = @Autowired)
     protected MessageService messageService;
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
 }

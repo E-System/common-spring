@@ -18,6 +18,7 @@ package com.es.lib.spring.service.audit.impl;
 import com.es.lib.entity.iface.audit.event.AuditEvent;
 import com.es.lib.spring.service.audit.AuditSaveService;
 import com.es.lib.spring.service.controller.RequestService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
 
+    @Setter(onMethod_ = @Autowired)
     private RequestService requestService;
 
     public DefaultAuditSaveServiceImpl() { }
@@ -46,10 +48,5 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
 
     protected void save(AuditEvent event, String ip) {
         log.error("---USE DEFAULT AuditSaveService::save({}, {})---", event, ip);
-    }
-
-    @Autowired
-    public void setRequestService(RequestService requestService) {
-        this.requestService = requestService;
     }
 }

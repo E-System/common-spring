@@ -18,6 +18,7 @@ package com.es.lib.spring.service.controller.impl;
 import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.spring.service.controller.RequestService;
 import com.es.lib.spring.service.controller.UrlService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,10 +34,11 @@ import java.util.stream.Collectors;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Component
 public class UrlServiceImpl implements UrlService {
 
-    private RequestService requestService;
+    private final RequestService requestService;
 
     private static String mapAttribute(Map.Entry<String, Object> v) {
         return v.getKey() + "={" + v.getKey() + "}";
@@ -106,10 +108,5 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public Optional<String> getPreviousPage() {
         return Optional.ofNullable(requestService.get().getHeader("Referer")).map(requestUrl -> "redirect:" + requestUrl);
-    }
-
-    @Autowired
-    public void setRequestService(RequestService requestService) {
-        this.requestService = requestService;
     }
 }

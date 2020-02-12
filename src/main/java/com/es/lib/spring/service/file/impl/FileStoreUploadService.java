@@ -26,6 +26,7 @@ import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
     private final FileStorePathService fileStorePathService;
+    @Setter(onMethod_ = @Autowired(required = false))
     private Collection<FileStoreUploadCheckService> uploadCheckServices;
 
     /**
@@ -101,10 +103,5 @@ public class FileStoreUploadService {
         for (FileStoreUploadCheckService uploadChecker : uploadCheckServices) {
             uploadChecker.check(file, fileParts);
         }
-    }
-
-    @Autowired(required = false)
-    public void setUploadCheckServices(Collection<FileStoreUploadCheckService> uploadCheckServices) {
-        this.uploadCheckServices = uploadCheckServices;
     }
 }

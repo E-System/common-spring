@@ -95,10 +95,7 @@ public abstract class BaseStoreController extends BaseController {
         }
         addFileName(fileName, response);
         response.setContentType(servletContext.getMimeType(file.toString()));
-        FileStoreUtil.copyContent(
-            file,
-            response.getOutputStream()
-        );
+        FileStoreUtil.copyContent(file, response.getOutputStream());
         return true;
     }
 

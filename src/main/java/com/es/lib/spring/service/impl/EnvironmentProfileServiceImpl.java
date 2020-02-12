@@ -16,6 +16,7 @@
 package com.es.lib.spring.service.impl;
 
 import com.es.lib.spring.service.EnvironmentProfileService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,11 @@ import java.util.Arrays;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 26.06.16
  */
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class EnvironmentProfileServiceImpl implements EnvironmentProfileService {
 
-    private Environment environment;
+    private final Environment environment;
 
     @Override
     public boolean isDevelop() {
@@ -54,10 +56,5 @@ public class EnvironmentProfileServiceImpl implements EnvironmentProfileService 
     @Override
     public boolean isProfileActive(String name) {
         return Arrays.asList(environment.getActiveProfiles()).contains(name);
-    }
-
-    @Autowired
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
     }
 }

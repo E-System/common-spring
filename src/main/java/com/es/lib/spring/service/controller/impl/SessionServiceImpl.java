@@ -17,6 +17,7 @@ package com.es.lib.spring.service.controller.impl;
 
 import com.es.lib.spring.service.controller.RequestService;
 import com.es.lib.spring.service.controller.SessionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,11 @@ import javax.servlet.http.HttpSession;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class SessionServiceImpl implements SessionService {
 
-    private RequestService requestService;
+    private final RequestService requestService;
 
     /**
      * Получить сессию
@@ -44,10 +46,5 @@ public class SessionServiceImpl implements SessionService {
             return null;
         }
         return request.getSession();
-    }
-
-    @Autowired
-    public void setRequestService(RequestService requestService) {
-        this.requestService = requestService;
     }
 }

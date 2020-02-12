@@ -18,6 +18,7 @@ package com.es.lib.spring.web.service.impl;
 import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.web.service.TemplateToolService;
 import com.es.lib.spring.web.service.TemplateToolVariableProvider;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -34,7 +35,9 @@ import java.util.Map;
 @Service
 public class DefaultTemplateToolServiceImpl implements TemplateToolService {
 
+    @Setter(onMethod_ = @Autowired)
     private BuildInfoService buildInfoService;
+    @Setter(onMethod_ = @Autowired)
     private Collection<TemplateToolVariableProvider> variableProviders;
 
     @Override
@@ -54,15 +57,5 @@ public class DefaultTemplateToolServiceImpl implements TemplateToolService {
             result.putAll(variableProvider.get(locale));
         }
         return result;
-    }
-
-    @Autowired
-    public void setBuildInfoService(BuildInfoService buildInfoService) {
-        this.buildInfoService = buildInfoService;
-    }
-
-    @Autowired
-    public void setVariableProviders(Collection<TemplateToolVariableProvider> variableProviders) {
-        this.variableProviders = variableProviders;
     }
 }
