@@ -150,7 +150,6 @@ dependencies {
 
     compile "commons-io:commons-io:2.6"
     compile "javax.servlet:javax.servlet-api:4.0.1"
-
     compile "net.coobird:thumbnailator:0.4.8"
 
     compileOnly "org.projectlombok:lombok:1.18.10"
@@ -168,10 +167,8 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springVersion}"
 
-    testCompile "org.hibernate:hibernate-validator:5.2.5.Final"
+    testCompile "org.hibernate:hibernate-validator:5.4.3.Final"
     testCompile "javax.el:javax.el-api:3.0.0"
-    testCompileOnly "org.projectlombok:lombok:1.18.10"
-    testAnnotationProcessor "org.projectlombok:lombok:1.18.10"
 }
 
 test {
