@@ -24,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Slf4j
 public abstract class DefaultFileStorePathServiceImpl implements FileStorePathService {
 
@@ -37,8 +40,8 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     private String basePath;
 
     @Override
-    public String getBasePath() {
+    public Path getBasePath() {
         String path = StringUtils.isNoneBlank(basePath) ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/file-store";
-        return environmentProfileService.isDevelop() ? (projectRoot + path) : path;
+        return environmentProfileService.isDevelop() ? Paths.get(projectRoot, path) : Paths.get(path);
     }
 }

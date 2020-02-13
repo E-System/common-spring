@@ -80,7 +80,7 @@ public class FileStoreFetchService {
     }
 
     protected Path getRealFile(String path, Thumb thumb, IFileStore fileStore) {
-        Path originalFile = Paths.get(fileStorePathService.getBasePath() + path);
+        Path originalFile = Paths.get(fileStorePathService.getBasePath().toString(), path);
         if (thumb != null) {
             return ThumbUtil.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }

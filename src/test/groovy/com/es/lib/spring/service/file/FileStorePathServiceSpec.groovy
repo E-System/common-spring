@@ -18,9 +18,11 @@ package com.es.lib.spring.service.file
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 
+import java.nio.file.Paths
+
 class FileStorePathServiceSpec extends BaseSpringSpec {
 
-    static PATH = '/tmp/file-store'
+    static PATH = Paths.get('/tmp/file-store')
     @Autowired
     FileStorePathService fileStorePathService
 

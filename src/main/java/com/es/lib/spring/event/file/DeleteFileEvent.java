@@ -17,31 +17,33 @@ package com.es.lib.spring.event.file;
 
 import org.springframework.context.ApplicationEvent;
 
+import java.nio.file.Path;
+
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 31.01.16
  */
 public class DeleteFileEvent extends ApplicationEvent {
 
-    private String basePath;
-    private String path;
+    private Path basePath;
+    private Path path;
 
-    public DeleteFileEvent(Object source, String basePath, String path) {
+    public DeleteFileEvent(Object source, Path basePath, Path path) {
         super(source);
         this.basePath = basePath;
         this.path = path;
     }
 
-    public DeleteFileEvent(Object source, String path) {
+    public DeleteFileEvent(Object source, Path path) {
         super(source);
         this.path = path;
     }
 
-    public String getBasePath() {
+    public Path getBasePath() {
         return basePath;
     }
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 

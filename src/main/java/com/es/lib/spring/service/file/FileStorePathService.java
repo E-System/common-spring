@@ -19,6 +19,8 @@ import com.es.lib.entity.model.file.FileStoreMode;
 import com.es.lib.entity.model.file.FileStorePath;
 import com.es.lib.entity.util.FileStoreUtil;
 
+import java.nio.file.Path;
+
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 31.01.16
@@ -30,7 +32,7 @@ public interface FileStorePathService {
      *
      * @return base file store path
      */
-    String getBasePath();
+    Path getBasePath();
 
     /**
      * Get relative and absolute file store path
