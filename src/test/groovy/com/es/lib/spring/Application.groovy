@@ -17,14 +17,13 @@ package com.es.lib.spring
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
 @SpringBootApplication
-class Application extends SpringBootServletInitializer {
+class Application {
 
     static void main(String[] args) {
         SpringApplication.run(Application.class, args)
