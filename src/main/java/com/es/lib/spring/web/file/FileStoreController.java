@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.web.file;
 
-import com.es.lib.common.ImageUtil;
+import com.es.lib.common.file.ImageUtil;
 import com.es.lib.entity.model.file.FileStoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.spring.service.file.FileStoreControllerService;

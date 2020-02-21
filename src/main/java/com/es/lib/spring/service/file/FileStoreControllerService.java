@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.file;
 
-import com.es.lib.common.file.output.OutputData;
+import com.es.lib.common.model.data.OutputData;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileStoreRequest;
 import com.es.lib.spring.event.file.FileStoreNotFoundEvent;

@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.impl;
 
-import com.es.lib.common.HashUtil;
+import com.es.lib.common.security.HashUtil;
 import com.es.lib.spring.service.HashService;
 import org.springframework.stereotype.Service;
 

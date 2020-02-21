@@ -15,10 +15,10 @@
  */
 package com.es.lib.spring.web.file;
 
-import com.es.lib.common.MimeUtil;
-import com.es.lib.common.file.output.FileData;
-import com.es.lib.common.file.output.OutputData;
-import com.es.lib.common.file.output.StreamData;
+import com.es.lib.common.file.FileUtil;
+import com.es.lib.common.model.data.FileData;
+import com.es.lib.common.model.data.OutputData;
+import com.es.lib.common.model.data.StreamData;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.web.common.BaseController;
 import lombok.Setter;
@@ -101,7 +101,7 @@ public abstract class BaseStoreController extends BaseController {
 
     private void addFileName(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
         if (StringUtils.isNotBlank(fileName)) {
-            response.setHeader("Content-Disposition", MimeUtil.contentDisposition(false, fileName));
+            response.setHeader("Content-Disposition", FileUtil.fileNameDisposition(false, fileName));
         }
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.event.file;
 
-import com.es.lib.common.file.output.OutputData;
+import com.es.lib.common.model.data.OutputData;
 import com.es.lib.entity.model.file.FileStoreRequest;
 
 public class FileStoreNotFoundEvent {

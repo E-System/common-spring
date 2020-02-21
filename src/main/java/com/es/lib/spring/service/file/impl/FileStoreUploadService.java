@@ -15,8 +15,8 @@
  */
 package com.es.lib.spring.service.file.impl;
 
-import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
+import com.es.lib.common.security.HashUtil;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileParts;
 import com.es.lib.entity.model.file.TemporaryFileStore;
@@ -63,7 +63,7 @@ public class FileStoreUploadService {
         check(file, fileParts);
         try {
             return fileStoreService.toStore(
-                FileUtil.crc32(file.getBytes()),
+                HashUtil.crc32(file.getBytes()),
                 file.getSize(),
                 fileParts.getFileName(),
                 fileParts.getExt(),

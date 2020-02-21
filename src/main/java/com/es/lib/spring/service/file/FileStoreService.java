@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.file;
 
-import com.es.lib.common.FileUtil;
+import com.es.lib.common.security.HashUtil;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileParts;
 import com.es.lib.entity.model.file.FileStoreData;
@@ -60,7 +60,7 @@ public interface FileStoreService {
 
     default IFileStore toStore(byte[] data, String fileName, String ext, String mime) {
         return toStore(
-            FileUtil.crc32(data),
+            HashUtil.crc32(data),
             data.length,
             fileName,
             ext,
@@ -72,7 +72,7 @@ public interface FileStoreService {
     default IFileStore toStore(byte[] data, String fileNameWithExt, String mime) {
         FileParts fileParts = FileStoreUtil.extractFileParts(fileNameWithExt);
         return toStore(
-            FileUtil.crc32(data),
+            HashUtil.crc32(data),
             data.length,
             fileParts.getFileName(),
             fileParts.getExt(),
