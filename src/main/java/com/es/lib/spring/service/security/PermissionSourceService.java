@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.security;
 
-import com.es.lib.entity.iface.security.PermissionRow;
+import com.es.lib.entity.model.security.PermissionRow;
 
 import java.util.Collection;
 

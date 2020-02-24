@@ -16,9 +16,9 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.common.model.data.OutputData;
-import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.FileStoreRequest;
-import com.es.lib.spring.event.file.FileStoreNotFoundEvent;
+import com.es.lib.entity.model.file.IFileStore;
+import com.es.lib.entity.model.file.StoreRequest;
+import com.es.lib.entity.model.file.event.FileStoreNotFoundEvent;
 import com.es.lib.spring.service.BaseService;
 import com.es.lib.spring.service.file.impl.FileStoreFetchService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class FileStoreControllerService extends BaseService {
     private final FileStoreFetchService service;
     private final ApplicationEventPublisher eventPublisher;
 
-    public OutputData getOutputData(FileStoreRequest request) {
+    public OutputData getOutputData(StoreRequest request) {
         Map.Entry<Path, ? extends IFileStore> entry = service.getFile(request);
         if (entry == null) {
             FileStoreNotFoundEvent event = new FileStoreNotFoundEvent(request);

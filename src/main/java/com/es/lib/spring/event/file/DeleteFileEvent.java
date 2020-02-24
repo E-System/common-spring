@@ -15,6 +15,8 @@
  */
 package com.es.lib.spring.event.file;
 
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.context.ApplicationEvent;
 
 import java.nio.file.Path;
@@ -23,6 +25,8 @@ import java.nio.file.Path;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 31.01.16
  */
+@Getter
+@ToString
 public class DeleteFileEvent extends ApplicationEvent {
 
     private Path basePath;
@@ -37,21 +41,5 @@ public class DeleteFileEvent extends ApplicationEvent {
     public DeleteFileEvent(Object source, Path path) {
         super(source);
         this.path = path;
-    }
-
-    public Path getBasePath() {
-        return basePath;
-    }
-
-    public Path getPath() {
-        return path;
-    }
-
-    @Override
-    public String toString() {
-        return "DeleteFileEvent{" +
-               "basePath='" + basePath + '\'' +
-               ", path='" + path + '\'' +
-               '}';
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.file
 
-import com.es.lib.entity.model.file.FileStoreMode
+import com.es.lib.entity.model.file.StoreMode
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Shared
@@ -42,11 +42,11 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
 
     def "Create from exist file"() {
         when:
-        def file = service.create(path, FileStoreMode.TEMPORARY)
+        def file = service.create(path, StoreMode.TEMPORARY)
         println file
         then:
         file.size == 5
-        file.mode == FileStoreMode.TEMPORARY
+        file.mode == StoreMode.TEMPORARY
         file.fileName == 'original'
         file.fileExt == 'txt'
         file.mime == 'text/plain'
@@ -57,11 +57,11 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
 
     def "Create from bytes"() {
         when:
-        def file = service.create("Hello".bytes, 'txt', FileStoreMode.TEMPORARY)
+        def file = service.create("Hello".bytes, 'txt', StoreMode.TEMPORARY)
         println file
         then:
         file.size == 5
-        file.mode == FileStoreMode.TEMPORARY
+        file.mode == StoreMode.TEMPORARY
         file.fileExt == 'txt'
         file.mime == 'text/plain'
         file.filePath.startsWith("/temporary")
@@ -72,11 +72,11 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
     def "Create from input stream"() {
         when:
         def inputStream = new ByteArrayInputStream("Hello".bytes)
-        def file = service.create(inputStream, 'txt', 5, FileStoreMode.TEMPORARY)
+        def file = service.create(inputStream, 'txt', 5, StoreMode.TEMPORARY)
         println file
         then:
         file.size == 5
-        file.mode == FileStoreMode.TEMPORARY
+        file.mode == StoreMode.TEMPORARY
         file.fileExt == 'txt'
         file.mime == 'text/plain'
         file.filePath.startsWith("/temporary")

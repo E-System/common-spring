@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.security.imp;
 
-import com.es.lib.entity.iface.security.PermissionRow;
+import com.es.lib.entity.model.security.PermissionRow;
 import com.es.lib.spring.service.security.PermissionSourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

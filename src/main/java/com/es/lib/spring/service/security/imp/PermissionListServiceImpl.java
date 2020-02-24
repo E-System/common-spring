@@ -15,10 +15,10 @@
  */
 package com.es.lib.spring.service.security.imp;
 
-import com.es.lib.entity.iface.security.event.PermissionListInitEvent;
-import com.es.lib.entity.iface.security.event.PermissionListPostProcessEvent;
-import com.es.lib.entity.iface.security.model.Groups;
-import com.es.lib.entity.iface.security.model.PermissionListBuilder;
+import com.es.lib.entity.model.security.event.PermissionListInitEvent;
+import com.es.lib.entity.model.security.event.PermissionListPostProcessEvent;
+import com.es.lib.entity.model.security.model.Groups;
+import com.es.lib.entity.model.security.model.PermissionListBuilder;
 import com.es.lib.spring.service.security.PermissionListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

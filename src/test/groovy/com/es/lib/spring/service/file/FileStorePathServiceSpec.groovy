@@ -39,9 +39,9 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath(name, ext)
         expect:
-        result.basePath == PATH
-        result.path.endsWith(fileName)
-        result.fullPath.startsWith(PATH)
-        result.fullPath.endsWith(fileName)
+        result.root == PATH
+        result.relative.endsWith(fileName)
+        result.toAbsolutePath().startsWith(PATH)
+        result.toAbsolutePath().endsWith(fileName)
     }
 }

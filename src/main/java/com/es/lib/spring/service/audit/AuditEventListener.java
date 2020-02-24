@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.audit;
 
-import com.es.lib.entity.iface.audit.event.AuditEvent;
+import com.es.lib.entity.model.audit.event.AuditEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

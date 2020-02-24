@@ -16,7 +16,7 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.common.file.ImageUtil;
-import com.es.lib.entity.model.file.FileStoreRequest;
+import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.spring.service.file.FileStoreControllerService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class FileStoreController extends BaseStoreController {
 
     @GetMapping(value = FULL_PATH + "*")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
-        FileStoreRequest attributes = extractAttributes(req);
+        StoreRequest attributes = extractAttributes(req);
         if (attributes == null) {
             sendError(resp);
             return;
@@ -78,7 +78,7 @@ public class FileStoreController extends BaseStoreController {
         }
     }
 
-    private FileStoreRequest extractAttributes(HttpServletRequest req) {
+    private StoreRequest extractAttributes(HttpServletRequest req) {
         Map<String, String[]> params = req.getParameterMap();
         String id = req.getParameter("id");
         if (StringUtils.isBlank(id)) {
@@ -94,10 +94,10 @@ public class FileStoreController extends BaseStoreController {
         if (StringUtils.isBlank(id)) {
             return null;
         }
-        return new FileStoreRequest(
+        return new StoreRequest(
             id,
             params.containsKey("generate-empty"),
-            Thumb.extract(params.containsKey("thumb"), req.getParameter("tw"), req.getParameter("th"))
+            Thumb.create(params.containsKey("thumb"), req.getParameter("tw"), req.getParameter("th"))
         );
     }
 }

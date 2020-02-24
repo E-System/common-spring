@@ -15,9 +15,8 @@
  */
 package com.es.lib.spring.service.file;
 
-import com.es.lib.entity.model.file.FileStoreMode;
-import com.es.lib.entity.model.file.FileStorePath;
-import com.es.lib.entity.util.FileStoreUtil;
+import com.es.lib.entity.model.file.StoreMode;
+import com.es.lib.entity.model.file.StorePath;
 
 import java.nio.file.Path;
 
@@ -41,8 +40,8 @@ public interface FileStorePathService {
      * @param ext  file extension
      * @return relative and absolute file store path
      */
-    default FileStorePath getPath(String name, String ext) {
-        return getPath(FileStoreMode.PERSISTENT, name, ext);
+    default StorePath getPath(String name, String ext) {
+        return getPath(StoreMode.PERSISTENT, name, ext);
     }
 
     /**
@@ -53,15 +52,15 @@ public interface FileStorePathService {
      * @param ext  file extension
      * @return relative and absolute file store path
      */
-    default FileStorePath getPath(FileStoreMode mode, String name, String ext) {
-        return FileStoreUtil.getPath(getBasePath(), mode, name, ext);
+    default StorePath getPath(StoreMode mode, String name, String ext) {
+        return StorePath.create(getBasePath(), mode, name, ext);
     }
 
-    default FileStorePath uniquePath(String ext) {
-        return uniquePath(FileStoreMode.PERSISTENT, ext);
+    default StorePath uniquePath(String ext) {
+        return uniquePath(StoreMode.PERSISTENT, ext);
     }
 
-    default FileStorePath uniquePath(FileStoreMode mode, String ext) {
-        return FileStoreUtil.getUniquePath(getBasePath(), mode, ext);
+    default StorePath uniquePath(StoreMode mode, String ext) {
+        return StorePath.create(getBasePath(), mode, ext);
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.security;
 
-import com.es.lib.entity.iface.security.model.Groups;
+import com.es.lib.entity.model.security.model.Groups;
 
 import java.util.Collection;
 

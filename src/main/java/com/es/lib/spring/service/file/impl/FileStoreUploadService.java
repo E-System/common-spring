@@ -16,9 +16,9 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.exception.ESRuntimeException;
+import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.HashUtil;
-import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.FileParts;
+import com.es.lib.entity.model.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
@@ -59,14 +59,14 @@ public class FileStoreUploadService {
         if (file == null || file.isEmpty()) {
             return null;
         }
-        FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
-        check(file, fileParts);
+        FileName fileName = FileName.create(file.getOriginalFilename());
+        check(file, fileName);
         try {
             return fileStoreService.toStore(
                 HashUtil.crc32(file.getBytes()),
                 file.getSize(),
-                fileParts.getFileName(),
-                fileParts.getExt(),
+                fileName.getName(),
+                fileName.getExt(),
                 file.getContentType(),
                 file.getBytes()
             );
@@ -79,13 +79,13 @@ public class FileStoreUploadService {
         if (file == null || file.isEmpty()) {
             return null;
         }
-        FileParts fileParts = FileStoreUtil.extractFileParts(file.getOriginalFilename());
-        check(file, fileParts);
+        FileName fileName = FileName.create(file.getOriginalFilename());
+        check(file, fileName);
         try {
             return FileStoreUtil.createTemporary(
                 fileStorePathService.getBasePath(),
                 file.getInputStream(),
-                fileParts,
+                fileName,
                 file.getSize(),
                 file.getContentType(),
                 new ThumbnailatorThumbGenerator(),
@@ -96,12 +96,12 @@ public class FileStoreUploadService {
         }
     }
 
-    private void check(MultipartFile file, FileParts fileParts) {
+    private void check(MultipartFile file, FileName fileName) {
         if (uploadCheckServices == null) {
             return;
         }
         for (FileStoreUploadCheckService uploadChecker : uploadCheckServices) {
-            uploadChecker.check(file, fileParts);
+            uploadChecker.check(file, fileName);
         }
     }
 }

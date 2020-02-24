@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.audit.impl;
 
-import com.es.lib.entity.iface.audit.event.AuditEvent;
+import com.es.lib.entity.model.audit.event.AuditEvent;
 import com.es.lib.spring.service.audit.AuditSaveService;
 import com.es.lib.spring.service.controller.RequestService;
 import lombok.Setter;

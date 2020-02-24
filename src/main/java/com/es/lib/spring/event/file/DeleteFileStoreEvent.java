@@ -15,13 +15,17 @@
  */
 package com.es.lib.spring.event.file;
 
-import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.IFileStore;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.context.ApplicationEvent;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.02.16
  */
+@Getter
+@ToString
 public class DeleteFileStoreEvent extends ApplicationEvent {
 
     private IFileStore fileStore;
@@ -29,16 +33,5 @@ public class DeleteFileStoreEvent extends ApplicationEvent {
     public DeleteFileStoreEvent(Object source, IFileStore fileStore) {
         super(source);
         this.fileStore = fileStore;
-    }
-
-    public IFileStore getFileStore() {
-        return fileStore;
-    }
-
-    @Override
-    public String toString() {
-        return "DeleteFileStoreEvent{" +
-               "fileStore=" + fileStore +
-               '}';
     }
 }
