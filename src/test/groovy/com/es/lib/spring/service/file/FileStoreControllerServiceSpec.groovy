@@ -26,11 +26,11 @@ class FileStoreControllerServiceSpec extends BaseSpringSpec {
 
     def "GetOutputData1"() {
         expect:
-        service.getOutputData(new StoreRequest("", false, null)) == null
+        service.getOutputData(StoreRequest.create("", false, null)) == null
     }
 
     def "GetOutputData2"() {
         expect:
-        service.getOutputData(new StoreRequest("qwe", false, null)) == null
+        service.getOutputData(StoreRequest.create("qwe", false, null)) == null
     }
 }

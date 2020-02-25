@@ -94,7 +94,7 @@ public class FileStoreController extends BaseStoreController {
         if (StringUtils.isBlank(id)) {
             return null;
         }
-        return new StoreRequest(
+        return StoreRequest.create(
             id,
             params.containsKey("generate-empty"),
             Thumb.create(params.containsKey("thumb"), req.getParameter("tw"), req.getParameter("th"))
