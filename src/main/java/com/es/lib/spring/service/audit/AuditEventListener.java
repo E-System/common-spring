@@ -15,8 +15,12 @@
  */
 package com.es.lib.spring.service.audit;
 
+import com.es.lib.entity.model.audit.IAuditInfo;
+import com.es.lib.entity.model.audit.IAuditInfoProvider;
 import com.es.lib.entity.model.audit.event.AuditEvent;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.event.spi.*;
+import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -28,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
-public class AuditEventListener {
+public class AuditEventListener implements PostInsertEventListener, PostUpdateEventListener, PostDeleteEventListener {
 
     private final AuditSaveService auditSaveService;
 
@@ -38,26 +42,32 @@ public class AuditEventListener {
         auditSaveService.save(event);
     }
 
-    /*@Transactional
-    public void observeInsert(@Observes @EMAction(value = EMPhase.FINISH, operation = EMOperation.INSERT) EMEvent event) {
-        save(event);
+    @Override
+    public void onPostInsert(PostInsertEvent event) {
+        save("INSERT", event.getEntity());
     }
 
-    @Transactional
-    public void observeUpdate(@Observes @EMAction(value = EMPhase.FINISH, operation = EMOperation.UPDATE) EMEvent event) {
-        save(event);
+    @Override
+    public void onPostUpdate(PostUpdateEvent event) {
+        save("UPDATE", event.getEntity());
     }
 
-    @Transactional
-    public void observeDelete(@Observes @EMAction(value = EMPhase.FINISH, operation = EMOperation.DELETE) EMEvent event) {
-        save(event);
+    @Override
+    public void onPostDelete(PostDeleteEvent event) {
+        save("DELETE", event.getEntity());
     }
 
-    private void save(EMEvent event) {
-        if (!(event.getInstance() instanceof IAuditInfoProvider)) {
+    private void save(String operation, Object entity) {
+        if (!(entity instanceof IAuditInfoProvider)) {
             return;
         }
-        IAuditInfoProvider e = (IAuditInfoProvider) event.getInstance();
-        auditSaveService.save(new AuditEvent(event.getOperation().name(), e.getAuditInfo().toString()));
-    }*/
+        IAuditInfoProvider e = (IAuditInfoProvider) entity;
+        IAuditInfo auditInfo = e.getAuditInfo();
+        auditSaveService.save(new AuditEvent(operation, auditInfo));
+    }
+
+    @Override
+    public boolean requiresPostCommitHanding(EntityPersister persister) {
+        return false;
+    }
 }
