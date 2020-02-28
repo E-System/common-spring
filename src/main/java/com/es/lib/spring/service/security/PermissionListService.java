@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.security;
 
-import com.es.lib.entity.model.security.model.Groups;
+import com.es.lib.entity.model.security.PermissionGroups;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ import java.util.Collection;
  */
 public interface PermissionListService {
 
-    Groups getGroups();
+    PermissionGroups getGroups();
 
     Collection<String> getAllKeys();
 

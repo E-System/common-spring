@@ -16,9 +16,9 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.common.model.data.OutputData;
-import com.es.lib.entity.model.file.IFileStore;
+import com.es.lib.entity.event.file.FileStoreNotFoundEvent;
+import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
-import com.es.lib.entity.model.file.event.FileStoreNotFoundEvent;
 import com.es.lib.spring.service.BaseService;
 import com.es.lib.spring.service.file.impl.FileStoreFetchService;
 import lombok.RequiredArgsConstructor;

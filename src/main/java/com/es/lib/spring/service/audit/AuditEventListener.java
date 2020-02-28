@@ -15,9 +15,10 @@
  */
 package com.es.lib.spring.service.audit;
 
-import com.es.lib.entity.model.audit.IAuditInfo;
-import com.es.lib.entity.model.audit.IAuditInfoProvider;
-import com.es.lib.entity.model.audit.event.AuditEvent;
+import com.es.lib.entity.event.audit.AuditEvent;
+import com.es.lib.entity.iface.audit.IAuditInfo;
+import com.es.lib.entity.iface.audit.IAuditInfoProvider;
+import com.es.lib.entity.model.audit.code.IAuditActionCode;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.event.spi.*;
 import org.hibernate.persister.entity.EntityPersister;
@@ -44,17 +45,17 @@ public class AuditEventListener implements PostInsertEventListener, PostUpdateEv
 
     @Override
     public void onPostInsert(PostInsertEvent event) {
-        save(event.getSession(), "INSERT", event.getEntity());
+        save(event.getSession(), IAuditActionCode.INSERT, event.getEntity());
     }
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
-        save(event.getSession(), "UPDATE", event.getEntity());
+        save(event.getSession(), IAuditActionCode.UPDATE, event.getEntity());
     }
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        save(event.getSession(), "DELETE", event.getEntity());
+        save(event.getSession(), IAuditActionCode.DELETE, event.getEntity());
     }
 
     private void save(EventSource eventSource, String operation, Object entity) {
@@ -67,7 +68,7 @@ public class AuditEventListener implements PostInsertEventListener, PostUpdateEv
     }
 
     @Override
-    public boolean requiresPostCommitHanding(EntityPersister persister) {
+    public boolean requiresPostCommitHanding(EntityPersister p) {
         return false;
     }
 }

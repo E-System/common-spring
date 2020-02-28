@@ -16,7 +16,7 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.collection.CollectionUtil;
-import com.es.lib.entity.model.file.IFileStore;
+import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.entity.util.ThumbUtil;

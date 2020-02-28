@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.security.imp;
 
-import com.es.lib.entity.model.security.PermissionRow;
+import com.es.lib.entity.model.security.PermissionItem;
 import com.es.lib.spring.service.security.PermissionSourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,19 +30,19 @@ import java.util.Collections;
 public class DefaultPermissionSourceServiceImpl implements PermissionSourceService {
 
     @Override
-    public Collection<PermissionRow> listGlobal() {
+    public Collection<PermissionItem> listGlobal() {
         log.trace("---USE DEFAULT PermissionSourceService::listGlobal()---");
         return Collections.emptyList();
     }
 
     @Override
-    public Collection<PermissionRow> listForScope(Number idScope) {
+    public Collection<PermissionItem> listForScope(Number idScope) {
         log.trace("---USE DEFAULT PermissionSourceService::listForScope({})---", idScope);
         return Collections.emptyList();
     }
 
     @Override
-    public Collection<PermissionRow> listForScopeGroup(String scopeGroup) {
+    public Collection<PermissionItem> listForScopeGroup(String scopeGroup) {
         log.trace("---USE DEFAULT PermissionSourceService::listForScopeGroup({})---", scopeGroup);
         return Collections.emptyList();
     }

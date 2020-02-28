@@ -16,7 +16,7 @@
 package com.es.lib.spring.service.audit;
 
 
-import com.es.lib.entity.model.audit.event.AuditEvent;
+import com.es.lib.entity.event.audit.AuditEvent;
 import org.hibernate.event.spi.EventSource;
 
 /**

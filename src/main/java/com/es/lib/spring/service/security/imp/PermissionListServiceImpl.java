@@ -15,16 +15,15 @@
  */
 package com.es.lib.spring.service.security.imp;
 
-import com.es.lib.entity.model.security.event.PermissionListInitEvent;
-import com.es.lib.entity.model.security.event.PermissionListPostProcessEvent;
-import com.es.lib.entity.model.security.model.Groups;
-import com.es.lib.entity.model.security.model.PermissionListBuilder;
+import com.es.lib.entity.event.security.PermissionListInitEvent;
+import com.es.lib.entity.event.security.PermissionListPostProcessEvent;
+import com.es.lib.entity.model.security.PermissionGroups;
+import com.es.lib.entity.model.security.PermissionListBuilder;
 import com.es.lib.spring.service.security.PermissionListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,7 @@ public class PermissionListServiceImpl implements PermissionListService {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    private Groups groups;
+    private PermissionGroups groups;
     private Collection<String> allKeys;
 
     @EventListener
@@ -55,11 +54,11 @@ public class PermissionListServiceImpl implements PermissionListService {
     }
 
     @Override
-    public Groups getGroups() {
+    public PermissionGroups getGroups() {
         if (groups == null) {
-            return new Groups();
+            return new PermissionGroups();
         }
-        return new Groups(groups);
+        return new PermissionGroups(groups);
     }
 
     @Override

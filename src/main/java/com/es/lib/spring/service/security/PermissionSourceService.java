@@ -15,7 +15,8 @@
  */
 package com.es.lib.spring.service.security;
 
-import com.es.lib.entity.model.security.PermissionRow;
+
+import com.es.lib.entity.model.security.PermissionItem;
 
 import java.util.Collection;
 
@@ -25,9 +26,9 @@ import java.util.Collection;
  */
 public interface PermissionSourceService {
 
-    Collection<PermissionRow> listGlobal();
+    Collection<PermissionItem> listGlobal();
 
-    Collection<PermissionRow> listForScope(Number idScope);
+    Collection<PermissionItem> listForScope(Number idScope);
 
-    Collection<PermissionRow> listForScopeGroup(String scopeGroup);
+    Collection<PermissionItem> listForScopeGroup(String scopeGroup);
 }

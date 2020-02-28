@@ -17,7 +17,7 @@ package com.es.lib.spring.service.file;
 
 import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.HashUtil;
-import com.es.lib.entity.model.file.IFileStore;
+import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 
 import java.util.Collection;
