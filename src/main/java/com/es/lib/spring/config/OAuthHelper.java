@@ -2,6 +2,7 @@ package com.es.lib.spring.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,11 @@ public class OAuthHelper {
         return true;
     }
 
+    public static boolean isTokenExpired(AuthenticationFailureBadCredentialsEvent e) {
+        return e.getAuthentication().getName().equals("access-token")
+               && e.getException().getMessage().contains("Access token expired");
+    }
+
     public static String getCurrentLogin() {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null) {
@@ -40,6 +46,8 @@ public class OAuthHelper {
         Object principal = authentication.getPrincipal();
         if (principal instanceof User) {
             return ((User) principal).getUsername();
+        } else if (principal instanceof String) {
+            return (String) principal;
         }
         return null;
     }
