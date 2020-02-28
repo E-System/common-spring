@@ -17,6 +17,7 @@ package com.es.lib.spring.service.audit;
 
 
 import com.es.lib.entity.model.audit.event.AuditEvent;
+import org.hibernate.event.spi.EventSource;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -25,4 +26,6 @@ import com.es.lib.entity.model.audit.event.AuditEvent;
 public interface AuditSaveService {
 
     void save(AuditEvent event);
+
+    void save(EventSource eventSource, AuditEvent event);
 }

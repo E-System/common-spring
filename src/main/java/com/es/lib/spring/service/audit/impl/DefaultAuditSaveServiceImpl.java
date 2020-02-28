@@ -21,6 +21,7 @@ import com.es.lib.spring.service.controller.RequestService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.event.spi.EventSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,13 +41,22 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
     @Transactional
     public void save(AuditEvent event) {
         try {
-            save(event, StringUtils.defaultIfEmpty(requestService.getRemoteIp(), ""));
+            save(null, event, StringUtils.defaultIfEmpty(requestService.getRemoteIp(), ""));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
 
-    protected void save(AuditEvent event, String ip) {
-        log.error("---USE DEFAULT AuditSaveService::save({}, {})---", event, ip);
+    @Override
+    public void save(EventSource eventSource, AuditEvent event) {
+        try {
+            save(eventSource, event, StringUtils.defaultIfEmpty(requestService.getRemoteIp(), ""));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    protected void save(EventSource eventSource, AuditEvent event, String ip) {
+        log.error("---USE DEFAULT AuditSaveService::save({}, {}, {})---", eventSource, event, ip);
     }
 }

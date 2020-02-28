@@ -44,26 +44,26 @@ public class AuditEventListener implements PostInsertEventListener, PostUpdateEv
 
     @Override
     public void onPostInsert(PostInsertEvent event) {
-        save("INSERT", event.getEntity());
+        save(event.getSession(), "INSERT", event.getEntity());
     }
 
     @Override
     public void onPostUpdate(PostUpdateEvent event) {
-        save("UPDATE", event.getEntity());
+        save(event.getSession(), "UPDATE", event.getEntity());
     }
 
     @Override
     public void onPostDelete(PostDeleteEvent event) {
-        save("DELETE", event.getEntity());
+        save(event.getSession(), "DELETE", event.getEntity());
     }
 
-    private void save(String operation, Object entity) {
+    private void save(EventSource eventSource, String operation, Object entity) {
         if (!(entity instanceof IAuditInfoProvider)) {
             return;
         }
         IAuditInfoProvider e = (IAuditInfoProvider) entity;
         IAuditInfo auditInfo = e.getAuditInfo();
-        auditSaveService.save(new AuditEvent(operation, auditInfo));
+        auditSaveService.save(eventSource, new AuditEvent(operation, auditInfo));
     }
 
     @Override
