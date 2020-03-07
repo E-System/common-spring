@@ -30,7 +30,7 @@ buildscript {
 }
 
 wrapper {
-    gradleVersion = '6.2'
+    gradleVersion = '6.2.2'
 }
 
 apply from: "build-${profile}.gradle"
@@ -140,7 +140,7 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.2.4.RELEASE'
+    springVersion = '2.2.5.RELEASE'
 }
 dependencies {
     compile "com.es.lib:common-lib:1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
@@ -169,7 +169,7 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springVersion}"
 
-    testCompile "org.hibernate:hibernate-validator:5.4.3.Final"
+    testCompile "org.hibernate:hibernate-validator:6.1.2.Final"
     testCompile "javax.el:javax.el-api:3.0.1-b06"
 }
 
