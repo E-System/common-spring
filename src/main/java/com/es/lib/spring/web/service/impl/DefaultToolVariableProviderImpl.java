@@ -15,8 +15,8 @@
  */
 package com.es.lib.spring.web.service.impl;
 
-import com.es.lib.common.date.DateUtil;
-import com.es.lib.common.number.NumberFormatUtil;
+import com.es.lib.common.date.Dates;
+import com.es.lib.common.number.Numbers;
 import com.es.lib.common.text.TextUtil;
 import com.es.lib.spring.web.service.TemplateToolVariableProvider;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,8 @@ public class DefaultToolVariableProviderImpl implements TemplateToolVariableProv
     public Map<String, Object> get(Locale locale) {
         Map<String, Object> result = new HashMap<>(3);
         result.put("TextUtil", TextUtil.class);
-        result.put("DateUtil", DateUtil.class);
-        result.put("NumberFormatUtil", NumberFormatUtil.class);
+        result.put("Dates", Dates.class);
+        result.put("NumberFormatter", Numbers.formatter());
         return result;
     }
 }

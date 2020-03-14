@@ -64,7 +64,7 @@ public class FileStoreController extends BaseStoreController {
                 resp.setContentType("image/png");
                 try {
                     Thumb thumb = attributes.getThumb() != null ? attributes.getThumb() : new Thumb();
-                    ImageUtil.writeDefaultEmptyImage(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream());
+                    ImageUtil.writeDefaultEmptyImage(thumb.getWidth(), thumb.getHeight(), "НЕТ ИЗОБРАЖЕНИЯ", resp.getOutputStream());
                 } catch (IOException ignored) { }
             }
         );
