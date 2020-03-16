@@ -17,10 +17,11 @@ package com.es.lib.spring.web.service.impl;
 
 import com.es.lib.common.date.Dates;
 import com.es.lib.common.number.Numbers;
-import com.es.lib.common.text.TextUtil;
+import com.es.lib.common.text.Texts;
 import com.es.lib.spring.web.service.TemplateToolVariableProvider;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -33,10 +34,11 @@ import java.util.Map;
 public class DefaultToolVariableProviderImpl implements TemplateToolVariableProvider {
 
     @Override
-    public Map<String, Object> get(Locale locale) {
+    public Map<String, Object> get(ZoneId zoneId, Locale locale) {
         Map<String, Object> result = new HashMap<>(3);
-        result.put("TextUtil", TextUtil.class);
+        result.put("Texts", Texts.class);
         result.put("Dates", Dates.class);
+        result.put("DateFormatter", Dates.formatter(zoneId, locale));
         result.put("NumberFormatter", Numbers.formatter());
         return result;
     }

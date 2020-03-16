@@ -23,13 +23,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 24.06.16
  */
 @Service
@@ -42,19 +43,19 @@ public class DefaultTemplateToolServiceImpl implements TemplateToolService {
 
     @Override
     public void fillModel(Model model, Locale locale) {
-        model.addAllAttributes(getAll(locale));
+        model.addAllAttributes(getAll(ZoneId.systemDefault(), locale));
     }
 
     @Override
     public void fillModel(Map<String, Object> model, Locale locale) {
-        model.putAll(getAll(locale));
+        model.putAll(getAll(ZoneId.systemDefault(), locale));
     }
 
-    protected Map<String, Object> getAll(Locale locale) {
+    protected Map<String, Object> getAll(ZoneId zoneId, Locale locale) {
         Map<String, Object> result = new HashMap<>();
         result.put("buildInfo", buildInfoService.getInfo());
         for (TemplateToolVariableProvider variableProvider : variableProviders) {
-            result.putAll(variableProvider.get(locale));
+            result.putAll(variableProvider.get(zoneId, locale));
         }
         return result;
     }

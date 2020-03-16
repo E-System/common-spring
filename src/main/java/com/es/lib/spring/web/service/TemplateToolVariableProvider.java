@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.web.service;
 
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Map;
 
@@ -24,5 +25,5 @@ import java.util.Map;
  */
 public interface TemplateToolVariableProvider {
 
-    Map<String, Object> get(Locale locale);
+    Map<String, Object> get(ZoneId zoneId, Locale locale);
 }
