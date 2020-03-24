@@ -37,10 +37,26 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         def ext = 'txt'
         def fileName = name + '.' + ext
         then:
-        def result = fileStorePathService.getPath(name, ext)
+        def result = fileStorePathService.getPath(null, name, ext)
         expect:
         result.root == PATH
         result.relative.endsWith(fileName)
+        !result.relative.toString().contains("/null/")
+        result.toAbsolutePath().startsWith(PATH)
+        result.toAbsolutePath().endsWith(fileName)
+    }
+
+    def "GetPath with scope"() {
+        when:
+        def name = 'hello'
+        def ext = 'txt'
+        def fileName = name + '.' + ext
+        then:
+        def result = fileStorePathService.getPath("null", name, ext)
+        expect:
+        result.root == PATH
+        result.relative.endsWith(fileName)
+        result.relative.toString().contains("/null/")
         result.toAbsolutePath().startsWith(PATH)
         result.toAbsolutePath().endsWith(fileName)
     }
