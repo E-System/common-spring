@@ -84,6 +84,7 @@ public class FileStoreUploadService {
         try {
             return FileStoreUtil.createTemporary(
                 fileStorePathService.getBasePath(),
+                null,
                 file.getInputStream(),
                 fileName,
                 file.getSize(),

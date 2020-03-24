@@ -41,6 +41,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             fileStorePathService.getBasePath(),
             from,
             mode,
+            null,
             null
         );
     }
@@ -52,6 +53,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             from,
             ext,
             mode,
+            null,
             null
         );
     }
@@ -64,6 +66,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             ext,
             size,
             mode,
+            null,
             null
         );
     }

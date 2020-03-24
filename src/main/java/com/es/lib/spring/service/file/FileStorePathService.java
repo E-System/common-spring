@@ -40,8 +40,8 @@ public interface FileStorePathService {
      * @param ext  file extension
      * @return relative and absolute file store path
      */
-    default StorePath getPath(String name, String ext) {
-        return getPath(StoreMode.PERSISTENT, name, ext);
+    default StorePath getPath(String scope, String name, String ext) {
+        return getPath(StoreMode.PERSISTENT, scope, name, ext);
     }
 
     /**
@@ -52,15 +52,15 @@ public interface FileStorePathService {
      * @param ext  file extension
      * @return relative and absolute file store path
      */
-    default StorePath getPath(StoreMode mode, String name, String ext) {
-        return StorePath.create(getBasePath(), mode, name, ext);
+    default StorePath getPath(StoreMode mode, String scope, String name, String ext) {
+        return StorePath.create(getBasePath(), mode, scope, name, ext);
     }
 
-    default StorePath uniquePath(String ext) {
-        return uniquePath(StoreMode.PERSISTENT, ext);
+    default StorePath uniquePath(String scope, String ext) {
+        return uniquePath(StoreMode.PERSISTENT, scope, ext);
     }
 
-    default StorePath uniquePath(StoreMode mode, String ext) {
-        return StorePath.create(getBasePath(), mode, ext);
+    default StorePath uniquePath(StoreMode mode, String scope, String ext) {
+        return StorePath.create(getBasePath(), mode, scope, ext);
     }
 }
