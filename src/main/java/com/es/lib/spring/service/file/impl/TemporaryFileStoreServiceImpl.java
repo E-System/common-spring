@@ -19,6 +19,7 @@ import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.entity.util.FileStoreUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
+import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.TemporaryFileStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import java.nio.file.Path;
 public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService {
 
     private final FileStorePathService fileStorePathService;
+    private final FileStoreScopeService fileStoreScopeService;
 
     @Override
     public TemporaryFileStore create(Path from, StoreMode mode) {
@@ -41,7 +43,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             fileStorePathService.getBasePath(),
             from,
             mode,
-            null,
+            fileStoreScopeService.getScope(),
             null
         );
     }
@@ -53,7 +55,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             from,
             ext,
             mode,
-            null,
+            fileStoreScopeService.getScope(),
             null
         );
     }
@@ -66,7 +68,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             ext,
             size,
             mode,
-            null,
+            fileStoreScopeService.getScope(),
             null
         );
     }

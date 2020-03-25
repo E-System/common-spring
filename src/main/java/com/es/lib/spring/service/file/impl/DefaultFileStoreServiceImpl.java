@@ -18,6 +18,7 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
+import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.FileStoreService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
 
     @Setter(onMethod_ = @Autowired)
     protected FileStorePathService fileStorePathService;
+    @Setter(onMethod_ = @Autowired)
+    protected FileStoreScopeService fileStoreScopeService;
 
     @Override
     public IFileStore toStore(TemporaryFileStore temporaryFile) {

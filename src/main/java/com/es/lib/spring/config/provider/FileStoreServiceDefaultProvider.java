@@ -16,8 +16,10 @@
 package com.es.lib.spring.config.provider;
 
 import com.es.lib.spring.service.file.FileStorePathService;
+import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.impl.DefaultFileStorePathServiceImpl;
+import com.es.lib.spring.service.file.impl.DefaultFileStoreScopeServiceImpl;
 import com.es.lib.spring.service.file.impl.DefaultFileStoreServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +40,15 @@ public class FileStoreServiceDefaultProvider {
         return new InternalDefaultFileStoreServiceImpl();
     }
 
+    @Bean
+    @ConditionalOnMissingBean(FileStoreScopeService.class)
+    public FileStoreScopeService fileStoreScopeService() {
+        return new InternalDefaultFileStoreScopeServiceImpl();
+    }
+
     public static class InternalDefaultFileStorePathServiceImpl extends DefaultFileStorePathServiceImpl {}
-    public static class InternalDefaultFileStoreServiceImpl extends DefaultFileStoreServiceImpl{}
+
+    public static class InternalDefaultFileStoreServiceImpl extends DefaultFileStoreServiceImpl {}
+
+    public static class InternalDefaultFileStoreScopeServiceImpl extends DefaultFileStoreScopeServiceImpl {}
 }
