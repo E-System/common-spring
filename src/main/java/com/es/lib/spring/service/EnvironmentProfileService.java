@@ -21,9 +21,8 @@ package com.es.lib.spring.service;
  */
 public interface EnvironmentProfileService {
 
+    String PROFILE_RELEASE = "release";
     String PROFILE_DEVELOP = "develop";
-    String PROFILE_MASTER = "master";
-    String PROFILE_TEST = "test";
 
     /**
      * Проверка активности профиля с заданным именем
@@ -34,6 +33,13 @@ public interface EnvironmentProfileService {
     boolean isProfileActive(String name);
 
     /**
+     * Является ли активный профиль - release
+     *
+     * @return true - активный провиль release
+     */
+    boolean isRelease();
+
+    /**
      * Является ли активный профиль - develop
      *
      * @return true - активный провиль develop
@@ -41,23 +47,9 @@ public interface EnvironmentProfileService {
     boolean isDevelop();
 
     /**
-     * Является ли активный профиль - master
-     *
-     * @return true - активный провиль master
-     */
-    boolean isMaster();
-
-    /**
      * Включен вывод полного лога в адвайсах
      *
      * @return Включен вывод полного лога в адвайсах
      */
     boolean isFullErrorMessage();
-
-    /**
-     * Является ли активный профиль - test
-     *
-     * @return true - активный провиль test
-     */
-    boolean isTest();
 }

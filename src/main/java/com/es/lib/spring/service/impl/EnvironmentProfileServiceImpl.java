@@ -34,27 +34,22 @@ public class EnvironmentProfileServiceImpl implements EnvironmentProfileService 
     private final Environment environment;
 
     @Override
+    public boolean isProfileActive(String name) {
+        return Arrays.asList(environment.getActiveProfiles()).contains(name);
+    }
+    
+    @Override
+    public boolean isRelease() {
+        return isProfileActive(PROFILE_RELEASE);
+    }
+
+    @Override
     public boolean isDevelop() {
         return isProfileActive(PROFILE_DEVELOP);
     }
 
     @Override
-    public boolean isMaster() {
-        return isProfileActive(PROFILE_MASTER);
-    }
-
-    @Override
     public boolean isFullErrorMessage() {
-        return isDevelop() || isMaster() || isTest();
-    }
-
-    @Override
-    public boolean isTest() {
-        return isProfileActive(PROFILE_TEST);
-    }
-
-    @Override
-    public boolean isProfileActive(String name) {
-        return Arrays.asList(environment.getActiveProfiles()).contains(name);
+        return !isRelease();
     }
 }
