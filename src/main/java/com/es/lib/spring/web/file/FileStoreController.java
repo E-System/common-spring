@@ -18,7 +18,7 @@ package com.es.lib.spring.web.file;
 import com.es.lib.common.file.ImageUtil;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
-import com.es.lib.spring.service.file.FileStoreControllerService;
+import com.es.lib.spring.service.file.impl.FileStoreFetchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +43,7 @@ public class FileStoreController extends BaseStoreController {
     public static final String PATH = "/files";
     private static final String FULL_PATH = PATH + "/";
 
-    private final FileStoreControllerService service;
+    private final FileStoreFetchService fileStoreFetchService;
 
     @GetMapping(value = FULL_PATH + "*")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
@@ -55,7 +55,7 @@ public class FileStoreController extends BaseStoreController {
 
         process(
             resp,
-            () -> service.getOutputData(attributes),
+            () -> fileStoreFetchService.getData(attributes),
             () -> {
                 if (!attributes.isGenerateEmpty()) {
                     sendError(resp);

@@ -15,12 +15,16 @@
  */
 package com.es.lib.spring.service.file;
 
+import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.Hash;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -86,4 +90,16 @@ public interface FileStoreService {
     IFileStore copyInStore(long id);
 
     Collection<? extends IFileStore> list(Collection<? extends Number> ids);
+
+    default Map<String, IFileStore> listGroupedById(Collection<? extends Number> ids) {
+        if (CollectionUtil.isEmpty(ids)) {
+            return new HashMap<>();
+        }
+        return list(ids).stream().collect(
+            Collectors.toMap(
+                k -> String.valueOf(k.getId()),
+                v -> v
+            )
+        );
+    }
 }

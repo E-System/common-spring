@@ -15,7 +15,8 @@
  */
 package com.es.lib.spring.service.file.impl;
 
-import com.es.lib.common.collection.CollectionUtil;
+import com.es.lib.common.model.data.OutputData;
+import com.es.lib.entity.event.file.FileStoreNotFoundEvent;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
@@ -29,14 +30,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
@@ -49,55 +49,57 @@ public class FileStoreFetchService {
 
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public Map.Entry<Path, ? extends IFileStore> getFile(StoreRequest request) {
-        long value = NumberUtils.toLong(request.getId(), 0);
-        if (value > 0) {
-            return getFile(value, request.getThumb());
-        }
-        return getFile(request.getId(), request.getThumb());
-    }
-
-    public Map.Entry<Path, ? extends IFileStore> getFile(long id, Thumb thumb) {
-        return getFile(fileStoreService.fromStore(id), thumb);
-    }
-
-    public Map.Entry<Path, ? extends IFileStore> getFile(String base64, Thumb thumb) {
-        if (StringUtils.isBlank(base64)) {
+    public OutputData getData(StoreRequest request) {
+        Map.Entry<Path, ? extends IFileStore> entry = get(request);
+        if (entry == null) {
+            FileStoreNotFoundEvent event = new FileStoreNotFoundEvent(request);
+            eventPublisher.publishEvent(event);
+            if (event.getData() != null) {
+                return event.getData();
+            }
             return null;
         }
-        return getFile(fileStoreService.fromStore(base64), thumb);
-    }
-
-    protected Map.Entry<Path, ? extends IFileStore> getFile(IFileStore fileStore, Thumb thumb) {
-        if (fileStore == null || fileStore.getFilePath() == null) {
-            return null;
-        }
-        return Pair.of(
-            getRealFile(fileStore.getFilePath(), thumb, fileStore),
-            fileStore
+        log.info("FileStore entry = {}, fileExist = {}", entry, entry.getKey() != null && Files.exists(entry.getKey()));
+        return OutputData.create(
+            entry.getValue().getFileName(),
+            entry.getValue().getFilePath(),
+            entry.getKey()
         );
     }
 
-    protected Path getRealFile(String path, Thumb thumb, IFileStore fileStore) {
+    public Map.Entry<Path, ? extends IFileStore> get(StoreRequest request) {
+        long value = NumberUtils.toLong(request.getId(), 0);
+        if (value > 0) {
+            return get(value, request.getThumb());
+        }
+        return get(request.getId(), request.getThumb());
+    }
+
+    public Map.Entry<Path, ? extends IFileStore> get(long id, Thumb thumb) {
+        return get(fileStoreService.fromStore(id), thumb);
+    }
+
+    public Map.Entry<Path, ? extends IFileStore> get(String base64, Thumb thumb) {
+        if (StringUtils.isBlank(base64)) {
+            return null;
+        }
+        return get(fileStoreService.fromStore(base64), thumb);
+    }
+
+    protected Map.Entry<Path, ? extends IFileStore> get(IFileStore fileStore, Thumb thumb) {
+        if (fileStore == null || fileStore.getFilePath() == null) {
+            return null;
+        }
+        return Pair.of(get(fileStore.getFilePath(), thumb, fileStore), fileStore);
+    }
+
+    protected Path get(String path, Thumb thumb, IFileStore fileStore) {
         Path originalFile = Paths.get(fileStorePathService.getBasePath().toString(), path);
         if (thumb != null) {
             return ThumbUtil.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }
         return originalFile;
-    }
-
-    public Map<String, IFileStore> list(Collection<? extends Number> ids) {
-        if (CollectionUtil.isEmpty(ids)) {
-            return new HashMap<>();
-        }
-        return fileStoreService.list(
-            ids
-        ).stream().collect(
-            Collectors.toMap(
-                k -> String.valueOf(k.getId()),
-                v -> v
-            )
-        );
     }
 }
