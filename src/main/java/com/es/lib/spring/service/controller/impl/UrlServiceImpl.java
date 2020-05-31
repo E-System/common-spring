@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.controller.impl;
 
-import com.es.lib.common.collection.CollectionUtil;
+import com.es.lib.common.collection.Cols;
 import com.es.lib.spring.service.controller.RequestService;
 import com.es.lib.spring.service.controller.UrlService;
 import lombok.RequiredArgsConstructor;
@@ -81,7 +81,7 @@ public class UrlServiceImpl implements UrlService {
     public String url(boolean redirect, String uri, Collection<Map.Entry<String, Object>> attributes) {
         final StringBuilder sb = new StringBuilder(uri);
         final Collection<Object> values = new LinkedList<>();
-        if (CollectionUtil.isNotEmpty(attributes)) {
+        if (Cols.isNotEmpty(attributes)) {
             sb.append("?").append(
                 attributes.stream()
                           .map(UrlServiceImpl::mapAttribute)

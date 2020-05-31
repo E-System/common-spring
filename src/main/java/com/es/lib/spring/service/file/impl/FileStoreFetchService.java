@@ -20,7 +20,7 @@ import com.es.lib.entity.event.file.FileStoreNotFoundEvent;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
-import com.es.lib.entity.util.ThumbUtil;
+import com.es.lib.entity.util.Thumbs;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
@@ -98,7 +98,7 @@ public class FileStoreFetchService {
     protected Path get(String path, Thumb thumb, IFileStore fileStore) {
         Path originalFile = Paths.get(fileStorePathService.getBasePath().toString(), path);
         if (thumb != null) {
-            return ThumbUtil.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
+            return Thumbs.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }
         return originalFile;
     }

@@ -20,7 +20,7 @@ import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.Hash;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.entity.util.FileStoreUtil;
+import com.es.lib.entity.util.FileStores;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
@@ -82,7 +82,7 @@ public class FileStoreUploadService {
         FileName fileName = FileName.create(file.getOriginalFilename());
         check(file, fileName);
         try {
-            return FileStoreUtil.createTemporary(
+            return FileStores.createTemporary(
                 fileStorePathService.getBasePath(),
                 null,
                 file.getInputStream(),

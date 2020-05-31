@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.web.file;
 
-import com.es.lib.common.file.ImageUtil;
+import com.es.lib.common.file.Images;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.spring.service.file.impl.FileStoreFetchService;
@@ -64,7 +64,7 @@ public class FileStoreController extends BaseStoreController {
                 resp.setContentType("image/png");
                 try {
                     Thumb thumb = attributes.getThumb() != null ? attributes.getThumb() : new Thumb();
-                    ImageUtil.writeDefaultEmptyImage(thumb.getWidth(), thumb.getHeight(), "НЕТ ИЗОБРАЖЕНИЯ", resp.getOutputStream());
+                    Images.write(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream(), "НЕТ ИЗОБРАЖЕНИЯ");
                 } catch (IOException ignored) { }
             }
         );

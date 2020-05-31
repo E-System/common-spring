@@ -16,7 +16,7 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.entity.model.file.Thumb;
-import com.es.lib.entity.util.ThumbUtil;
+import com.es.lib.entity.util.Thumbs;
 import net.coobird.thumbnailator.Thumbnails;
 
 import java.awt.image.BufferedImage;
@@ -28,7 +28,7 @@ import java.nio.file.Path;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 17.03.2018
  */
-public class ThumbnailatorThumbGenerator implements ThumbUtil.Generator {
+public class ThumbnailatorThumbGenerator implements Thumbs.Generator {
 
     @Override
     public void process(Path source, String extension, Path target, Thumb thumb) throws IOException {

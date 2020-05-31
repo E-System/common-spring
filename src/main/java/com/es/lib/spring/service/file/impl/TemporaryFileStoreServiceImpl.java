@@ -17,7 +17,7 @@ package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.entity.util.FileStoreUtil;
+import com.es.lib.entity.util.FileStores;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.TemporaryFileStoreService;
@@ -39,7 +39,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
 
     @Override
     public TemporaryFileStore create(Path from, StoreMode mode) {
-        return FileStoreUtil.createTemporary(
+        return FileStores.createTemporary(
             fileStorePathService.getBasePath(),
             from,
             mode,
@@ -50,7 +50,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
 
     @Override
     public TemporaryFileStore create(byte[] from, String ext, StoreMode mode) {
-        return FileStoreUtil.createTemporary(
+        return FileStores.createTemporary(
             fileStorePathService.getBasePath(),
             from,
             ext,
@@ -62,7 +62,7 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
 
     @Override
     public TemporaryFileStore create(InputStream from, String ext, int size, StoreMode mode) {
-        return FileStoreUtil.createTemporary(
+        return FileStores.createTemporary(
             fileStorePathService.getBasePath(),
             from,
             ext,
