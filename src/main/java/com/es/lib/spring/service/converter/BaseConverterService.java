@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.converter;
 
-import com.es.lib.common.collection.Cols;
+import com.es.lib.common.collection.Items;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +34,7 @@ public abstract class BaseConverterService<R, T> {
     }
 
     public Collection<R> convert(Collection<T> items, BiConsumer<T, R> enhancer) {
-        if (Cols.isEmpty(items)) {
+        if (Items.isEmpty(items)) {
             return new ArrayList<>();
         }
         return items.stream().filter(Objects::nonNull).map(v -> convert(v, enhancer)).collect(Collectors.toList());

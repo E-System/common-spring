@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.file;
 
-import com.es.lib.common.collection.Cols;
+import com.es.lib.common.collection.Items;
 import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.Hash;
 import com.es.lib.entity.iface.file.IFileStore;
@@ -92,7 +92,7 @@ public interface FileStoreService {
     Collection<? extends IFileStore> list(Collection<? extends Number> ids);
 
     default Map<String, IFileStore> listGroupedById(Collection<? extends Number> ids) {
-        if (Cols.isEmpty(ids)) {
+        if (Items.isEmpty(ids)) {
             return new HashMap<>();
         }
         return list(ids).stream().collect(
