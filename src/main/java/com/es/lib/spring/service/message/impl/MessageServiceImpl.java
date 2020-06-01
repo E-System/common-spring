@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.es.lib.spring.service.controller.impl;
+package com.es.lib.spring.service.message.impl;
 
 import com.es.lib.spring.config.Constant;
-import com.es.lib.spring.service.controller.LocaleService;
-import com.es.lib.spring.service.controller.MessageService;
+import com.es.lib.spring.service.message.LocaleService;
+import com.es.lib.spring.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

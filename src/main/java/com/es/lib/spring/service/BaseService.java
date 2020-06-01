@@ -16,7 +16,7 @@
 package com.es.lib.spring.service;
 
 import com.es.lib.spring.exception.ServiceException;
-import com.es.lib.spring.service.controller.MessageService;
+import com.es.lib.spring.service.message.MessageService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 

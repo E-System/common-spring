@@ -21,7 +21,7 @@ import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
-import com.es.lib.spring.service.controller.MessageService;
+import com.es.lib.spring.service.message.MessageService;
 import com.es.lib.spring.util.ErrorCodes;
 import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;

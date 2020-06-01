@@ -13,10 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.es.lib.spring.service.controller.impl;
-
-import com.es.lib.spring.service.controller.LocaleService;
-import org.springframework.stereotype.Service;
+package com.es.lib.spring.service.message;
 
 import java.util.Locale;
 
@@ -24,16 +21,12 @@ import java.util.Locale;
  * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
-@Service
-public class LocaleServiceImpl implements LocaleService {
+public interface LocaleService {
 
     /**
      * Получить локаль
      *
      * @return локаль
      */
-    @Override
-    public Locale get() {
-        return Locale.getDefault();
-    }
+    Locale get();
 }

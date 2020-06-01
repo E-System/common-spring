@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.es.lib.spring.service.controller;
+package com.es.lib.spring.service.message;
 
 import org.springframework.context.MessageSourceResolvable;
 
