@@ -18,7 +18,7 @@ package com.es.lib.spring.web.advice;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.message.MessageService;
-import com.es.lib.spring.util.ErrorCodes;
+import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.web.common.WebController;
 import com.es.lib.spring.web.service.TemplateToolService;
 import lombok.RequiredArgsConstructor;

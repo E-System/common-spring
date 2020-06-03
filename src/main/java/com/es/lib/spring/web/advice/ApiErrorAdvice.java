@@ -22,7 +22,7 @@ import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.message.MessageService;
-import com.es.lib.spring.util.ErrorCodes;
+import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
