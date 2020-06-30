@@ -62,15 +62,16 @@ public class FileStoreUploadService {
         FileName fileName = FileName.create(file.getOriginalFilename());
         check(file, fileName);
         try {
+            byte[] bytes = file.getBytes();
             return fileStoreService.toStore(
-                Hash.crc32().get(file.getBytes()),
+                Hash.crc32().get(bytes),
                 file.getSize(),
                 fileName.getName(),
                 fileName.getExt(),
                 file.getContentType(),
-                file.getBytes()
+                bytes
             );
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new ESRuntimeException(e);
         }
     }
