@@ -67,6 +67,7 @@ public class ApiErrorAdvice {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOValidationResult violations(ConstraintViolationException e) {
+        log.error(e.getMessage(), e);
         return new DTOValidationResult(
             ErrorCodes.VALIDATION,
             "Invalid parameters",
@@ -84,6 +85,7 @@ public class ApiErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult serviceException(ServiceException e) {
+        log.error(e.getMessage(), e);
         return new DTOResult(
             e.getCode(),
             e.getMessage()
