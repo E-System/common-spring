@@ -16,7 +16,7 @@
 package com.es.lib.spring.service;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 26.06.16
  */
 public interface EnvironmentProfileService {

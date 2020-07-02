@@ -21,7 +21,7 @@ import com.es.lib.entity.model.file.StorePath;
 import java.nio.file.Path;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 31.01.16
  */
 public interface FileStorePathService {

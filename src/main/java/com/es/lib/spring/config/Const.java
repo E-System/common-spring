@@ -16,10 +16,10 @@
 package com.es.lib.spring.config;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
-public interface Constant {
+public interface Const {
 
     String MESSAGE_NOT_SET_PREFIX = "MESSAGE_NOT_SET: ";
     int DEFAULT_PAGE_SIZE = 10;

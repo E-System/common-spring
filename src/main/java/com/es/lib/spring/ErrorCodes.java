@@ -16,7 +16,7 @@
 package com.es.lib.spring;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 31.08.14
  */
 public interface ErrorCodes {

@@ -19,7 +19,7 @@ import com.es.lib.common.file.IO;
 import com.es.lib.common.model.data.FileData;
 import com.es.lib.common.model.data.OutputData;
 import com.es.lib.common.model.data.StreamData;
-import com.es.lib.entity.util.FileStores;
+import com.es.lib.entity.FileStores;
 import com.es.lib.spring.web.common.BaseController;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

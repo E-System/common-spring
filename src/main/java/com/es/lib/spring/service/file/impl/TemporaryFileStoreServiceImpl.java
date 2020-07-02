@@ -15,9 +15,9 @@
  */
 package com.es.lib.spring.service.file.impl;
 
+import com.es.lib.entity.FileStores;
 import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.entity.util.FileStores;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.TemporaryFileStoreService;

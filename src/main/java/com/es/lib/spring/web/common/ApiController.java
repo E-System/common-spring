@@ -17,7 +17,7 @@ package com.es.lib.spring.web.common;
 
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.dto.validation.DTOValidationField;
-import com.es.lib.spring.config.Constant;
+import com.es.lib.spring.config.Const;
 import com.es.lib.spring.exception.ServiceValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 03.11.19
  */
 @Slf4j
@@ -44,7 +44,7 @@ public abstract class ApiController extends BaseController {
     }
 
     protected void checkError(BindingResult bindingResult, Object request, Validator... validators) {
-        checkError(Constant.System.VALIDATION_ERROR_CODE, bindingResult, request, validators);
+        checkError(Const.System.VALIDATION_ERROR_CODE, bindingResult, request, validators);
     }
 
     protected void checkError(String code, BindingResult bindingResult, Object request, Validator... validators) {
@@ -57,7 +57,7 @@ public abstract class ApiController extends BaseController {
     }
 
     protected void checkError(Errors bindingResult) {
-        checkError(Constant.System.VALIDATION_ERROR_CODE, bindingResult);
+        checkError(Const.System.VALIDATION_ERROR_CODE, bindingResult);
     }
 
     protected void checkError(String code, Errors bindingResult) {

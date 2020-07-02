@@ -22,14 +22,14 @@ import lombok.ToString;
 import java.util.Collection;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 29.08.14
  */
 @Getter
 @ToString(callSuper = true)
 public class ServiceValidationException extends ServiceException {
 
-    private Collection<DTOValidationField> fields;
+    private final Collection<DTOValidationField> fields;
 
     public ServiceValidationException(String code, Collection<DTOValidationField> fields, String message, Object... args) {
         super(code, message, args);

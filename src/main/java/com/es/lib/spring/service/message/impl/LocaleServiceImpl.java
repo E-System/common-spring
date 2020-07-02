@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
 @Service

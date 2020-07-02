@@ -15,7 +15,7 @@
  */
 package com.es.lib.spring.service.message.impl;
 
-import com.es.lib.spring.config.Constant;
+import com.es.lib.spring.config.Const;
 import com.es.lib.spring.service.message.LocaleService;
 import com.es.lib.spring.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
 @Slf4j
@@ -45,7 +45,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public String get(String code) {
-        return getWithDefault(code, Constant.MESSAGE_NOT_SET_PREFIX + code);
+        return getWithDefault(code, Const.MESSAGE_NOT_SET_PREFIX + code);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public String get(String code, Object... os) {
-        return messageSource.getMessage(code, os, Constant.MESSAGE_NOT_SET_PREFIX + code, localeService.get());
+        return messageSource.getMessage(code, os, Const.MESSAGE_NOT_SET_PREFIX + code, localeService.get());
     }
 
     /**

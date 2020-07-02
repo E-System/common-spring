@@ -15,11 +15,10 @@
  */
 package com.es.lib.spring.service;
 
-
 import com.es.lib.common.model.BuildInfo;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 29.06.17
  */
 public interface BuildInfoService {

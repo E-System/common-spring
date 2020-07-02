@@ -18,9 +18,9 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.Hash;
+import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.entity.util.FileStores;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 10.04.15
  */
 @Slf4j

@@ -20,7 +20,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 24.06.16
  */
 public abstract class BaseController {

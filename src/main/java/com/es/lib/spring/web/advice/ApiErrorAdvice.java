@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 03.11.19
  */
 @Slf4j

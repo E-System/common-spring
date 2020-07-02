@@ -16,11 +16,11 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.model.data.OutputData;
+import com.es.lib.entity.Thumbs;
 import com.es.lib.entity.event.file.FileStoreNotFoundEvent;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
-import com.es.lib.entity.util.Thumbs;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
@@ -39,7 +39,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 06.01.16
  */
 @Slf4j

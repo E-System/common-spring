@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 26.06.16
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)

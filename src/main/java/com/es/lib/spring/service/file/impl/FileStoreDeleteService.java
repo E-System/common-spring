@@ -26,9 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Paths;
 
-
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.02.16
  */
 @RequiredArgsConstructor(onConstructor_ = @Autowired)

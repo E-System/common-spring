@@ -23,7 +23,7 @@ import java.text.MessageFormat
 import java.util.function.Function
 
 /**
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 23.07.16
  */
 class TestBaseServiceSpec extends BaseSpringSpec {

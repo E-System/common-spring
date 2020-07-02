@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Service for fill model with template tools
  *
- * @author Zuzoev Dmitry - zuzoev.d@ext-system.com
+ * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 19.06.16
  */
 public interface TemplateToolService {
