@@ -25,10 +25,10 @@ public interface EnvironmentProfileService {
     String PROFILE_DEVELOP = "develop";
 
     /**
-     * Проверка активности профиля с заданным именем
+     * Check active profile by name
      *
-     * @param name имя профиля
-     * @return true - если указанный профиль активен
+     * @param name profile name
+     * @return true if profile with name active
      */
     boolean isProfileActive(String name);
 
@@ -52,4 +52,11 @@ public interface EnvironmentProfileService {
      * @return Включен вывод полного лога в адвайсах
      */
     boolean isFullErrorMessage();
+
+    /**
+     * Get current profile name
+     *
+     * @return Current profile name
+     */
+    String getProfile();
 }

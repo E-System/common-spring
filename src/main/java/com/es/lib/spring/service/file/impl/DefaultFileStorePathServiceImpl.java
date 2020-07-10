@@ -31,17 +31,17 @@ import java.nio.file.Paths;
 public abstract class DefaultFileStorePathServiceImpl implements FileStorePathService {
 
     @Setter(onMethod_ = @Autowired)
-    private EnvironmentProfileService environmentProfileService;
+    protected EnvironmentProfileService environmentProfileService;
     @Setter(onMethod_ = @Autowired)
-    private BuildInfoService buildInfoService;
+    protected BuildInfoService buildInfoService;
     @Setter(onMethod_ = @Value("${project.root:./}"))
-    private String projectRoot;
+    protected String projectRoot;
     @Setter(onMethod_ = @Value("${common.fileStore.path:#{null}}"))
-    private String basePath;
+    protected String basePath;
 
     @Override
     public Path getBasePath() {
-        String path = StringUtils.isNoneBlank(basePath) ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/file-store";
+        String path = StringUtils.isNoneBlank(basePath) ? basePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/file-store");
         return environmentProfileService.isDevelop() ? Paths.get(projectRoot, path) : Paths.get(path);
     }
 }

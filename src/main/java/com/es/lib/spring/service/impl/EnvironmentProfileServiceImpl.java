@@ -37,7 +37,7 @@ public class EnvironmentProfileServiceImpl implements EnvironmentProfileService 
     public boolean isProfileActive(String name) {
         return Arrays.asList(environment.getActiveProfiles()).contains(name);
     }
-    
+
     @Override
     public boolean isRelease() {
         return isProfileActive(PROFILE_RELEASE);
@@ -51,5 +51,10 @@ public class EnvironmentProfileServiceImpl implements EnvironmentProfileService 
     @Override
     public boolean isFullErrorMessage() {
         return !isRelease();
+    }
+
+    @Override
+    public String getProfile() {
+        return environment.getActiveProfiles()[0];
     }
 }
