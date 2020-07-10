@@ -42,7 +42,7 @@ public class DefaultTemplatePathServiceImpl implements TemplatePathService {
     private String basePath;
 
     public String getBasePath() {
-        String path = StringUtils.isNoneBlank(basePath) ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/templates";
+        String path = StringUtils.isNoneBlank(basePath) ? basePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/templates");
         return environmentProfileService.isDevelop() ? this.projectRoot + path : path;
     }
 
