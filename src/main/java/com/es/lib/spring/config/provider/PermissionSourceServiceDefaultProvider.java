@@ -16,7 +16,7 @@
 package com.es.lib.spring.config.provider;
 
 import com.es.lib.spring.service.security.PermissionSourceService;
-import com.es.lib.spring.service.security.imp.DefaultPermissionSourceServiceImpl;
+import com.es.lib.spring.service.security.impl.DefaultPermissionSourceServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

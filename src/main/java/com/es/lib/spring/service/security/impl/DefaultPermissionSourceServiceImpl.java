@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.es.lib.spring.service.security.imp;
+package com.es.lib.spring.service.security.impl;
 
 import com.es.lib.entity.model.security.PermissionItem;
 import com.es.lib.spring.service.security.PermissionSourceService;

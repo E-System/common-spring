@@ -15,9 +15,11 @@
  */
 package com.es.lib.spring.service.security;
 
+import com.es.lib.dto.permission.DTOPermission;
 import com.es.lib.entity.model.security.PermissionGroups;
 
 import java.util.Collection;
+import java.util.function.Function;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -30,4 +32,6 @@ public interface PermissionListService {
     Collection<String> getAllKeys();
 
     boolean isAvailable(String key);
+
+    DTOPermission toModel(Collection<String> enabledPermissions, Function<String, String> groupNameResolver, Function<String, String> targetNameResolver, Function<String, String> actionNameResolver);
 }
