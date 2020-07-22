@@ -28,7 +28,7 @@ import java.text.MessageFormat;
 @ToString
 public class ServiceException extends RuntimeException {
 
-    private String code;
+    private final String code;
 
     public ServiceException(String code) {
         super(code);

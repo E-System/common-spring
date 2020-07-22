@@ -16,6 +16,7 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.common.file.IO;
+import com.es.lib.common.model.data.ByteData;
 import com.es.lib.common.model.data.FileData;
 import com.es.lib.common.model.data.OutputData;
 import com.es.lib.common.model.data.StreamData;
@@ -61,6 +62,8 @@ public abstract class BaseStoreController extends BaseController {
         }
         if (data.isStream()) {
             return writeStream((StreamData) data, response);
+        } else if (data.isBytes()) {
+            return writeBytes((ByteData) data, response);
         }
         FileData fileData = (FileData) data;
         if (StringUtils.isNotBlank(sendUrl)) {
@@ -70,6 +73,16 @@ public abstract class BaseStoreController extends BaseController {
             return true;
         }
         return writeFile(fileData, response);
+    }
+
+    protected boolean writeBytes(ByteData data, HttpServletResponse response) throws Exception {
+        if (data == null || data.getContent() == null || data.getContentType() == null) {
+            return false;
+        }
+        addFileName(data.getFileName(), response);
+        response.setContentType(data.getContentType());
+        response.getOutputStream().write(data.getContent());
+        return true;
     }
 
     protected boolean writeStream(StreamData data, HttpServletResponse response) throws Exception {

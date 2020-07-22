@@ -38,9 +38,9 @@ public abstract class BaseValidator<T> extends EntityClassExtractor<T> implement
     protected abstract void validate(T target, ErrorsWrapper errors);
 
 
-    protected class ErrorsWrapper {
+    protected static class ErrorsWrapper {
 
-        private Errors errors;
+        private final Errors errors;
 
         public ErrorsWrapper(Errors errors) {
             this.errors = errors;
