@@ -25,16 +25,31 @@ class PermissionSourceServiceSpec extends BaseSpringSpec {
 
     def "List global"() {
         expect:
-        service.listGlobal().size() == 0
+        service.global().size() == 0
     }
 
     def "List scope"() {
         expect:
-        service.listForScope(1).size() == 0
+        service.scope(1).size() == 0
     }
 
     def "List scope group"() {
         expect:
-        service.listForScopeGroup("GROUP").size() == 0
+        service.scopeGroup("GROUP").size() == 0
+    }
+
+    def "List global with role"() {
+        expect:
+        service.global(1).size() == 0
+    }
+
+    def "List scope with role"() {
+        expect:
+        service.scope(1, 1).size() == 0
+    }
+
+    def "List scope group with role"() {
+        expect:
+        service.scopeGroup("GROUP", 1).size() == 0
     }
 }

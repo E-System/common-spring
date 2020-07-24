@@ -37,11 +37,11 @@ public interface PermissionSourceService {
         return filterByRole(idRole, global());
     }
 
-    default Collection<PermissionItem> scope(Integer idRole, Number idScope) {
+    default Collection<PermissionItem> scope(Number idScope, Integer idRole) {
         return filterByRole(idRole, scope(idScope));
     }
 
-    default Collection<PermissionItem> scopeGroup(Integer idRole, String group) {
+    default Collection<PermissionItem> scopeGroup(String group, Integer idRole) {
         return filterByRole(idRole, scopeGroup(group));
     }
 
