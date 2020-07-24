@@ -52,4 +52,15 @@ class PermissionSourceServiceSpec extends BaseSpringSpec {
         expect:
         service.scopeGroup("GROUP", 1).size() == 0
     }
+
+    def "List all"() {
+        expect:
+        service.all("GROUP", 1).size() == 0
+    }
+
+    def "List all with role"() {
+        expect:
+        service.all("GROUP", 1, 1).size() == 0
+    }
+
 }

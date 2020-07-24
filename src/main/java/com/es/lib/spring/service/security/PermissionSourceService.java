@@ -17,6 +17,7 @@ package com.es.lib.spring.service.security;
 
 
 import com.es.lib.entity.model.security.PermissionItem;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -32,6 +33,19 @@ public interface PermissionSourceService {
     Collection<PermissionItem> scope(Number idScope);
 
     Collection<PermissionItem> scopeGroup(String group);
+
+    default Collection<PermissionItem> all(String group, Number idScope) {
+        if (idScope != null) {
+            return scope(idScope);
+        } else if (StringUtils.isNotBlank(group)) {
+            return scopeGroup(group);
+        }
+        return global();
+    }
+
+    default Collection<PermissionItem> all(String group, Number idScope, Integer idRole) {
+        return filterByRole(idRole, all(group, idScope));
+    }
 
     default Collection<PermissionItem> global(Integer idRole) {
         return filterByRole(idRole, global());
