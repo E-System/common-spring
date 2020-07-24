@@ -30,20 +30,20 @@ import java.util.Collections;
 public class DefaultPermissionSourceServiceImpl implements PermissionSourceService {
 
     @Override
-    public Collection<PermissionItem> listGlobal() {
-        log.trace("---USE DEFAULT PermissionSourceService::listGlobal()---");
+    public Collection<PermissionItem> global() {
+        log.trace("---USE DEFAULT PermissionSourceService::global()---");
         return Collections.emptyList();
     }
 
     @Override
-    public Collection<PermissionItem> listForScope(Number idScope) {
-        log.trace("---USE DEFAULT PermissionSourceService::listForScope({})---", idScope);
+    public Collection<PermissionItem> scope(Number idScope) {
+        log.trace("---USE DEFAULT PermissionSourceService::scope({})---", idScope);
         return Collections.emptyList();
     }
 
     @Override
-    public Collection<PermissionItem> listForScopeGroup(String scopeGroup) {
-        log.trace("---USE DEFAULT PermissionSourceService::listForScopeGroup({})---", scopeGroup);
+    public Collection<PermissionItem> scopeGroup(String group) {
+        log.trace("---USE DEFAULT PermissionSourceService::scopeGroup({})---", group);
         return Collections.emptyList();
     }
 }

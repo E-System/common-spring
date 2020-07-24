@@ -19,6 +19,7 @@ package com.es.lib.spring.service.security;
 import com.es.lib.entity.model.security.PermissionItem;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -26,9 +27,25 @@ import java.util.Collection;
  */
 public interface PermissionSourceService {
 
-    Collection<PermissionItem> listGlobal();
+    Collection<PermissionItem> global();
 
-    Collection<PermissionItem> listForScope(Number idScope);
+    Collection<PermissionItem> scope(Number idScope);
 
-    Collection<PermissionItem> listForScopeGroup(String scopeGroup);
+    Collection<PermissionItem> scopeGroup(String group);
+
+    default Collection<PermissionItem> global(Integer idRole) {
+        return filterByRole(idRole, global());
+    }
+
+    default Collection<PermissionItem> scope(Integer idRole, Number idScope) {
+        return filterByRole(idRole, scope(idScope));
+    }
+
+    default Collection<PermissionItem> scopeGroup(Integer idRole, String group) {
+        return filterByRole(idRole, scopeGroup(group));
+    }
+
+    static Collection<PermissionItem> filterByRole(Integer idRole, Collection<PermissionItem> items) {
+        return items.stream().filter(v -> v.getIdRole().equals(idRole)).collect(Collectors.toList());
+    }
 }
