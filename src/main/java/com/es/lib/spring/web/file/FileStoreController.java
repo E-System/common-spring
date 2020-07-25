@@ -36,8 +36,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Controller
-@ConditionalOnProperty("common.fileStore.path")
-@ConditionalOnExpression("${common.fileStore.enabled:true}")
+@ConditionalOnProperty("common.file-store.path")
+@ConditionalOnExpression("${common.file-store.enabled:true}")
 public class FileStoreController extends BaseStoreController {
 
     public static final String PATH = "/files";

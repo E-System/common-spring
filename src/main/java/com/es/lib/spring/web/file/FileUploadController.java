@@ -33,8 +33,8 @@ import static com.es.lib.spring.web.file.FileStoreController.PATH;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
-@ConditionalOnProperty("common.fileStore.path")
-@ConditionalOnExpression("${common.fileStore.enabled:true}")
+@ConditionalOnProperty("common.file-store.path")
+@ConditionalOnExpression("${common.file-store.enabled:true}")
 public class FileUploadController extends ApiController {
 
     private final FileStoreUploadService fileStoreUploadService;

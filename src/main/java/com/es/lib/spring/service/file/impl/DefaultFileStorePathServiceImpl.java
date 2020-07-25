@@ -36,7 +36,7 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     protected BuildInfoService buildInfoService;
     @Setter(onMethod_ = @Value("${project.root:./}"))
     protected String projectRoot;
-    @Setter(onMethod_ = @Value("${common.fileStore.path:#{null}}"))
+    @Setter(onMethod_ = @Value("${common.file-store.path:#{null}}"))
     protected String basePath;
 
     @Override
