@@ -36,6 +36,9 @@ public class ThumbnailatorThumbGenerator implements Thumbs.Generator {
         if (extension.equals("png")) {
             builder.imageType(BufferedImage.TYPE_INT_ARGB);
         }
+        if (!Float.isNaN(thumb.getQuality())) {
+            builder.outputQuality(thumb.getQuality());
+        }
         builder.toFile(target.toFile());
     }
 }
