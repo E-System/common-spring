@@ -97,7 +97,7 @@ public class FileStoreController extends BaseStoreController {
         return StoreRequest.create(
             id,
             params.containsKey("generate-empty"),
-            Thumb.create(params.containsKey("thumb"), req.getParameter("tw"), req.getParameter("th"))
+            Thumb.create(params.containsKey("thumb"), req.getParameter("tw"), req.getParameter("th"), req.getParameter("tq"))
         );
     }
 }
