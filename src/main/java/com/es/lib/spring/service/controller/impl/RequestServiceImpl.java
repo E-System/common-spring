@@ -95,7 +95,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public String getBody(Charset charset) {
         try {
-            return IOUtils.toString(get().getInputStream(), StandardCharsets.UTF_8);
+            return IOUtils.toString(get().getInputStream(), charset);
         } catch (Exception ignore) {
             return null;
         }
