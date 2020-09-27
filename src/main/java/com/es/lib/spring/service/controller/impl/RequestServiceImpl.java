@@ -16,11 +16,14 @@
 package com.es.lib.spring.service.controller.impl;
 
 import com.es.lib.spring.service.controller.RequestService;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -81,5 +84,20 @@ public class RequestServiceImpl implements RequestService {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    /**
+     * Read request body from HttpServletRequest
+     *
+     * @param charset - body charset
+     * @return body
+     */
+    @Override
+    public String getBody(Charset charset) {
+        try {
+            return IOUtils.toString(get().getInputStream(), StandardCharsets.UTF_8);
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 }

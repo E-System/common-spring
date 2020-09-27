@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -58,4 +59,12 @@ public interface RequestService {
      * @return IP адрес
      */
     String getRemoteIp();
+
+    /**
+     * Read request body from HttpServletRequest
+     *
+     * @param charset - body charset
+     * @return body
+     */
+    String getBody(Charset charset);
 }
