@@ -37,12 +37,13 @@ public class HibernateListenerConfig {
 
     @PostConstruct
     protected void init() {
-        if (emf != null) {
-            SessionFactoryImpl sessionFactory = emf.unwrap(SessionFactoryImpl.class);
-            EventListenerRegistry registry = sessionFactory.getServiceRegistry().getService(EventListenerRegistry.class);
-            registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(listener);
-            registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(listener);
-            registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(listener);
+        if (emf == null) {
+            return;
         }
+        SessionFactoryImpl sessionFactory = emf.unwrap(SessionFactoryImpl.class);
+        EventListenerRegistry registry = sessionFactory.getServiceRegistry().getService(EventListenerRegistry.class);
+        registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(listener);
+        registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(listener);
+        registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(listener);
     }
 }
