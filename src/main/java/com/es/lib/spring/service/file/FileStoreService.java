@@ -24,6 +24,7 @@ import com.es.lib.entity.model.file.TemporaryFileStore;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  */
 public interface FileStoreService {
 
-    IFileStore toStore(TemporaryFileStore temporaryFile);
+    IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers);
 
     IFileStore toStore(
         long crc32,
@@ -40,38 +41,42 @@ public interface FileStoreService {
         String fileName,
         String ext,
         String mime,
-        byte[] data
+        byte[] data,
+        Set<String> checkers
     );
 
-    default IFileStore toStore(String data, String fileName, String ext, String mime) {
+    default IFileStore toStore(String data, String fileName, String ext, String mime, Set<String> checkers) {
         return toStore(
             data.getBytes(),
             fileName,
             ext,
-            mime
+            mime,
+            checkers
         );
     }
 
-    default IFileStore toStore(String data, String fileNameWithExt, String mime) {
+    default IFileStore toStore(String data, String fileNameWithExt, String mime, Set<String> checkers) {
         return toStore(
             data.getBytes(),
             fileNameWithExt,
-            mime
+            mime,
+            checkers
         );
     }
 
-    default IFileStore toStore(byte[] data, String fileName, String ext, String mime) {
+    default IFileStore toStore(byte[] data, String fileName, String ext, String mime, Set<String> checkers) {
         return toStore(
             Hash.crc32().get(data),
             data.length,
             fileName,
             ext,
             mime,
-            data
+            data,
+            checkers
         );
     }
 
-    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime) {
+    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime, Set<String> checkers) {
         FileName fileName = FileName.create(fileNameWithExt);
         return toStore(
             Hash.crc32().get(data),
@@ -79,7 +84,8 @@ public interface FileStoreService {
             fileName.getName(),
             fileName.getExt(),
             mime,
-            data
+            data,
+            checkers
         );
     }
 

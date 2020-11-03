@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 @Slf4j
 public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
@@ -36,14 +37,14 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     protected FileStoreScopeService fileStoreScopeService;
 
     @Override
-    public IFileStore toStore(TemporaryFileStore temporaryFile) {
-        log.error("---USE DEFAULT FileStoreService::toStore({})---", temporaryFile);
+    public IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers) {
+        log.error("---USE DEFAULT FileStoreService::toStore({}, {})---", temporaryFile, checkers);
         return null;
     }
 
     @Override
-    public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data) {
-        log.error("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data);
+    public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data, Set<String> checkers) {
+        log.error("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers);
         return null;
     }
 

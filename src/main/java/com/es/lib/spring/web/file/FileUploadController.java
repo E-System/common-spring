@@ -41,7 +41,8 @@ public class FileUploadController extends ApiController {
 
     @PostMapping(value = PATH)
     public DTOResponse<Long> upload(@RequestParam(value = "file") MultipartFile file) {
-        return ok(fileStoreUploadService.load(file).getId());
+        // TODO: Add checkers
+        return ok(fileStoreUploadService.load(file, null).getId());
     }
 
 }

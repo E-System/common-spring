@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -55,7 +56,7 @@ public class FileStoreUploadService {
      * @param file данные загружаемого файла
      * @return объект сохраненного файла
      */
-    public IFileStore load(MultipartFile file) {
+    public IFileStore load(MultipartFile file, Set<String> checkers) {
         if (file == null || file.isEmpty()) {
             return null;
         }
@@ -69,7 +70,8 @@ public class FileStoreUploadService {
                 fileName.getName(),
                 fileName.getExt(),
                 file.getContentType(),
-                bytes
+                bytes,
+                checkers
             );
         } catch (IOException e) {
             throw new ESRuntimeException(e);
