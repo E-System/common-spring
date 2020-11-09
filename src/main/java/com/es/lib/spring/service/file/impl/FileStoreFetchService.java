@@ -22,6 +22,7 @@ import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.spring.service.file.FileStorePathService;
+import com.es.lib.spring.service.file.FileStoreSecurityService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,7 @@ public class FileStoreFetchService {
 
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
+    private final FileStoreSecurityService fileStoreSecurityService;
     private final ApplicationEventPublisher eventPublisher;
 
     public OutputData getData(StoreRequest request) {
@@ -92,7 +94,10 @@ public class FileStoreFetchService {
         if (fileStore == null || fileStore.getFilePath() == null) {
             return null;
         }
-        return Pair.of(get(fileStore.getFilePath(), thumb, fileStore), fileStore);
+        if (fileStoreSecurityService.isFileAvailable(fileStore)) {
+            return Pair.of(get(fileStore.getFilePath(), thumb, fileStore), fileStore);
+        }
+        return null;
     }
 
     protected Path get(String path, Thumb thumb, IFileStore fileStore) {
