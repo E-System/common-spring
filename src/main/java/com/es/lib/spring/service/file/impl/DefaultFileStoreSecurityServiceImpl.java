@@ -18,7 +18,7 @@ import java.util.Collection;
 @Service
 public class DefaultFileStoreSecurityServiceImpl implements FileStoreSecurityService {
 
-    @Setter(onMethod_ = @Autowired)
+    @Setter(onMethod_ = @Autowired(required = false))
     protected Collection<FileStoreSecurityCheckService> checkServices;
 
     @Override
