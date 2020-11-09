@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 
 /**
@@ -35,7 +36,7 @@ public class DefaultFileStoreSecurityServiceImpl implements FileStoreSecuritySer
     }
 
     protected boolean isAvailable(IFileStore fileStore, String checker) {
-        for (FileStoreSecurityCheckService service : checkServices) {
+        for (FileStoreSecurityCheckService service : checkServices.stream().filter(v -> v.getName().equals(checker)).collect(Collectors.toList())) {
             if (!service.isAvailable(fileStore)) {
                 return false;
             }
