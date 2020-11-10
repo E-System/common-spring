@@ -19,13 +19,11 @@ import com.es.lib.common.email.EmailSender;
 import com.es.lib.common.exception.ESRuntimeException;
 import com.es.lib.spring.service.email.event.ReloadEmailSenderEvent;
 import com.es.lib.spring.service.email.event.SendEmailEvent;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Map;
@@ -48,14 +46,14 @@ public class EmailEventListener {
         log.trace("Send mail event process: {}", event);
         try {
             getSender(event.getScope()).send(event.getEmailMessage());
-        } catch (IOException | MessagingException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             event.setException(e);
         }
     }
 
     @EventListener
-    public void handleReloadEmailSenderEvent(ReloadEmailSenderEvent event){
+    public void handleReloadEmailSenderEvent(ReloadEmailSenderEvent event) {
         log.trace("Reload sender event process: {}", event);
         senders.remove(getScope(event.getScope()));
     }
