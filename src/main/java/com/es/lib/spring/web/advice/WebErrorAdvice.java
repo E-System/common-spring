@@ -15,10 +15,11 @@
  */
 package com.es.lib.spring.web.advice;
 
+import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.EnvironmentProfileService;
+import com.es.lib.spring.service.exception.DatabaseConstraintMessageResolverService;
 import com.es.lib.spring.service.message.MessageService;
-import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.web.common.WebController;
 import com.es.lib.spring.web.service.TemplateToolService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,7 @@ public class WebErrorAdvice {
     private final MessageService messageService;
     private final EnvironmentProfileService environmentProfileService;
     private final TemplateToolService templateToolService;
+    private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
 
     @ExceptionHandler
     public ModelAndView serviceExceptionHandler(ServiceException e, Locale locale) {
@@ -68,12 +70,17 @@ public class WebErrorAdvice {
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", ErrorCodes.THROWABLE);
-        if (environmentProfileService.isFullErrorMessage()) {
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            result.addObject("emessage", e.getMessage() + "\n" + sw.toString());
+        Map.Entry<Boolean, String> messageResolveResult = databaseConstraintMessageResolverService.resolveMessage(e);
+        if (messageResolveResult.getKey()) {
+            result.addObject("emessage", messageResolveResult.getValue());
         } else {
-            result.addObject("emessage", messageService.getThrowablePublicMessage());
+            if (environmentProfileService.isFullErrorMessage()) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                result.addObject("emessage", e.getMessage() + "\n" + sw.toString());
+            } else {
+                result.addObject("emessage", messageService.getThrowablePublicMessage());
+            }
         }
         fillGlobals(result.getModel(), locale);
         return result;

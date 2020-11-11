@@ -18,11 +18,12 @@ package com.es.lib.spring.web.advice;
 import com.es.lib.dto.DTOResult;
 import com.es.lib.dto.DTOValidationResult;
 import com.es.lib.dto.validation.DTOValidationField;
+import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.exception.ServiceValidationException;
 import com.es.lib.spring.service.EnvironmentProfileService;
+import com.es.lib.spring.service.exception.DatabaseConstraintMessageResolverService;
 import com.es.lib.spring.service.message.MessageService;
-import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +52,7 @@ public class ApiErrorAdvice {
 
     private final MessageService messageService;
     private final EnvironmentProfileService environmentProfileService;
+    private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
 
     @ExceptionHandler
     @ResponseBody
@@ -98,13 +101,18 @@ public class ApiErrorAdvice {
     public DTOResult throwable(Throwable e) {
         log.error("Runtime exception: " + e.getMessage(), e);
         String message;
-        if (environmentProfileService.isFullErrorMessage()) {
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            message = e.getMessage();
-            //+ "\n" + sw.toString();
+        Map.Entry<Boolean, String> messageResolveResult = databaseConstraintMessageResolverService.resolveMessage(e);
+        if (messageResolveResult.getKey()) {
+            message = messageResolveResult.getValue();
         } else {
-            message = messageService.getThrowablePublicMessage();
+            if (environmentProfileService.isFullErrorMessage()) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                message = e.getMessage();
+                //+ "\n" + sw.toString();
+            } else {
+                message = messageService.getThrowablePublicMessage();
+            }
         }
         return new DTOResult(
             ErrorCodes.THROWABLE,
