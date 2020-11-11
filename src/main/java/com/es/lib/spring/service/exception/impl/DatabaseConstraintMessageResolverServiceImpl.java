@@ -93,10 +93,10 @@ public class DatabaseConstraintMessageResolverServiceImpl implements DatabaseCon
     }
 
     private Throwable extractPersistentException(Throwable e) {
-        if (e == null || e.getCause() == null) {
+        if (e == null) {
             return null;
         }
-        if (!(e.getCause() instanceof DataIntegrityViolationException)) {
+        if (!(e instanceof DataIntegrityViolationException)) {
             return null;
         }
 
