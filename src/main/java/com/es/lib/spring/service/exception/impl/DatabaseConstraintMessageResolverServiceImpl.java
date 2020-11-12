@@ -101,7 +101,6 @@ public class DatabaseConstraintMessageResolverServiceImpl implements DatabaseCon
             return null;
         }
 
-        Throwable pException = e.getCause();
-        return pException.getCause();
+        return e.getCause();
     }
 }
