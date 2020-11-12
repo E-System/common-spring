@@ -3,6 +3,7 @@ package com.es.lib.spring.service.exception.provider.impl;
 
 import com.es.lib.spring.service.exception.provider.ConstraintMessageProvider;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
@@ -13,12 +14,12 @@ import java.util.Map;
 public abstract class ConstraintMessageProviderAdapter implements ConstraintMessageProvider {
 
     @Override
-    public Map<String, String> simpleMessages() {
-        return Collections.emptyMap();
+    public Collection<Map.Entry<String, String>> simpleMessages() {
+        return Collections.emptyList();
     }
 
     @Override
-    public Map<String, String> regexpMessages() {
-        return Collections.emptyMap();
+    public Collection<Map.Entry<String, String>> regexpMessages() {
+        return Collections.emptyList();
     }
 }

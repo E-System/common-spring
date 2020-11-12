@@ -2,10 +2,12 @@ package com.es.lib.spring.service.exception.provider.impl;
 
 import com.es.lib.spring.service.message.MessageService;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -19,9 +21,9 @@ public class DefaultFKeyMessageProviderImpl extends ConstraintMessageProviderAda
     private MessageService messageService;
 
     @Override
-    public Map<String, String> regexpMessages() {
-        Map<String, String> result = new HashMap<>();
-        result.put("(.*)_fkey$", messageService.getWithDefault("db.references", "Can not delete this element. There are other elements that link to it"));
-        return result;
+    public Collection<Map.Entry<String, String>> regexpMessages() {
+        return Collections.singletonList(
+            Pair.of("(.*)_fkey$", messageService.getWithDefault("db.references", "Can not delete this element. There are other elements that link to it"))
+        );
     }
 }

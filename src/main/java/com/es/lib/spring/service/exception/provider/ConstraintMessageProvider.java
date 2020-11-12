@@ -1,5 +1,6 @@
 package com.es.lib.spring.service.exception.provider;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Map;
  */
 public interface ConstraintMessageProvider {
 
-    Map<String, String> simpleMessages();
+    Collection<Map.Entry<String, String>> simpleMessages();
 
-    Map<String, String> regexpMessages();
+    Collection<Map.Entry<String, String>> regexpMessages();
 }

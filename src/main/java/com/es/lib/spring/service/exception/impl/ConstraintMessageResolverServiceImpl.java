@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -30,9 +31,19 @@ public class ConstraintMessageResolverServiceImpl implements ConstraintMessageRe
         simpleMappings = new HashMap<>();
         regexpMappings = new HashMap<>();
         for (ConstraintMessageProvider messageProvider : messageProviders) {
-            simpleMappings.putAll(messageProvider.simpleMessages());
-            regexpMappings.putAll(messageProvider.regexpMessages());
+            simpleMappings.putAll(convert(messageProvider.simpleMessages()));
+            regexpMappings.putAll(convert(messageProvider.regexpMessages()));
         }
+    }
+
+    private Map<String, String> convert(Collection<Map.Entry<String, String>> items) {
+        if (items == null) {
+            return new HashMap<>();
+        }
+        return items.stream().collect(Collectors.toMap(
+            Map.Entry::getKey,
+            Map.Entry::getValue
+        ));
     }
 
     @Override
