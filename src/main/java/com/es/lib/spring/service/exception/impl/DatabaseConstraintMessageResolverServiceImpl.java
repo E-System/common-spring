@@ -96,11 +96,9 @@ public class DatabaseConstraintMessageResolverServiceImpl implements DatabaseCon
         if (e == null) {
             return null;
         }
-        log.trace("extractPersistentException: {}, {}", e.getClass(), e.getCause());
         if (!(e instanceof DataIntegrityViolationException)) {
             return null;
         }
-
         return e.getCause();
     }
 }
