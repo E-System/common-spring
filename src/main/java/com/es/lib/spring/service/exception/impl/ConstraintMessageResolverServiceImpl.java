@@ -1,5 +1,6 @@
 package com.es.lib.spring.service.exception.impl;
 
+import com.es.lib.common.collection.Items;
 import com.es.lib.spring.service.exception.ConstraintMessageResolverService;
 import com.es.lib.spring.service.exception.provider.ConstraintMessageProvider;
 import lombok.Setter;
@@ -31,19 +32,9 @@ public class ConstraintMessageResolverServiceImpl implements ConstraintMessageRe
         simpleMappings = new HashMap<>();
         regexpMappings = new HashMap<>();
         for (ConstraintMessageProvider messageProvider : messageProviders) {
-            simpleMappings.putAll(convert(messageProvider.simpleMessages()));
-            regexpMappings.putAll(convert(messageProvider.regexpMessages()));
+            simpleMappings.putAll(Items.toMap(messageProvider.simpleMessages()));
+            regexpMappings.putAll(Items.toMap(messageProvider.regexpMessages()));
         }
-    }
-
-    private Map<String, String> convert(Collection<Map.Entry<String, String>> items) {
-        if (items == null) {
-            return new HashMap<>();
-        }
-        return items.stream().collect(Collectors.toMap(
-            Map.Entry::getKey,
-            Map.Entry::getValue
-        ));
     }
 
     @Override
