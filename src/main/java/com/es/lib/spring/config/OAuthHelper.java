@@ -30,9 +30,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -76,7 +76,7 @@ public class OAuthHelper {
         return null;
     }
 
-    public static OAuth2AccessToken createNewAccessToken(AuthorizationServerTokenServices tokenService, String clientId, String clientSecret, String login, String passwordHash, List<GrantedAuthority> authorities) {
+    public static OAuth2AccessToken createNewAccessToken(AuthorizationServerTokenServices tokenService, String clientId, String clientSecret, String login, String passwordHash, Collection<GrantedAuthority> authorities) {
         HashMap<String, String> authorizationParameters = new HashMap<>();
         authorizationParameters.put("scope", "read");
         authorizationParameters.put("username", login);
