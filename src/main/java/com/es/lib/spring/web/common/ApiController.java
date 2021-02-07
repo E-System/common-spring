@@ -27,6 +27,7 @@ import org.springframework.validation.Validator;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.function.Supplier;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -36,6 +37,11 @@ import java.util.LinkedList;
 public abstract class ApiController extends BaseController {
 
     protected DTOResponse<?> ok() {
+        return new DTOResponse<>(null);
+    }
+
+    protected DTOResponse<?> ok(Runnable runnable) {
+        runnable.run();
         return new DTOResponse<>(null);
     }
 
