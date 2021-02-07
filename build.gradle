@@ -25,12 +25,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1.1"
     }
 }
 
 wrapper {
-    gradleVersion = '6.7.1'
+    gradleVersion = '6.8.2'
 }
 
 apply from: "build-${profile}.gradle"
@@ -140,7 +140,7 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.4.1'
+    springVersion = '2.4.2'
     pgVersion = '42.2.18'
     lombokVersion = '1.18.16'
     commonVersion = "1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
