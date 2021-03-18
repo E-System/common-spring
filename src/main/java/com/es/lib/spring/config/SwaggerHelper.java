@@ -50,9 +50,13 @@ public class SwaggerHelper {
     }
 
     public static UiConfiguration uiConfig() {
+        return uiConfig(DocExpansion.LIST);
+    }
+
+    public static UiConfiguration uiConfig(DocExpansion docExpansion) {
         return UiConfigurationBuilder
             .builder()
-            .docExpansion(DocExpansion.LIST)
+            .docExpansion(docExpansion)
             .build();
     }
 
