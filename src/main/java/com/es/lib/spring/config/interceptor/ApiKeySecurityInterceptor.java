@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -28,5 +30,9 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
             return false;
         }
         return true;
+    }
+
+    public static void register(InterceptorRegistry registry, ApiKeySecurityInterceptor interceptor, List<String> includePatterns, List<String> excludePattern) {
+        registry.addInterceptor(interceptor).addPathPatterns(includePatterns).excludePathPatterns(excludePattern);
     }
 }
