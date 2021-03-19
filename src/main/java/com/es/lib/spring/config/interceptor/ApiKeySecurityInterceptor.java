@@ -1,10 +1,10 @@
 package com.es.lib.spring.config.interceptor;
 
+import com.es.lib.common.exception.web.UnauthorizedException;
 import com.es.lib.spring.service.auth.ApiKeyCheckService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -28,8 +28,7 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
             apiKeyCheckService.check(request);
         } catch (Throwable e) {
             log.warn("Api key authentication failed: {} [host {}, URI {}]", e.getMessage(), request.getRemoteHost(), request.getRequestURI());
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-            return false;
+            throw new UnauthorizedException("Invalid api key", "unauthorized");
         }
         return true;
     }
