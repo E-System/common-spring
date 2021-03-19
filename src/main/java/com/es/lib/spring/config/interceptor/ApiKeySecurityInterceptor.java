@@ -39,6 +39,7 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
             "/",
             "/version",
             "/docs",
+            "/csrf",
             "/swagger-ui.html**",
             "/swagger-resources/**",
             "/webjars/**",
