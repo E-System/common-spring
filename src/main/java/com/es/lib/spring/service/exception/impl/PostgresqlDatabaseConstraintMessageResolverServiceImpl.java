@@ -12,6 +12,7 @@ import org.hibernate.exception.GenericJDBCException;
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.ServerErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class DatabaseConstraintMessageResolverServiceImpl implements DatabaseConstraintMessageResolverService {
+@ConditionalOnClass(value = ServerErrorMessage.class)
+public class PostgresqlDatabaseConstraintMessageResolverServiceImpl implements DatabaseConstraintMessageResolverService {
 
     @Setter(onMethod_ = @Autowired)
     private ConstraintMessageResolverService messageResolverService;
