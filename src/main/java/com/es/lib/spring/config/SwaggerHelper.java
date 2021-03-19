@@ -60,12 +60,16 @@ public class SwaggerHelper {
             .build();
     }
 
-    public static OAuth oauth2Schema(String contextPath) {
+    public static SecurityScheme oauth2Schema(String contextPath) {
         return new OAuth(
             "oauth2schema",
             Collections.emptyList(),
             Collections.singletonList(new ResourceOwnerPasswordCredentialsGrant(contextPath + "/oauth/token?grant_type=password"))
         );
+    }
+
+    public static SecurityScheme apiKeySchema(String keyName, String passAs) {
+        return new ApiKey("apiKeySchema", keyName, passAs);
     }
 
     private static List<SecurityContext> securityContexts(String schemeName, Collection<String> paths) {
