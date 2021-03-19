@@ -57,6 +57,6 @@ public abstract class DefaultAuditSaveServiceImpl implements AuditSaveService {
     }
 
     protected void save(EventSource eventSource, AuditEvent event, String ip) {
-        log.error("---USE DEFAULT AuditSaveService::save({}, {}, {})---", eventSource, event, ip);
+        log.warn("---USE DEFAULT AuditSaveService::save({}, {}, {})---", eventSource, event, ip);
     }
 }

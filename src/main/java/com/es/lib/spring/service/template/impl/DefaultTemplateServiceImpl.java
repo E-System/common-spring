@@ -25,7 +25,7 @@ public abstract class DefaultTemplateServiceImpl implements TemplateService {
 
     @Override
     public String evaluate(String code, Map<String, Object> context) {
-        log.error("---USE DEFAULT TemplateService::evaluate({}, {})---", code, context);
+        log.warn("---USE DEFAULT TemplateService::evaluate({}, {})---", code, context);
         return null;
     }
 }

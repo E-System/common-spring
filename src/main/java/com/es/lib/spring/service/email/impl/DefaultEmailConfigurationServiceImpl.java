@@ -28,7 +28,7 @@ public abstract class DefaultEmailConfigurationServiceImpl implements EmailConfi
 
     @Override
     public SMTPServerConfiguration create(Number idConfiguration) {
-        log.error("---USE DEFAULT EmailConfigurationService::create({})---", idConfiguration);
+        log.warn("---USE DEFAULT EmailConfigurationService::create({})---", idConfiguration);
         return null;
     }
 }

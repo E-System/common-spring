@@ -31,19 +31,19 @@ public class DefaultPermissionSourceServiceImpl implements PermissionSourceServi
 
     @Override
     public Collection<PermissionItem> global() {
-        log.trace("---USE DEFAULT PermissionSourceService::global()---");
+        log.warn("---USE DEFAULT PermissionSourceService::global()---");
         return Collections.emptyList();
     }
 
     @Override
     public Collection<PermissionItem> scope(Number idScope) {
-        log.trace("---USE DEFAULT PermissionSourceService::scope({})---", idScope);
+        log.warn("---USE DEFAULT PermissionSourceService::scope({})---", idScope);
         return Collections.emptyList();
     }
 
     @Override
     public Collection<PermissionItem> scopeGroup(String group) {
-        log.trace("---USE DEFAULT PermissionSourceService::scopeGroup({})---", group);
+        log.warn("---USE DEFAULT PermissionSourceService::scopeGroup({})---", group);
         return Collections.emptyList();
     }
 }

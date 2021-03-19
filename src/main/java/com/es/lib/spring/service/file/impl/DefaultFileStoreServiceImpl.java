@@ -38,37 +38,37 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
 
     @Override
     public IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers) {
-        log.error("---USE DEFAULT FileStoreService::toStore({}, {})---", temporaryFile, checkers);
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {})---", temporaryFile, checkers);
         return null;
     }
 
     @Override
     public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data, Set<String> checkers) {
-        log.error("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers);
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers);
         return null;
     }
 
     @Override
     public IFileStore fromStore(long id) {
-        log.error("---USE DEFAULT FileStoreService::fromStore({})---", id);
+        log.warn("---USE DEFAULT FileStoreService::fromStore({})---", id);
         return null;
     }
 
     @Override
     public IFileStore copyInStore(long id) {
-        log.error("---USE DEFAULT FileStoreService::copyInStore({})---", id);
+        log.warn("---USE DEFAULT FileStoreService::copyInStore({})---", id);
         return null;
     }
 
     @Override
     public IFileStore fromStore(String base64) {
-        log.error("---USE DEFAULT FileStoreService::fromStore({})---", base64);
+        log.warn("---USE DEFAULT FileStoreService::fromStore({})---", base64);
         return null;
     }
 
     @Override
     public Collection<? extends IFileStore> list(Collection<? extends Number> ids) {
-        log.error("---USE DEFAULT FileStoreService::list({})---", ids);
+        log.warn("---USE DEFAULT FileStoreService::list({})---", ids);
         return Collections.emptyList();
     }
 }

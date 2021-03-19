@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.config;
 
+import com.es.lib.spring.service.auth.ApiKeyCheckService;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -33,8 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SwaggerHelper {
-
-    public static final String API_KEY_NAME = "X-Auth-Token";
 
     public static Docket create(String basePackage, SecurityScheme securityScheme, Collection<String> paths, ApiInfo apiInfo) {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -71,7 +70,7 @@ public class SwaggerHelper {
     }
 
     public static SecurityScheme apiKeySchema() {
-        return apiKeySchema("header", API_KEY_NAME);
+        return apiKeySchema("header", ApiKeyCheckService.KEY_NAME);
     }
 
     public static SecurityScheme apiKeySchema(String passAs, String keyName) {
