@@ -35,7 +35,7 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
     }
 
     public static void register(InterceptorRegistry registry, ApiKeySecurityInterceptor interceptor) {
-        register(registry, interceptor, Collections.singletonList("/*"), Arrays.asList(
+        register(registry, interceptor, Collections.singletonList("/**"), Arrays.asList(
             "/",
             "/version",
             "/docs",
