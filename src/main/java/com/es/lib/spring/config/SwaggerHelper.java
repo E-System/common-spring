@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 
 public class SwaggerHelper {
 
+    public static final String API_KEY_NAME = "X-Auth-Token";
+
     public static Docket create(String basePackage, SecurityScheme securityScheme, Collection<String> paths, ApiInfo apiInfo) {
         return new Docket(DocumentationType.SWAGGER_2)
             .securitySchemes(Collections.singletonList(securityScheme))
@@ -68,7 +70,11 @@ public class SwaggerHelper {
         );
     }
 
-    public static SecurityScheme apiKeySchema(String keyName, String passAs) {
+    public static SecurityScheme apiKeySchema() {
+        return apiKeySchema("header", API_KEY_NAME);
+    }
+
+    public static SecurityScheme apiKeySchema(String passAs, String keyName) {
         return new ApiKey("apiKeySchema", keyName, passAs);
     }
 
