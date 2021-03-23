@@ -56,7 +56,7 @@ group = ext.mainGroup
 version = ext.mainVersion + (ext.snapshot ? '-SNAPSHOT' : '')
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url "${artifactory_contextUrl}/libs-${project.ext.snapshot ? 'all-local' : 'release'}"
         credentials {
@@ -153,7 +153,7 @@ dependencies {
 
     api "commons-io:commons-io:2.8.0"
     api "javax.servlet:javax.servlet-api:4.0.1"
-    api "net.coobird:thumbnailator:0.4.13"
+    api "net.coobird:thumbnailator:0.4.14"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springVersion}"
