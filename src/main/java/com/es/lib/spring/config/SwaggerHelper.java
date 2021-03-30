@@ -47,7 +47,7 @@ public class SwaggerHelper {
             .consumes(Collections.singleton("application/json"))
             .apiInfo(apiInfo)
             .useDefaultResponseMessages(false)
-            .ignoredParameterTypes(Principal.class, Map.class);
+            .ignoredParameterTypes(Principal.class);
     }
 
     public static UiConfiguration uiConfig() {
