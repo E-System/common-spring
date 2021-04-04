@@ -34,10 +34,10 @@ import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Controller
 @ConditionalOnProperty("common.file-store.path")
 @ConditionalOnExpression("${common.file-store.enabled:true}")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileStoreController extends BaseStoreController {
 
     public static final String PATH = "/files";

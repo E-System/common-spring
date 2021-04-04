@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
  * @since 03.11.19
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @ControllerAdvice(assignableTypes = ApiController.class)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ApiErrorAdvice {
 
     private final MessageService messageService;

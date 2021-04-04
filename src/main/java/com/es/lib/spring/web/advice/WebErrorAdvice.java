@@ -41,8 +41,8 @@ import java.util.Map;
  * @since 28.06.16
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @ControllerAdvice(assignableTypes = WebController.class)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class WebErrorAdvice {
 
     private final MessageService messageService;

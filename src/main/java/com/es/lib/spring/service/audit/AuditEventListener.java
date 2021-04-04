@@ -31,8 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 29.03.2018
  */
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class AuditEventListener implements PostInsertEventListener, PostUpdateEventListener, PostDeleteEventListener {
 
     private final AuditSaveService auditSaveService;

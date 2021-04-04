@@ -31,10 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @ConditionalOnProperty("common.file-store.path")
 @ConditionalOnExpression("${common.file-store.enabled:true}")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileUploadController extends ApiController {
 
     private final FileStoreUploadService fileStoreUploadService;

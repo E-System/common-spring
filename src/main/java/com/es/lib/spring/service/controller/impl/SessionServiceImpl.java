@@ -28,8 +28,8 @@ import javax.servlet.http.HttpSession;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class SessionServiceImpl implements SessionService {
 
     private final RequestService requestService;

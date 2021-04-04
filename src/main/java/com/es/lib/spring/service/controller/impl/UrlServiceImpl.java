@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.08.15
  */
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UrlServiceImpl implements UrlService {
 
     private final RequestService requestService;

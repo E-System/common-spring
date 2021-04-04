@@ -23,5 +23,4 @@ public interface ErrorCodes {
 
     String VALIDATION = "validation.error";
     String THROWABLE = "throwable";
-
 }

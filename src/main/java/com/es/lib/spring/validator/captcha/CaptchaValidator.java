@@ -30,8 +30,8 @@ import javax.validation.ConstraintValidatorContext;
  * @since 13.09.14
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CaptchaValidator implements ConstraintValidator<Captcha, String> {
 
     private final CaptchaService captchaService;

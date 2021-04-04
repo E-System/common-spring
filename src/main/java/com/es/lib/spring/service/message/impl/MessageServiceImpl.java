@@ -30,8 +30,8 @@ import org.springframework.stereotype.Service;
  * @since 02.08.15
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MessageServiceImpl implements MessageService {
 
     private final MessageSource messageSource;
