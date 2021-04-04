@@ -30,8 +30,8 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService {
 
     private final FileStorePathService fileStorePathService;

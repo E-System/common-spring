@@ -19,14 +19,15 @@ import com.es.lib.entity.model.security.PermissionItem;
 import com.es.lib.spring.service.security.PermissionSourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class DefaultPermissionSourceServiceImpl implements PermissionSourceService {
 
     @Override

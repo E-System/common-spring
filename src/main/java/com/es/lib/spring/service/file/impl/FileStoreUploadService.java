@@ -41,8 +41,8 @@ import java.util.Set;
  * @since 10.04.15
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;

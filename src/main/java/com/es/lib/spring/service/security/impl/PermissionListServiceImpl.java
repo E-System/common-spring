@@ -29,6 +29,7 @@ import com.es.lib.spring.service.security.PermissionListService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -39,8 +40,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class PermissionListServiceImpl implements PermissionListService {
 
     private final ApplicationEventPublisher eventPublisher;

@@ -27,8 +27,8 @@ import java.util.Arrays;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 26.06.16
  */
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class EnvironmentProfileServiceImpl implements EnvironmentProfileService {
 
     private final Environment environment;

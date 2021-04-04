@@ -44,8 +44,8 @@ import java.util.Map;
  * @since 06.01.16
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileStoreFetchService {
 
     private final FileStorePathService fileStorePathService;

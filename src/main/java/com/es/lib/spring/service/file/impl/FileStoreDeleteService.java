@@ -30,8 +30,8 @@ import java.nio.file.Paths;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 02.02.16
  */
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileStoreDeleteService {
 
     private final FileStorePathService fileStorePathService;
