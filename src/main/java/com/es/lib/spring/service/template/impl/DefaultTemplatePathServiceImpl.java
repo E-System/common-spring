@@ -18,15 +18,15 @@ package com.es.lib.spring.service.template.impl;
 import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.template.TemplatePathService;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.PostConstruct;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Base64;
 
 @Slf4j
@@ -39,15 +39,14 @@ public class DefaultTemplatePathServiceImpl implements TemplatePathService {
     @Setter(onMethod_ = @Value("${project.root:./}"))
     private String projectRoot;
     @Setter(onMethod_ = @Value("${common.templates.path:#{null}}"))
+    private String configBasePath;
+    @Getter
     private String basePath;
 
-    public String getBasePath() {
-        String path = StringUtils.isNoneBlank(basePath) ? basePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/templates");
-        return environmentProfileService.isDevelop() ? this.projectRoot + path : path;
-    }
-
-    public Path getPath(String path) {
-        return Paths.get(getBasePath(), path);
+    @PostConstruct
+    public void postConstruct() {
+        String path = StringUtils.isNoneBlank(configBasePath) ? configBasePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/templates");
+        basePath = environmentProfileService.isDevelop() ? this.projectRoot + path : path;
     }
 
     public String base64(String path) {

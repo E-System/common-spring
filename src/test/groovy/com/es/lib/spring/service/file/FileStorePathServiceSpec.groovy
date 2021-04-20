@@ -17,18 +17,20 @@ package com.es.lib.spring.service.file
 
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 
 import java.nio.file.Paths
 
 class FileStorePathServiceSpec extends BaseSpringSpec {
 
-    static PATH = Paths.get('/tmp/file-store')
     @Autowired
     FileStorePathService fileStorePathService
+    @Value('${common.file-store.path}')
+    String configPath
 
     def "GetBasePath"() {
         expect:
-        fileStorePathService.basePath == PATH
+        fileStorePathService.basePath == Paths.get(configPath)
     }
 
     def "GetPath"() {
@@ -39,10 +41,10 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath(null, name, ext)
         expect:
-        result.root == PATH
+        result.root == Paths.get(configPath)
         result.relative.endsWith(fileName)
         !result.relative.toString().contains("/null/")
-        result.toAbsolutePath().startsWith(PATH)
+        result.toAbsolutePath().startsWith(Paths.get(configPath))
         result.toAbsolutePath().endsWith(fileName)
     }
 
@@ -54,10 +56,10 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath("null", name, ext)
         expect:
-        result.root == PATH
+        result.root == Paths.get(configPath)
         result.relative.endsWith(fileName)
         result.relative.toString().contains("/null/")
-        result.toAbsolutePath().startsWith(PATH)
+        result.toAbsolutePath().startsWith(Paths.get(configPath))
         result.toAbsolutePath().endsWith(fileName)
     }
 }

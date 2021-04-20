@@ -16,12 +16,15 @@
 package com.es.lib.spring.service.template;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public interface TemplatePathService {
 
     String getBasePath();
 
-    Path getPath(String path);
+    default Path getPath(String path){
+        return Paths.get(getBasePath(), path);
+    }
 
     String base64(String path);
 }

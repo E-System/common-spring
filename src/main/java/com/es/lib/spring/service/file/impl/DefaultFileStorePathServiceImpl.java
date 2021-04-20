@@ -18,12 +18,14 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.file.FileStorePathService;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.PostConstruct;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -37,11 +39,14 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     @Setter(onMethod_ = @Value("${project.root:./}"))
     protected String projectRoot;
     @Setter(onMethod_ = @Value("${common.file-store.path:#{null}}"))
-    protected String basePath;
+    protected String configBasePath;
+    @Getter
+    private Path basePath;
 
-    @Override
-    public Path getBasePath() {
-        String path = StringUtils.isNoneBlank(basePath) ? basePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/file-store");
-        return environmentProfileService.isDevelop() ? Paths.get(projectRoot, path) : Paths.get(path);
+    @PostConstruct
+    public void postConstruct() {
+        String path = StringUtils.isNoneBlank(configBasePath) ? configBasePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/file-store");
+        basePath = environmentProfileService.isDevelop() ? Paths.get(projectRoot, path) : Paths.get(path);
+        log.trace("File store base path: {}", basePath);
     }
 }
