@@ -34,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -61,9 +60,9 @@ public class FileStoreFetchService {
             if (event.getData() != null) {
                 return event.getData();
             }
+            log.warn("Data for request not found: {}", request);
             return null;
         }
-        log.info("FileStore entry = {}, fileExist = {}", entry, entry.getKey() != null && Files.exists(entry.getKey()));
         return OutputData.create(
             entry.getValue().getFileName(),
             entry.getValue().getFilePath(),
