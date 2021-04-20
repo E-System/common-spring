@@ -47,6 +47,7 @@ public class DefaultTemplatePathServiceImpl implements TemplatePathService {
     public void postConstruct() {
         String path = StringUtils.isNoneBlank(configBasePath) ? configBasePath : ("/srv/es/" + buildInfoService.getInfo().getName() + "/" + environmentProfileService.getProfile() + "/templates");
         basePath = environmentProfileService.isDevelop() ? this.projectRoot + path : path;
+        log.trace("Templates base path: {}", basePath);
     }
 
     public String base64(String path) {
