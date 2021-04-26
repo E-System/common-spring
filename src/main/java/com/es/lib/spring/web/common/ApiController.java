@@ -27,7 +27,6 @@ import org.springframework.validation.Validator;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.function.Supplier;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -73,7 +72,7 @@ public abstract class ApiController extends BaseController {
         Collection<DTOValidationField> fields = new LinkedList<>();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             String message = messageService.get(fieldError);
-            log.error("ApiController::checkError - {}, {}", message, fieldError);
+            log.trace("ApiController::checkError - {}, {}", message, fieldError);
             fields.add(new DTOValidationField(fieldError.getField(), message));
         }
         throw new ServiceValidationException(code, fields, messageService.get(code));
