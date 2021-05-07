@@ -28,7 +28,7 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
             apiKeyCheckService.check(request);
         } catch (Throwable e) {
             log.warn("Api key authentication failed: {} [host {}, URI {}]", e.getMessage(), request.getRemoteHost(), request.getRequestURI());
-            throw new UnauthorizedException("Invalid api key", "unauthorized");
+            throw new UnauthorizedException("unauthorized", "Invalid api key");
         }
         return true;
     }

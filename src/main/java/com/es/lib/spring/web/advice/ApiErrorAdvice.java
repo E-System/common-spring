@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.web.advice;
 
+import com.es.lib.common.exception.web.*;
 import com.es.lib.dto.DTOResult;
 import com.es.lib.dto.DTOValidationResult;
 import com.es.lib.dto.validation.DTOValidationField;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,7 +39,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -54,19 +55,15 @@ public class ApiErrorAdvice {
     private final EnvironmentProfileService environmentProfileService;
     private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
 
-    @ExceptionHandler
+    @ExceptionHandler({ServiceValidationException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOValidationResult validation(ServiceValidationException e) {
         log.error(e.getCode(), e);
-        return new DTOValidationResult(
-            e.getCode(),
-            e.getMessage(),
-            e.getFields()
-        );
+        return new DTOValidationResult(e.getCode(), e.getMessage(), e.getFields());
     }
 
-    @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ExceptionHandler({ConstraintViolationException.class})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public DTOValidationResult violations(ConstraintViolationException e) {
@@ -74,28 +71,60 @@ public class ApiErrorAdvice {
         return new DTOValidationResult(
             ErrorCodes.VALIDATION,
             "Invalid parameters",
-            convert(e)
+            e.getConstraintViolations().stream()
+             .map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage()))
+             .collect(Collectors.toList())
         );
     }
 
-    private Collection<DTOValidationField> convert(ConstraintViolationException e) {
-        return e.getConstraintViolations().stream()
-                .map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage()))
-                .collect(Collectors.toList());
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler({ServiceException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult serviceException(ServiceException e) {
         log.error(e.getMessage(), e);
-        return new DTOResult(
-            e.getCode(),
-            e.getMessage()
-        );
+        return new DTOResult(e.getCode(), e.getMessage());
     }
 
-    @ExceptionHandler(value = {Throwable.class})
+    @ExceptionHandler({
+        BadRequestException.class,
+        ForbiddenException.class,
+        MethodNotAllowedException.class,
+        NotFoundException.class,
+        NotImplementedException.class,
+        UnauthorizedException.class,
+        UnprocessableEntityException.class,
+        UpgradeRequiredException.class,
+        CodeRuntimeException.class
+    })
+    public ResponseEntity<DTOResult> exception(CodeRuntimeException e) {
+        log.error(e.getMessage(), e);
+        return ResponseEntity
+            .status(createStatus(e))
+            .body(new DTOResult(e.getCode(), e.getMessage()));
+    }
+
+    private HttpStatus createStatus(CodeRuntimeException e) {
+        if (e instanceof BadRequestException) {
+            return HttpStatus.BAD_REQUEST;
+        } else if (e instanceof ForbiddenException) {
+            return HttpStatus.FORBIDDEN;
+        } else if (e instanceof MethodNotAllowedException) {
+            return HttpStatus.METHOD_NOT_ALLOWED;
+        } else if (e instanceof NotFoundException) {
+            return HttpStatus.NOT_FOUND;
+        } else if (e instanceof NotImplementedException) {
+            return HttpStatus.NOT_IMPLEMENTED;
+        } else if (e instanceof UnauthorizedException) {
+            return HttpStatus.UNAUTHORIZED;
+        } else if (e instanceof UnprocessableEntityException) {
+            return HttpStatus.UNPROCESSABLE_ENTITY;
+        } else if (e instanceof UpgradeRequiredException) {
+            return HttpStatus.UPGRADE_REQUIRED;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    @ExceptionHandler({Throwable.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult throwable(Throwable e) {
