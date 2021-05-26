@@ -29,6 +29,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -63,17 +64,7 @@ public class OAuthHelper {
         if (context == null) {
             return null;
         }
-        Authentication authentication = context.getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof User) {
-            return ((User) principal).getUsername();
-        } else if (principal instanceof String) {
-            return (String) principal;
-        }
-        return null;
+        return extractLogin(context.getAuthentication());
     }
 
     public static OAuth2AccessToken createNewAccessToken(AuthorizationServerTokenServices tokenService, String clientId, String clientSecret, String login, String passwordHash, Collection<? extends GrantedAuthority> authorities) {
@@ -100,5 +91,29 @@ public class OAuthHelper {
         OAuth2Authentication authenticationRequest = new OAuth2Authentication(authorizationRequest, authenticationToken);
         authenticationRequest.setAuthenticated(true);
         return tokenService.createAccessToken(authenticationRequest);
+    }
+
+    public static String getUserLogin(TokenStore tokenStore, String accessToken) {
+        if (accessToken == null) {
+            return null;
+        }
+        OAuth2Authentication auth = tokenStore.readAuthentication(accessToken);
+        if (auth == null) {
+            return null;
+        }
+        return extractLogin(auth.getUserAuthentication());
+    }
+
+    private static String extractLogin(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            return ((User) principal).getUsername();
+        } else if (principal instanceof String) {
+            return (String) principal;
+        }
+        return null;
     }
 }
