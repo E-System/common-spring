@@ -18,22 +18,14 @@ package com.es.lib.spring.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 @Slf4j
@@ -46,10 +38,15 @@ public class OAuthConfigureHelper {
     }
 
     public static void serverEndpoints(AuthorizationServerEndpointsConfigurer endpoints, AuthenticationManager authenticationManager, AccessTokenConverter tokenConverter) {
+        serverEndpoints(endpoints, authenticationManager, tokenConverter, null);
+    }
+
+    public static void serverEndpoints(AuthorizationServerEndpointsConfigurer endpoints, AuthenticationManager authenticationManager, AccessTokenConverter tokenConverter, TokenStore tokenStore) {
         endpoints
             .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
             .authenticationManager(authenticationManager)
             .accessTokenConverter(tokenConverter)
+            .tokenStore(tokenStore)
             .reuseRefreshTokens(false);
     }
 
