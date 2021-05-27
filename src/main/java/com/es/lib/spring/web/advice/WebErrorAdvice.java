@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.web.advice;
 
+import com.es.lib.common.exception.web.*;
 import com.es.lib.spring.ErrorCodes;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.EnvironmentProfileService;
@@ -50,8 +51,8 @@ public class WebErrorAdvice {
     private final TemplateToolService templateToolService;
     private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
 
-    @ExceptionHandler
-    public ModelAndView serviceExceptionHandler(ServiceException e, Locale locale) {
+    @ExceptionHandler(value = ServiceException.class)
+    public ModelAndView serviceException(ServiceException e, Locale locale) {
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", e.getCode())
@@ -60,8 +61,29 @@ public class WebErrorAdvice {
         return result;
     }
 
+    @ExceptionHandler({
+        BadRequestException.class,
+        ForbiddenException.class,
+        MethodNotAllowedException.class,
+        NotFoundException.class,
+        NotImplementedException.class,
+        UnauthorizedException.class,
+        UnprocessableEntityException.class,
+        UpgradeRequiredException.class,
+        CodeRuntimeException.class
+    })
+    public ModelAndView exception(CodeRuntimeException e, Locale locale) {
+        ModelAndView result = new ModelAndView("error")
+            .addObject("ename", e.getClass().getSimpleName())
+            .addObject("ecode", e.getCode())
+            .addObject("emessage", e.getMessage());
+        result.setStatus(ErrorCodes.createStatus(e));
+        fillGlobals(result.getModel(), locale);
+        return result;
+    }
+
     @ExceptionHandler(value = {Throwable.class})
-    public ModelAndView exceptionHandler(Throwable e, Locale locale) throws Throwable {
+    public ModelAndView throwable(Throwable e, Locale locale) throws Throwable {
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
             log.trace("Exception annotated with @ResponseStatus. Skip processing");
             throw e;

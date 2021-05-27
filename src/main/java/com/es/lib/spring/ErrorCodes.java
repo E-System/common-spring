@@ -15,6 +15,9 @@
  */
 package com.es.lib.spring;
 
+import com.es.lib.common.exception.web.*;
+import org.springframework.http.HttpStatus;
+
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 31.08.14
@@ -23,4 +26,25 @@ public interface ErrorCodes {
 
     String VALIDATION = "validation.error";
     String THROWABLE = "throwable";
+
+    static HttpStatus createStatus(CodeRuntimeException e) {
+        if (e instanceof BadRequestException) {
+            return HttpStatus.BAD_REQUEST;
+        } else if (e instanceof ForbiddenException) {
+            return HttpStatus.FORBIDDEN;
+        } else if (e instanceof MethodNotAllowedException) {
+            return HttpStatus.METHOD_NOT_ALLOWED;
+        } else if (e instanceof NotFoundException) {
+            return HttpStatus.NOT_FOUND;
+        } else if (e instanceof NotImplementedException) {
+            return HttpStatus.NOT_IMPLEMENTED;
+        } else if (e instanceof UnauthorizedException) {
+            return HttpStatus.UNAUTHORIZED;
+        } else if (e instanceof UnprocessableEntityException) {
+            return HttpStatus.UNPROCESSABLE_ENTITY;
+        } else if (e instanceof UpgradeRequiredException) {
+            return HttpStatus.UPGRADE_REQUIRED;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
 }

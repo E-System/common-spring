@@ -99,29 +99,8 @@ public class ApiErrorAdvice {
     public ResponseEntity<DTOResult> exception(CodeRuntimeException e) {
         log.error(e.getMessage(), e);
         return ResponseEntity
-            .status(createStatus(e))
+            .status(ErrorCodes.createStatus(e))
             .body(new DTOResult(e.getCode(), e.getMessage()));
-    }
-
-    private HttpStatus createStatus(CodeRuntimeException e) {
-        if (e instanceof BadRequestException) {
-            return HttpStatus.BAD_REQUEST;
-        } else if (e instanceof ForbiddenException) {
-            return HttpStatus.FORBIDDEN;
-        } else if (e instanceof MethodNotAllowedException) {
-            return HttpStatus.METHOD_NOT_ALLOWED;
-        } else if (e instanceof NotFoundException) {
-            return HttpStatus.NOT_FOUND;
-        } else if (e instanceof NotImplementedException) {
-            return HttpStatus.NOT_IMPLEMENTED;
-        } else if (e instanceof UnauthorizedException) {
-            return HttpStatus.UNAUTHORIZED;
-        } else if (e instanceof UnprocessableEntityException) {
-            return HttpStatus.UNPROCESSABLE_ENTITY;
-        } else if (e instanceof UpgradeRequiredException) {
-            return HttpStatus.UPGRADE_REQUIRED;
-        }
-        return HttpStatus.BAD_REQUEST;
     }
 
     @ExceptionHandler({Throwable.class})
