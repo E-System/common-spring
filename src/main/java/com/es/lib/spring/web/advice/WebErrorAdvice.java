@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -57,6 +58,7 @@ public class WebErrorAdvice {
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", e.getCode())
             .addObject("emessage", e.getMessage());
+        result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         fillGlobals(result.getModel(), locale);
         return result;
     }
@@ -104,6 +106,7 @@ public class WebErrorAdvice {
                 result.addObject("emessage", messageService.getThrowablePublicMessage());
             }
         }
+        result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         fillGlobals(result.getModel(), locale);
         return result;
     }
