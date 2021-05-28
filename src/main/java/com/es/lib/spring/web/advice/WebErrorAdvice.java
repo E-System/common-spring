@@ -52,7 +52,7 @@ public class WebErrorAdvice {
     private final TemplateToolService templateToolService;
     private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
 
-    @ExceptionHandler(value = ServiceException.class)
+    @ExceptionHandler({ServiceException.class})
     public ModelAndView serviceException(ServiceException e, Locale locale) {
         ModelAndView result = new ModelAndView("error")
             .addObject("ename", e.getClass().getSimpleName())
@@ -84,7 +84,7 @@ public class WebErrorAdvice {
         return result;
     }
 
-    @ExceptionHandler(value = {Throwable.class})
+    @ExceptionHandler({Throwable.class})
     public ModelAndView throwable(Throwable e, Locale locale) throws Throwable {
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
             log.trace("Exception annotated with @ResponseStatus. Skip processing");
