@@ -23,6 +23,7 @@ import com.es.lib.spring.service.exception.DatabaseConstraintMessageResolverServ
 import com.es.lib.spring.service.message.MessageService;
 import com.es.lib.spring.web.common.WebController;
 import com.es.lib.spring.web.service.TemplateToolService;
+import com.es.lib.spring.web.service.WebErrorViewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +52,16 @@ public class WebErrorAdvice {
     private final EnvironmentProfileService environmentProfileService;
     private final TemplateToolService templateToolService;
     private final DatabaseConstraintMessageResolverService databaseConstraintMessageResolverService;
+    private final WebErrorViewService webErrorViewService;
 
     @ExceptionHandler({ServiceException.class})
     public ModelAndView serviceException(ServiceException e, Locale locale) {
-        ModelAndView result = new ModelAndView("error")
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ModelAndView result = new ModelAndView(webErrorViewService.evaluate(e, locale, status))
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", e.getCode())
             .addObject("emessage", e.getMessage());
-        result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        result.setStatus(status);
         fillGlobals(result.getModel(), locale);
         return result;
     }
@@ -75,11 +78,12 @@ public class WebErrorAdvice {
         CodeRuntimeException.class
     })
     public ModelAndView exception(CodeRuntimeException e, Locale locale) {
-        ModelAndView result = new ModelAndView("error")
+        HttpStatus status = ErrorCodes.createStatus(e);
+        ModelAndView result = new ModelAndView(webErrorViewService.evaluate(e, locale, status))
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", e.getCode())
             .addObject("emessage", e.getMessage());
-        result.setStatus(ErrorCodes.createStatus(e));
+        result.setStatus(status);
         fillGlobals(result.getModel(), locale);
         return result;
     }
@@ -90,8 +94,9 @@ public class WebErrorAdvice {
             log.trace("Exception annotated with @ResponseStatus. Skip processing");
             throw e;
         }
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         log.error("Runtime exception: " + e.getMessage(), e);
-        ModelAndView result = new ModelAndView("error")
+        ModelAndView result = new ModelAndView(webErrorViewService.evaluate(e, locale, status))
             .addObject("ename", e.getClass().getSimpleName())
             .addObject("ecode", ErrorCodes.THROWABLE);
         Map.Entry<Boolean, String> messageResolveResult = databaseConstraintMessageResolverService.resolveMessage(e);
@@ -106,7 +111,7 @@ public class WebErrorAdvice {
                 result.addObject("emessage", messageService.getThrowablePublicMessage());
             }
         }
-        result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        result.setStatus(status);
         fillGlobals(result.getModel(), locale);
         return result;
     }
