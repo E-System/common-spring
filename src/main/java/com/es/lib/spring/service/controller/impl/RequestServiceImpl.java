@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.service.controller.impl;
 
+import com.es.lib.common.collection.Items;
 import com.es.lib.spring.service.controller.RequestService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -32,25 +34,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class RequestServiceImpl implements RequestService {
 
-    /**
-     * Получить объект запроса
-     *
-     * @return Объект запроса
-     */
     @Override
     public HttpServletRequest get() {
         ServletRequestAttributes requestAttributes = RequestService.getRequestAttributes();
         return requestAttributes != null ? requestAttributes.getRequest() : null;
     }
 
-    /**
-     * Получить аттрибуты запроса
-     *
-     * @param name имя аттрибута
-     * @param clz  класс значения
-     * @param <T>  тип значения
-     * @return значение аттрибута
-     */
     @Override
     public <T> T getAttribute(String name, Class<T> clz) {
         HttpServletRequest request = get();
@@ -60,11 +49,6 @@ public class RequestServiceImpl implements RequestService {
         return (T) request.getAttribute(name);
     }
 
-    /**
-     * Получить IP адрес откуда пришел запрос
-     *
-     * @return IP адрес
-     */
     @Override
     public String getRemoteIp() {
         HttpServletRequest request = null;
@@ -86,12 +70,6 @@ public class RequestServiceImpl implements RequestService {
         return ip;
     }
 
-    /**
-     * Read request body from HttpServletRequest
-     *
-     * @param charset - body charset
-     * @return body
-     */
     @Override
     public String getBody(Charset charset) {
         try {
@@ -99,5 +77,10 @@ public class RequestServiceImpl implements RequestService {
         } catch (Exception ignore) {
             return null;
         }
+    }
+
+    @Override
+    public Map<String, String> getHeaders(HttpServletRequest request) {
+        return Items.toMap(Collections.list(request.getHeaderNames()), v -> v, request::getHeader);
     }
 }
