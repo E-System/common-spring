@@ -64,7 +64,7 @@ public class FileStoreFetchService {
             return null;
         }
         return OutputData.create(
-            entry.getValue().getFileName(),
+            entry.getValue().getFullName(),
             entry.getValue().getFilePath(),
             entry.getKey()
         );
