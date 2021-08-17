@@ -2,7 +2,6 @@ package com.es.lib.spring.web.common
 
 import com.es.lib.dto.DTOPagerResponse
 import com.es.lib.dto.DTOResponse
-import com.es.lib.dto.DTOResult
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -11,6 +10,7 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.ResponseEntity
 
 class ApiControllerSpec extends BaseSpringSpec {
+
     @LocalServerPort
     private Integer port
 
@@ -33,10 +33,10 @@ class ApiControllerSpec extends BaseSpringSpec {
         def simple = getForEntity("simple", DTOResponse.class)
         def pager = getForEntity("pager", DTOPagerResponse.class)
         then:
-        with(simple.body as DTOResponse){
+        with(simple.body as DTOResponse) {
             it.data == "Test"
         }
-        with(pager.body as DTOPagerResponse){
+        with(pager.body as DTOPagerResponse) {
             it.data == ["Test"]
             it.pager.page == 10
             it.pager.pages == [1, -1, 7, 8, 9, 10, 11, 12, 13, 14, -1, 100]
