@@ -15,6 +15,8 @@
  */
 package com.es.lib.spring.web.common;
 
+import com.es.lib.dto.DTOPager;
+import com.es.lib.dto.DTOPagerResponse;
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.spring.config.Const;
@@ -46,6 +48,10 @@ public abstract class ApiController extends BaseController {
 
     protected <T> DTOResponse<T> ok(T data) {
         return new DTOResponse<>(data);
+    }
+
+    protected <T> DTOPagerResponse<T> ok(DTOPager<T> pager) {
+        return new DTOPagerResponse<>(pager);
     }
 
     protected void checkError(BindingResult bindingResult, Object request, Validator... validators) {
