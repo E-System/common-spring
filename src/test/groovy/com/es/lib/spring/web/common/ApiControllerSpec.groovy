@@ -28,6 +28,10 @@ class ApiControllerSpec extends BaseSpringSpec {
         return restTemplate.getForEntity(url(path), responseType, params)
     }
 
+    ResponseEntity postForEntity(String path, Object request, Class responseType, Object... params) {
+        return restTemplate.postForEntity(url(path), request, responseType, params)
+    }
+
     def "Simple and pager response"() {
         when:
         def simple = getForEntity("simple", DTOResponse.class)
@@ -45,6 +49,15 @@ class ApiControllerSpec extends BaseSpringSpec {
             it.pager.pageSize == 10
             it.pager.total == 1000
             it.totals == null
+        }
+    }
+
+    def "Multiple object - GET"() {
+        when:
+        def response = getForEntity("multiple-object?offset=1&limit=2&name=Test", String.class)
+        then:
+        with(response.body as String) {
+            it == "ok-RequestObjectPage{offset=1, limit=2}:RequestObjectFilter{name='Test', limit=2}"
         }
     }
 }
