@@ -151,7 +151,7 @@ dependencies {
     api "com.es.lib:common-dto:${commonVersion}"
     api "com.es.lib:common-validator:${commonVersion}"
 
-    api "commons-io:commons-io:2.8.0"
+    api "commons-io:commons-io:2.11.0"
     api "javax.servlet:javax.servlet-api:4.0.1"
     api "net.coobird:thumbnailator:0.4.14"
 
@@ -166,13 +166,14 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
-    testImplementation "org.spockframework:spock-spring:1.3-groovy-2.5"
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+    testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
     testImplementation "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springVersion}"
 }
 
 test {
+    useJUnitPlatform()
     systemProperty 'spring.profiles.active', 'test'
     finalizedBy jacocoTestReport
 }
