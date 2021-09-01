@@ -17,6 +17,7 @@ package com.es.lib.spring.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -99,6 +100,11 @@ public class OffsetPageRequest implements Pageable, Serializable {
     @Override
     public Pageable first() {
         return new OffsetPageRequest(0, getPageSize(), getSort());
+    }
+
+    @Override
+    public Pageable withPage(int pageNumber) {
+        return new OffsetPageRequest((long) pageNumber * limit, this.getPageSize(), this.getSort());
     }
 
     @Override
