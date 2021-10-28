@@ -140,9 +140,9 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.5.5'
-    pgVersion = '42.2.23'
-    lombokVersion = '1.18.20'
+    springVersion = '2.5.6'
+    pgVersion = '42.2.24'
+    lombokVersion = '1.18.22'
     commonVersion = "1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
 }
 dependencies {
