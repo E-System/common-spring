@@ -15,10 +15,12 @@
  */
 package com.es.lib.spring.service.file;
 
+import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.StorePath;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -54,6 +56,10 @@ public interface FileStorePathService {
      */
     default StorePath getPath(StoreMode mode, String scope, String name, String ext) {
         return StorePath.create(getBasePath(), mode, scope, name, ext);
+    }
+
+    default Path getPath(IFileStore fileStore) {
+        return Paths.get(getBasePath().toString(), fileStore.getFilePath());
     }
 
     default StorePath uniquePath(String scope, String ext) {
