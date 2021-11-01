@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.service.file
 
+import com.es.lib.entity.iface.file.IFileStore
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -31,6 +32,16 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
     def "GetBasePath"() {
         expect:
         fileStorePathService.basePath == Paths.get(configPath)
+    }
+
+    def "Get full path from FileStore"() {
+        when:
+        def relativePath = "/relative/path/asd.txt"
+        def fs = new FileStore(relativePath)
+        then:
+        def path = fileStorePathService.getPath(fs)
+        expect:
+        path.toString() == configPath + relativePath
     }
 
     def "GetPath"() {
@@ -61,5 +72,103 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         result.relative.toString().contains("/null/")
         result.toAbsolutePath().startsWith(Paths.get(configPath))
         result.toAbsolutePath().endsWith(fileName)
+    }
+
+    class FileStore implements IFileStore {
+        String filePath
+
+        FileStore(filePath) {
+            this.filePath = filePath
+        }
+
+        @Override
+        String getFilePath() {
+            return filePath
+        }
+
+        @Override
+        void setFilePath(String filePath) {
+            this.filePath = filePath
+        }
+
+        @Override
+        String getFileName() {
+            return "Very long file name"
+        }
+
+        @Override
+        void setFileName(String fileName) {}
+
+        @Override
+        String getFileExt() {
+            return "jpeg"
+        }
+
+        @Override
+        void setFileExt(String fileExt) {}
+
+        @Override
+        long getCrc32() {
+            return 0
+        }
+
+        @Override
+        void setCrc32(long crc32) {}
+
+        @Override
+        long getSize() {
+            return 0
+        }
+
+        @Override
+        void setSize(long size) {}
+
+        @Override
+        String getMime() {
+            return null
+        }
+
+        @Override
+        String getAbbreviatedFileName(int maxWidth) {
+            return abbreviatedFileName(this, maxWidth)
+        }
+
+        @Override
+        boolean isImage() {
+            return isImage(this)
+        }
+
+        @Override
+        void setMime(String mime) {}
+
+        @Override
+        String getFullName() {
+            return fullName(this)
+        }
+
+        @Override
+        boolean isDeleted() {
+            return false
+        }
+
+        @Override
+        void setDeleted(boolean deleted) {}
+
+        @Override
+        Map<String, String> getAttributes() {
+            return null
+        }
+
+        @Override
+        void setAttributes(Map<String, String> attributes) {
+        }
+
+        @Override
+        Long getId() {
+            return null
+        }
+
+        @Override
+        void setId(Long id) {}
     }
 }

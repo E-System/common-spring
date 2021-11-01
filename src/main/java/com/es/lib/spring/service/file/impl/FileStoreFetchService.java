@@ -94,13 +94,13 @@ public class FileStoreFetchService {
             return null;
         }
         if (fileStoreSecurityService.isFileAvailable(fileStore)) {
-            return Pair.of(get(fileStore.getFilePath(), thumb, fileStore), fileStore);
+            return Pair.of(getPath(fileStore, thumb), fileStore);
         }
         return null;
     }
 
-    protected Path get(String path, Thumb thumb, IFileStore fileStore) {
-        Path originalFile = Paths.get(fileStorePathService.getBasePath().toString(), path);
+    protected Path getPath(IFileStore fileStore, Thumb thumb) {
+        Path originalFile = fileStorePathService.getPath(fileStore);
         if (thumb != null) {
             return Thumbs.generate(originalFile, thumb, fileStore, new ThumbnailatorThumbGenerator());
         }
