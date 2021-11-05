@@ -11,7 +11,7 @@ profile=develop
 ```
 * Artifactory URL
 ```
-artifactory_contextUrl=http://ext-system.com/artifactory
+artifactory_contextUrl=https://artifactory.ext-system.com/artifactory
 ```
 * SonarQube account (Analyzing not run if property not defined)
 ```

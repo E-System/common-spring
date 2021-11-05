@@ -48,7 +48,6 @@ configurations.all {
     }
 }
 
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
