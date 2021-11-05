@@ -17,6 +17,7 @@ package com.es.lib.spring.service.impl;
 
 import com.es.lib.common.model.BuildInfo;
 import com.es.lib.spring.service.BuildInfoService;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +27,7 @@ import javax.annotation.PostConstruct;
  * @since 29.06.17
  */
 @Service
+@Getter
 public class BuildInfoServiceImpl implements BuildInfoService {
 
     private BuildInfo info;
@@ -33,10 +35,5 @@ public class BuildInfoServiceImpl implements BuildInfoService {
     @PostConstruct
     public void postConstruct() {
         info = BuildInfo.create();
-    }
-
-    @Override
-    public BuildInfo getInfo() {
-        return info;
     }
 }

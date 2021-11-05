@@ -28,9 +28,9 @@ import java.util.Locale;
 public class LocaleServiceImpl implements LocaleService {
 
     /**
-     * Получить локаль
+     * Get locale
      *
-     * @return локаль
+     * @return locale
      */
     @Override
     public Locale get() {

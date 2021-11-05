@@ -20,6 +20,8 @@ import java.util.Map;
 
 public interface TemplateService {
 
+    String evaluate(String code, Map<String, Object> context);
+
     default String evaluate(String code) {
         return evaluate(code, Collections.emptyMap());
     }
@@ -27,6 +29,4 @@ public interface TemplateService {
     default String evaluate(String code, Object value) {
         return evaluate(code, Collections.singletonMap("value", value));
     }
-
-    String evaluate(String code, Map<String, Object> context);
 }

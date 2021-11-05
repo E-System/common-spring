@@ -35,9 +35,9 @@ public class SessionServiceImpl implements SessionService {
     private final RequestService requestService;
 
     /**
-     * Получить сессию
+     * Get session
      *
-     * @return Объект сессии
+     * @return Session object
      */
     @Override
     public HttpSession get() {
