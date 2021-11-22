@@ -47,27 +47,27 @@ class ApiErrorAdviceSpec extends BaseSpringSpec {
         def Th = getForEntity("Th", DTOResult.class)
         then:
         BadRequestException.statusCode == HttpStatus.BAD_REQUEST
-        (BadRequestException.body as DTOResult).code == 'Code'
+        (BadRequestException.body as DTOResult).code == ExceptionController.CODE
         ForbiddenException.statusCode == HttpStatus.FORBIDDEN
-        (ForbiddenException.body as DTOResult).code == 'Code'
+        (ForbiddenException.body as DTOResult).code == ExceptionController.CODE
         MethodNotAllowedException.statusCode == HttpStatus.METHOD_NOT_ALLOWED
-        (MethodNotAllowedException.body as DTOResult).code == 'Code'
+        (MethodNotAllowedException.body as DTOResult).code == ExceptionController.CODE
         NotFoundException.statusCode == HttpStatus.NOT_FOUND
-        (NotFoundException.body as DTOResult).code == 'Code'
+        (NotFoundException.body as DTOResult).code == ExceptionController.CODE
         NotImplementedException.statusCode == HttpStatus.NOT_IMPLEMENTED
-        (NotImplementedException.body as DTOResult).code == 'Code'
+        (NotImplementedException.body as DTOResult).code == ExceptionController.CODE
         UnauthorizedException.statusCode == HttpStatus.UNAUTHORIZED
-        (UnauthorizedException.body as DTOResult).code == 'Code'
+        (UnauthorizedException.body as DTOResult).code == ExceptionController.CODE
         UnprocessableEntityException.statusCode == HttpStatus.UNPROCESSABLE_ENTITY
-        (UnprocessableEntityException.body as DTOResult).code == 'Code'
+        (UnprocessableEntityException.body as DTOResult).code == ExceptionController.CODE
         UpgradeRequiredException.statusCode == HttpStatus.UPGRADE_REQUIRED
-        (UpgradeRequiredException.body as DTOResult).code == 'Code'
+        (UpgradeRequiredException.body as DTOResult).code == ExceptionController.CODE
         CodeRuntimeException.statusCode == HttpStatus.BAD_REQUEST
-        (CodeRuntimeException.body as DTOResult).code == 'Code'
+        (CodeRuntimeException.body as DTOResult).code == ExceptionController.CODE
         ServiceException.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
-        (ServiceException.body as DTOResult).code == 'Code'
+        (ServiceException.body as DTOResult).code == ExceptionController.CODE
         ServiceValidationException.statusCode == HttpStatus.UNPROCESSABLE_ENTITY
-        (ServiceValidationException.body as DTOResult).code == 'Code'
+        (ServiceValidationException.body as DTOResult).code == ExceptionController.CODE
         (ServiceValidationException.body as DTOValidationResult).fields.size() > 0
         Th.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
         (Th.body as DTOResult).code == ErrorCodes.THROWABLE

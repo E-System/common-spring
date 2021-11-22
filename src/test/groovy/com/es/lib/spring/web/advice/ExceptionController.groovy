@@ -12,63 +12,66 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ExceptionController extends ApiController {
 
+    static String CODE = "Code"
+    static String MSG = "Msg"
+
     @GetMapping("BadRequestException")
     DTOResponse<?> BadRequestException() {
-        throw new BadRequestException("Code", "Msg")
+        throw new BadRequestException(CODE, MSG)
     }
 
     @GetMapping("ForbiddenException")
     DTOResponse<?> ForbiddenException() {
-        throw new ForbiddenException("Code", "Msg")
+        throw new ForbiddenException(CODE, MSG)
     }
 
     @GetMapping("MethodNotAllowedException")
     DTOResponse<?> MethodNotAllowedException() {
-        throw new MethodNotAllowedException("Code", "Msg")
+        throw new MethodNotAllowedException(CODE, MSG)
     }
 
     @GetMapping("NotFoundException")
     DTOResponse<?> NotFoundException() {
-        throw new NotFoundException("Code", "Msg")
+        throw new NotFoundException(CODE, MSG)
     }
 
     @GetMapping("NotImplementedException")
     DTOResponse<?> NotImplementedException() {
-        throw new NotImplementedException("Code", "Msg")
+        throw new NotImplementedException(CODE, MSG)
     }
 
     @GetMapping("UnauthorizedException")
     DTOResponse<?> UnauthorizedException() {
-        throw new UnauthorizedException("Code", "Msg")
+        throw new UnauthorizedException(CODE, MSG)
     }
 
     @GetMapping("UnprocessableEntityException")
     DTOResponse<?> UnprocessableEntityException() {
-        throw new UnprocessableEntityException("Code", "Msg")
+        throw new UnprocessableEntityException(CODE, MSG)
     }
 
     @GetMapping("UpgradeRequiredException")
     DTOResponse<?> UpgradeRequiredException() {
-        throw new UpgradeRequiredException("Code", "Msg")
+        throw new UpgradeRequiredException(CODE, MSG)
     }
 
     @GetMapping("CodeRuntimeException")
     DTOResponse<?> CodeRuntimeException() {
-        throw new CodeRuntimeException("Code", "Msg")
+        throw new CodeRuntimeException(CODE, MSG)
     }
 
     @GetMapping("ServiceException")
     DTOResponse<?> ServiceException() {
-        throw new ServiceException("Code", "Msg")
+        throw new ServiceException(CODE, MSG)
     }
 
     @GetMapping("ServiceValidationException")
     DTOResponse<?> ServiceValidationException() {
-        throw new ServiceValidationException("Code", [new DTOValidationField("name", "value")], "Message")
+        throw new ServiceValidationException(CODE, [new DTOValidationField("name", "value")], MSG)
     }
 
     @GetMapping("Th")
     DTOResponse<?> Throwable() {
-        throw new Throwable("Msg")
+        throw new Throwable(MSG)
     }
 }
