@@ -1,11 +1,8 @@
 package com.es.lib.spring.service.security
 
-
 import com.es.lib.entity.model.security.code.ISecurityAction
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
-
-import java.util.function.Function
 
 class PermissionListServiceSpec extends BaseSpringSpec {
 
@@ -20,22 +17,11 @@ class PermissionListServiceSpec extends BaseSpringSpec {
 
     def "To model"() {
         when:
-        def result = service.toModel([ISecurityAction.join('TARGET1', ISecurityAction.VIEW)], new Function<String, String>() {
-            @Override
-            String apply(String s) {
-                return s
-            }
-        }, new Function<String, String>() {
-            @Override
-            String apply(String s) {
-                return s
-            }
-        }, new Function<String, String>() {
-            @Override
-            String apply(String s) {
-                return s
-            }
-        })
+        def result = service.toModel([ISecurityAction.join('TARGET1', ISecurityAction.VIEW)],
+            { return it },
+            { return it },
+            { return it }
+        )
         then:
         result.actions[0].code == ISecurityAction.VIEW
         result.actions[1].code == ISecurityAction.EDIT
