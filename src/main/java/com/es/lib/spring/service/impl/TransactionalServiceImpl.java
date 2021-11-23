@@ -32,5 +32,4 @@ public class TransactionalServiceImpl implements TransactionalService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void runReqNew(Runnable runnable) { runnable.run(); }
-
 }

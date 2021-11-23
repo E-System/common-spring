@@ -24,5 +24,4 @@ public interface TransactionalService {
     void run(Runnable runnable);
 
     void runReqNew(Runnable runnable);
-
 }

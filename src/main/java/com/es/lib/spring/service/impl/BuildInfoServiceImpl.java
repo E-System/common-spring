@@ -26,8 +26,8 @@ import javax.annotation.PostConstruct;
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 29.06.17
  */
-@Service
 @Getter
+@Service
 public class BuildInfoServiceImpl implements BuildInfoService {
 
     private BuildInfo info;
