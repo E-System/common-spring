@@ -45,14 +45,16 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         def file = service.create(path, StoreMode.TEMPORARY)
         println file
         then:
-        file.size == 5
-        file.mode == StoreMode.TEMPORARY
-        file.fileName == 'original'
-        file.fileExt == 'txt'
-        file.mime == 'text/plain'
-        file.filePath.startsWith("/temporary")
-        !file.modeRelativePath.startsWith("/temporary")
-        file.filePath.replace("/temporary", "") == file.modeRelativePath
+        with(file) {
+            size == 5
+            mode == StoreMode.TEMPORARY
+            fileName == 'original'
+            fileExt == 'txt'
+            mime == 'text/plain'
+            filePath.startsWith("/temporary")
+            !modeRelativePath.startsWith("/temporary")
+            filePath.replace("/temporary", "") == modeRelativePath
+        }
     }
 
     def "Create from bytes"() {
@@ -60,13 +62,15 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         def file = service.create("Hello".bytes, 'txt', StoreMode.TEMPORARY)
         println file
         then:
-        file.size == 5
-        file.mode == StoreMode.TEMPORARY
-        file.fileExt == 'txt'
-        file.mime == 'text/plain'
-        file.filePath.startsWith("/temporary")
-        !file.modeRelativePath.startsWith("/temporary")
-        file.filePath.replace("/temporary", "") == file.modeRelativePath
+        with(file) {
+            size == 5
+            mode == StoreMode.TEMPORARY
+            fileExt == 'txt'
+            mime == 'text/plain'
+            filePath.startsWith("/temporary")
+            !modeRelativePath.startsWith("/temporary")
+            filePath.replace("/temporary", "") == modeRelativePath
+        }
     }
 
     def "Create from input stream"() {
@@ -75,12 +79,14 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
         def file = service.create(inputStream, 'txt', 5, StoreMode.TEMPORARY)
         println file
         then:
-        file.size == 5
-        file.mode == StoreMode.TEMPORARY
-        file.fileExt == 'txt'
-        file.mime == 'text/plain'
-        file.filePath.startsWith("/temporary")
-        !file.modeRelativePath.startsWith("/temporary")
-        file.filePath.replace("/temporary", "") == file.modeRelativePath
+        with(file) {
+            size == 5
+            mode == StoreMode.TEMPORARY
+            fileExt == 'txt'
+            mime == 'text/plain'
+            filePath.startsWith("/temporary")
+            !modeRelativePath.startsWith("/temporary")
+            filePath.replace("/temporary", "") == modeRelativePath
+        }
     }
 }

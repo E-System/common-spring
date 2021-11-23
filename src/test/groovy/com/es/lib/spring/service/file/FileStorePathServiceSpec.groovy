@@ -52,11 +52,14 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath(null, name, ext)
         expect:
-        result.root == Paths.get(configPath)
-        result.relative.endsWith(fileName)
-        !result.relative.toString().contains("/null/")
-        result.toAbsolutePath().startsWith(Paths.get(configPath))
-        result.toAbsolutePath().endsWith(fileName)
+        with(result){
+            root == Paths.get(configPath)
+            relative.endsWith(fileName)
+            !relative.toString().contains("/null/")
+            toAbsolutePath().startsWith(Paths.get(configPath))
+            toAbsolutePath().endsWith(fileName)
+        }
+
     }
 
     def "GetPath with scope"() {
@@ -67,11 +70,13 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath("null", name, ext)
         expect:
-        result.root == Paths.get(configPath)
-        result.relative.endsWith(fileName)
-        result.relative.toString().contains("/null/")
-        result.toAbsolutePath().startsWith(Paths.get(configPath))
-        result.toAbsolutePath().endsWith(fileName)
+        with(result){
+            root == Paths.get(configPath)
+            relative.endsWith(fileName)
+            relative.toString().contains("/null/")
+            toAbsolutePath().startsWith(Paths.get(configPath))
+            toAbsolutePath().endsWith(fileName)
+        }
     }
 
     class FileStore implements IFileStore {
