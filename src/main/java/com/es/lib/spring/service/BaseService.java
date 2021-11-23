@@ -20,7 +20,9 @@ import com.es.lib.spring.service.message.MessageService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -31,6 +33,26 @@ public abstract class BaseService {
 
     @Setter(onMethod_ = @Autowired)
     protected MessageService messageService;
+
+    protected <T, R> R fetch(Function<T, R> fetcher, T id, boolean exceptional, String code, String message) {
+        return fetch(fetcher, id, Objects::isNull, exceptional, code, message);
+    }
+
+    protected <T, R> R fetch(Function<T, R> fetcher, T id, Predicate<R> throwChecker, boolean exceptional, String code, String message) {
+        return fetch(() -> fetcher.apply(id), throwChecker, exceptional, code, message, id);
+    }
+
+    protected <T> T fetch(Supplier<T> supplier, boolean exceptional, String code, String message, Object... args) {
+        return fetch(supplier, Objects::isNull, exceptional, code, message, args);
+    }
+
+    protected <T> T fetch(Supplier<T> supplier, Predicate<T> throwChecker, boolean exceptional, String code, String message, Object... args) {
+        T result = supplier.get();
+        if (throwChecker.test(result) && exceptional) {
+            throw serviceException(code, message, args);
+        }
+        return result;
+    }
 
     /**
      * Fetch entity by id, and throw messageException if entity is null
@@ -43,29 +65,21 @@ public abstract class BaseService {
      * @return Entity instance
      */
     protected <T, R> R fetchById(Function<T, R> fetcher, T id, String code, String message) {
-        R result = fetcher.apply(id);
-        if (result == null) {
-            throw serviceException(code, message, id);
-        }
-        return result;
+        return fetch(fetcher, id, true, code, message);
     }
 
     /**
      * Получить объект и проверить на то что он существует
      *
-     * @param supplier  лямбда получения объекта
-     * @param errorCode код сообщения в случае если объект == null
-     * @param message   текст сообщения в случае если объект == null
-     * @param args      атрибуты для форматирования теста сообщения
-     * @param <T>       тип получаемого объекта
+     * @param supplier лямбда получения объекта
+     * @param code     код сообщения в случае если объект == null
+     * @param message  текст сообщения в случае если объект == null
+     * @param args     атрибуты для форматирования теста сообщения
+     * @param <T>      тип получаемого объекта
      * @return объект
      */
-    protected <T> T fetch(Supplier<T> supplier, String errorCode, String message, Object... args) {
-        T result = supplier.get();
-        if (result == null) {
-            throw serviceException(errorCode, message, args);
-        }
-        return result;
+    protected <T> T fetch(Supplier<T> supplier, String code, String message, Object... args) {
+        return fetch(supplier, true, code, message, args);
     }
 
     /**

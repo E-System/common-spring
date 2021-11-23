@@ -20,7 +20,6 @@ import com.es.lib.spring.exception.ServiceException
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.text.MessageFormat
-import java.util.function.Function
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -56,12 +55,7 @@ class TestBaseServiceSpec extends BaseSpringSpec {
         def errorMessage = "Error message {0}"
         def id = 1L
         when:
-        service.fetchById(new Function<Long, Object>() {
-            @Override
-            Object apply(Long o) {
-                return null
-            }
-        }, id, code, errorMessage)
+        service.fetchById({ null }, id, code, errorMessage)
         then:
         def ex = thrown(ServiceException)
         ex.code == code
@@ -74,12 +68,7 @@ class TestBaseServiceSpec extends BaseSpringSpec {
         def errorMessage = "{${code}}"
         def id = 1L
         when:
-        service.fetchById(new Function<Long, Object>() {
-            @Override
-            Object apply(Long o) {
-                return null
-            }
-        }, id, code, errorMessage.toString())
+        service.fetchById({ null }, id, code, errorMessage.toString())
         then:
         def ex = thrown(ServiceException)
         ex.code == code
@@ -87,14 +76,14 @@ class TestBaseServiceSpec extends BaseSpringSpec {
 
     def "Fetch with null result need throw service exception"() {
         given:
-        def errorCode = 'error.code'
+        def code = 'error.code'
         def errorMessage = 'errorMessage {0}'
         def errorOs = 'os'
         when:
-        service.fetch({ null }, errorCode, errorMessage, errorOs)
+        service.fetch({ null }, code, errorMessage, errorOs)
         then:
         def ex = thrown(ServiceException)
-        ex.code == errorCode
+        ex.code == code
         ex.message == 'errorMessage os'
     }
 
