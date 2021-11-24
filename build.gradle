@@ -61,7 +61,7 @@ repositories {
         url "${artifactory_contextUrl}/libs-${project.ext.snapshot ? 'all-local' : 'release'}"
         credentials {
             username = 'public-reader'
-            password = 'public-reader'
+            password = 'Public-reader_123'
         }
     }
     mavenLocal()
