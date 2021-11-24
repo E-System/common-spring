@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Supplier;
+
 /**
  * @author Vitaliy Savchenko - savchenko.v@ext-system.com
  * @since 03.03.19
@@ -32,4 +34,13 @@ public class TransactionalServiceImpl implements TransactionalService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void runReqNew(Runnable runnable) { runnable.run(); }
+
+    @Transactional
+    @Override
+    public <T> T run(Supplier<T> supplier) { return supplier.get(); }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public <T> T runReqNew(Supplier<T> supplier) { return supplier.get(); }
+
 }
