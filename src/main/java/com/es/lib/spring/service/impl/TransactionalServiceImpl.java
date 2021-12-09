@@ -17,6 +17,7 @@ package com.es.lib.spring.service.impl;
 
 import com.es.lib.spring.service.TransactionalService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,17 +31,35 @@ import java.util.function.Supplier;
 public class TransactionalServiceImpl implements TransactionalService {
 
     @Transactional
+    @Override
     public void run(Runnable runnable) { runnable.run(); }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public void runReqNew(Runnable runnable) { runnable.run(); }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public void runReadCommitted(Runnable runnable) { runnable.run(); }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public void runReadCommittedReqNew(Runnable runnable) { runnable.run(); }
 
     @Transactional
     @Override
     public <T> T run(Supplier<T> supplier) { return supplier.get(); }
 
-    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public <T> T runReqNew(Supplier<T> supplier) { return supplier.get(); }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Override
+    public <T> T runReadCommitted(Supplier<T> supplier) { return supplier.get(); }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public <T> T runReadCommittedReqNew(Supplier<T> supplier) { return supplier.get(); }
 
 }

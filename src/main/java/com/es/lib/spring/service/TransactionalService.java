@@ -30,8 +30,16 @@ public interface TransactionalService {
 
     void runReqNew(Runnable runnable);
 
+    void runReadCommitted(Runnable runnable);
+
+    void runReadCommittedReqNew(Runnable runnable);
+
     <T> T run(Supplier<T> supplier);
 
     <T> T runReqNew(Supplier<T> supplier);
+
+    <T> T runReadCommitted(Supplier<T> supplier);
+
+    <T> T runReadCommittedReqNew(Supplier<T> supplier);
 
 }
