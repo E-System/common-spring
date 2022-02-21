@@ -15,6 +15,11 @@
  */
 package com.es.lib.spring.service;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.function.Supplier;
+
 /**
  * @author Vitaliy Savchenko - savchenko.v@ext-system.com
  * @since 03.03.19
@@ -24,4 +29,17 @@ public interface TransactionalService {
     void run(Runnable runnable);
 
     void runReqNew(Runnable runnable);
+
+    void runReadCommitted(Runnable runnable);
+
+    void runReadCommittedReqNew(Runnable runnable);
+
+    <T> T run(Supplier<T> supplier);
+
+    <T> T runReqNew(Supplier<T> supplier);
+
+    <T> T runReadCommitted(Supplier<T> supplier);
+
+    <T> T runReadCommittedReqNew(Supplier<T> supplier);
+
 }
