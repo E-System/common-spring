@@ -30,7 +30,7 @@ buildscript {
 }
 
 wrapper {
-    gradleVersion = '7.3'
+    gradleVersion = '7.4'
 }
 
 apply from: "build-${profile}.gradle"
@@ -152,7 +152,7 @@ dependencies {
 
     api "commons-io:commons-io:2.11.0"
     api "javax.servlet:javax.servlet-api:4.0.1"
-    api "net.coobird:thumbnailator:0.4.14"
+    api "net.coobird:thumbnailator:0.4.17"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springVersion}"
