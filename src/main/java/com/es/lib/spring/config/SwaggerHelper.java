@@ -16,27 +16,23 @@
 package com.es.lib.spring.config;
 
 import com.es.lib.spring.service.auth.ApiKeyCheckService;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.DocExpansion;
-import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger.web.UiConfigurationBuilder;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.OAuthFlow;
+import io.swagger.v3.oas.models.security.OAuthFlows;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SwaggerHelper {
 
-    public static Docket create(String basePackage, SecurityScheme securityScheme, Collection<String> paths, ApiInfo apiInfo) {
-        return new Docket(DocumentationType.SWAGGER_2)
+   /* public static OpenAPI create(String basePackage, SecurityScheme securityScheme, Collection<String> paths, Info apiInfo) {
+        return new OpenAPI()
+            .info(apiInfo)
             .securitySchemes(Collections.singletonList(securityScheme))
             .securityContexts(securityContexts(securityScheme.getName(), paths))
             .select()
@@ -45,7 +41,6 @@ public class SwaggerHelper {
             .build()
             .produces(Collections.singleton("application/json"))
             .consumes(Collections.singleton("application/json"))
-            .apiInfo(apiInfo)
             .useDefaultResponseMessages(false)
             .ignoredParameterTypes(Principal.class);
     }
@@ -62,29 +57,29 @@ public class SwaggerHelper {
     }
 
     public static SecurityScheme oauth2Schema(String contextPath) {
-        return new OAuth(
-            "oauth2schema",
-            Collections.emptyList(),
-            Collections.singletonList(new ResourceOwnerPasswordCredentialsGrant(contextPath + "/oauth/token?grant_type=password"))
-        );
+        return new SecurityScheme()
+            .type(SecurityScheme.Type.OAUTH2)
+            .flows(new OAuthFlows().clientCredentials(new OAuthFlow().tokenUrl(contextPath + "/oauth/token?grant_type=password")));
     }
 
     public static SecurityScheme apiKeySchema() {
-        return apiKeySchema("header", ApiKeyCheckService.KEY_NAME);
+        return apiKeySchema(SecurityScheme.In.HEADER, ApiKeyCheckService.KEY_NAME);
     }
 
-    public static SecurityScheme apiKeySchema(String passAs, String keyName) {
-        return new ApiKey("apiKeySchema", keyName, passAs);
+    public static SecurityScheme apiKeySchema(SecurityScheme.In passAs, String keyName) {
+        return new SecurityScheme()
+            .type(SecurityScheme.Type.APIKEY).in(passAs)
+            .name(keyName);
     }
 
-    private static List<SecurityContext> securityContexts(String schemeName, Collection<String> paths) {
+    private static List<SecurityScheme> securityContexts(String schemeName, Collection<String> paths) {
         return paths.stream().map(v -> createSecurityContext(schemeName, v)).collect(Collectors.toList());
     }
 
-    private static SecurityContext createSecurityContext(String schemeName, String path) {
+    private static SecurityScheme createSecurityContext(String schemeName, String path) {
         return SecurityContext.builder()
                               .securityReferences(Collections.singletonList(new SecurityReference(schemeName, new AuthorizationScope[0])))
                               .forPaths(PathSelectors.ant(path))
                               .build();
-    }
+    }*/
 }
