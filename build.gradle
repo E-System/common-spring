@@ -139,7 +139,7 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.6.3'
+    springVersion = '2.6.4'
     pgVersion = '42.3.3'
     lombokVersion = '1.18.22'
     commonVersion = "1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
