@@ -30,12 +30,12 @@ public interface SwaggerSecuritySchema {
         String NAME = "apiKeySchema";
     }
 
-    static WebSecurity ignoring(final WebSecurity security) {
-        security.ignoring()
-                .antMatchers("/docs")
-                .antMatchers("/swagger-ui/**")
-                .antMatchers("/swagger-resources/**")
-                .antMatchers("/v3/api-docs/**");
-        return security;
+    static WebSecurity.IgnoredRequestConfigurer ignoring(final WebSecurity security) {
+        return security
+            .ignoring()
+            .antMatchers("/docs")
+            .antMatchers("/swagger-ui/**")
+            .antMatchers("/swagger-resources/**")
+            .antMatchers("/v3/api-docs/**");
     }
 }
