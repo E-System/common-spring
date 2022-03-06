@@ -15,6 +15,8 @@
  */
 package com.es.lib.spring.config;
 
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+
 public interface SwaggerSecuritySchema {
 
     interface OAuth2 {
@@ -26,5 +28,14 @@ public interface SwaggerSecuritySchema {
     interface ApiKey {
 
         String NAME = "apiKeySchema";
+    }
+
+    static WebSecurity ignoring(final WebSecurity security) {
+        security.ignoring()
+                .antMatchers("/docs")
+                .antMatchers("/swagger-ui/**")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/v3/api-docs/**");
+        return security;
     }
 }

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
@@ -27,14 +26,5 @@ public class SwaggerHelper {
                 .title(title)
                 .version(buildInfoService.getInfo().getVersion())
                 .contact(new Contact().name(contactName).email(contactEmail)));
-    }
-
-    public static WebSecurity webSecurity(final WebSecurity security) {
-        security.ignoring()
-                .antMatchers("/docs")
-                .antMatchers("/swagger-ui/**")
-                .antMatchers("/swagger-resources/**")
-                .antMatchers("/v3/api-docs/**");
-        return security;
     }
 }
