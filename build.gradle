@@ -169,6 +169,7 @@ dependencies {
     testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
     testImplementation 'org.spockframework:spock-spring:2.1-groovy-3.0'
     testImplementation "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springVersion}"
     testImplementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
 }

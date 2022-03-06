@@ -29,7 +29,7 @@ public class SwaggerHelper {
                 .contact(new Contact().name(contactName).email(contactEmail)));
     }
 
-    public WebSecurity webSecurity(final WebSecurity security) {
+    public static WebSecurity webSecurity(final WebSecurity security) {
         security.ignoring()
                 .antMatchers("/docs")
                 .antMatchers("/swagger-ui/**")
