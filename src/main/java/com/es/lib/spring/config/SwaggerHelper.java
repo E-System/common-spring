@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
@@ -14,6 +15,7 @@ import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@ConditionalOnClass(name = "io.swagger.v3.oas.models.OpenAPI")
 public class SwaggerHelper {
 
     private final ServletContext servletContext;
