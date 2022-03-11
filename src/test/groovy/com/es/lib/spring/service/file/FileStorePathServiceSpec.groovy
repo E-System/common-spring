@@ -160,12 +160,12 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         void setDeleted(boolean deleted) {}
 
         @Override
-        Map<String, String> getAttributes() {
+        Map<String, String> getAttrs() {
             return null
         }
 
         @Override
-        void setAttributes(Map<String, String> attributes) {
+        void setAttrs(Map<String, String> attrs) {
         }
 
         @Override
