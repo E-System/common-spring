@@ -37,13 +37,12 @@ public class ApiKeySecurityInterceptor implements HandlerInterceptor {
         register(registry, interceptor, Collections.singletonList("/**"), Arrays.asList(
             "/",
             "/version",
-            "/docs",
             "/csrf",
             "/error",
-            "/swagger-ui.html**",
+            "/docs",
+            "/swagger-ui/**",
             "/swagger-resources/**",
-            "/webjars/**",
-            "/v2/api-docs"
+            "/v3/api-docs/**"
         ));
     }
 
