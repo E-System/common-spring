@@ -1,6 +1,6 @@
 package com.es.lib.spring.config;
 
-import com.es.lib.spring.service.SpElClassProvider;
+import com.es.lib.spring.service.SpELClassProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -23,18 +23,18 @@ import static java.lang.reflect.Modifier.isStatic;
 
 @Slf4j
 @Configuration
-public class SpElFunctionConfig {
+public class SpELConfig {
 
     @Bean
     @Autowired
-    public static SpelFunctionPostProcessor spelFunctionPostProcessor(ApplicationContext applicationContext) {
-        List<Class<?>> classesToReg = applicationContext.getBeanProvider(SpElClassProvider.class).stream().flatMap(v -> v.getClasses().stream()).collect(Collectors.toList());
+    public static SpELPostProcessor spelFunctionPostProcessor(ApplicationContext applicationContext) {
+        List<Class<?>> classesToReg = applicationContext.getBeanProvider(SpELClassProvider.class).stream().flatMap(v -> v.getItems().stream()).collect(Collectors.toList());
         log.info("Classes to extend SpEL: {}", classesToReg);
-        return new SpelFunctionPostProcessor(classesToReg);
+        return new SpELPostProcessor(classesToReg);
     }
 
     @RequiredArgsConstructor
-    static class SpelFunctionPostProcessor implements BeanFactoryPostProcessor {
+    static class SpELPostProcessor implements BeanFactoryPostProcessor {
 
         private final Collection<Class<?>> functionHolders;
 

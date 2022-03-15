@@ -3,10 +3,10 @@ package com.es.lib.spring.service
 import org.springframework.stereotype.Component
 
 @Component
-class TestSpElClassProvider implements SpElClassProvider {
+class TestSpELClassProvider implements SpELClassProvider {
 
     @Override
-    Collection<Class<?>> getClasses() {
+    Collection<Class<?>> getItems() {
         return Arrays.asList(Root.class)
     }
 
