@@ -30,7 +30,7 @@ class ApiErrorAdviceSpec extends BaseSpringSpec {
     ResponseEntity getForEntity(String path, Class responseType, Object... params) {
         return restTemplate.getForEntity(url(path), responseType, params)
     }
-
+    
     def "CodeRuntimeException"() {
         when:
         def BadRequestException = getForEntity("BadRequestException", DTOResult.class)

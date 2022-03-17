@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 public interface ErrorCodes {
 
     String VALIDATION = "validation.error";
+    String FORBIDDEN = "forbidden";
     String THROWABLE = "throwable";
 
     static HttpStatus createStatus(CodeRuntimeException e) {

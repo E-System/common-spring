@@ -29,8 +29,10 @@ import com.es.lib.spring.web.common.ApiController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -75,6 +77,15 @@ public class ApiErrorAdvice {
              .map(v -> new DTOValidationField(v.getPropertyPath().toString(), v.getMessage()))
              .collect(Collectors.toList())
         );
+    }
+
+    @ConditionalOnClass(name = "org.springframework.security.access.AccessDeniedException")
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public DTOResult violations(AccessDeniedException e) {
+        log.error(e.getMessage(), e);
+        return new DTOResult(ErrorCodes.FORBIDDEN, e.getMessage());
     }
 
     @ExceptionHandler({ServiceException.class})
