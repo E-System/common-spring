@@ -16,12 +16,12 @@ public class SecurityHelper {
 
     public static boolean isRoot() {
         SecurityUser securityUser = getSecurityUser();
-        return securityUser != null && securityUser.isRoot();
+        return securityUser != null && securityUser.getRole().isRoot();
     }
 
     public static boolean isAdmin() {
         SecurityUser securityUser = getSecurityUser();
-        return securityUser != null && securityUser.isAdmin();
+        return securityUser != null && securityUser.getRole().isAdmin();
     }
 
     public static Collection<String> getGrantedAuthorities() {

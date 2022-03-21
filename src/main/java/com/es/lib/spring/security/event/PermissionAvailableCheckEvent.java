@@ -8,6 +8,7 @@
 
 package com.es.lib.spring.security.event;
 
+import com.es.lib.spring.security.model.SecurityRole;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -21,9 +22,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class PermissionAvailableCheckEvent {
 
-    private final Number idRole;
-    private final String scopeGroup;
-    private final Number idScope;
+    private final SecurityRole role;
     private final String target;
     private final String action;
 }

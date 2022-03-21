@@ -1,9 +1,9 @@
 package com.es.lib.spring.security.service.impl;
 
 import com.es.lib.spring.security.SecurityHelper;
-import com.es.lib.spring.security.service.SecurityService;
 import com.es.lib.spring.security.event.PermissionAvailableCheckEvent;
 import com.es.lib.spring.security.model.SecurityUser;
+import com.es.lib.spring.security.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,9 +24,7 @@ public class SecurityServiceImpl implements SecurityService {
         }
         try {
             eventPublisher.publishEvent(new PermissionAvailableCheckEvent(
-                securityUser.getIdRole(),
-                securityUser.getScopeGroup(),
-                securityUser.getIdScope(),
+                securityUser.getRole(),
                 target,
                 action
             ));

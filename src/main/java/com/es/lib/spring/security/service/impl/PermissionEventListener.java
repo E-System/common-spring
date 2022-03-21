@@ -11,10 +11,10 @@ package com.es.lib.spring.security.service.impl;
 import com.es.lib.common.collection.Items;
 import com.es.lib.entity.model.security.PermissionItem;
 import com.es.lib.entity.model.security.code.ISecurityAction;
-import com.es.lib.spring.security.SecurityHelper;
 import com.es.lib.spring.security.event.PermissionAvailableCheckEvent;
 import com.es.lib.spring.security.event.PermissionReloadEvent;
 import com.es.lib.spring.security.event.PermissionReloadedEvent;
+import com.es.lib.spring.security.model.SecurityRole;
 import com.es.lib.spring.security.service.PermissionListService;
 import com.es.lib.spring.security.service.PermissionSourceService;
 import lombok.RequiredArgsConstructor;
@@ -70,16 +70,17 @@ public class PermissionEventListener implements Serializable {
         if (!permissionListService.isAvailable(pKey)) {
             throw new AccessDeniedException("Permission invalid. Not exist in system configuration");
         }
-        if (SecurityHelper.isRoot()) {
+        SecurityRole role = event.getRole();
+        if (role.isRoot()) {
             return;
         }
-        Integer idRole = event.getIdRole().intValue();
+        Integer idRole = role.getId().intValue();
         Collection<String> permissions = new ArrayList<>();
-        if (event.getIdScope() != null) {
-            permissions = getScopePermission(event.getIdScope()).get(idRole);
+        if (role.getIdScope() != null) {
+            permissions = getScopePermission(role.getIdScope()).get(idRole);
         }
-        if (Items.isEmpty(permissions) && StringUtils.isNotBlank(event.getScopeGroup())) {
-            permissions = getScopeGroupPermission(event.getScopeGroup()).get(idRole);
+        if (Items.isEmpty(permissions) && StringUtils.isNotBlank(role.getScopeGroup())) {
+            permissions = getScopeGroupPermission(role.getScopeGroup()).get(idRole);
         }
         if (Items.isEmpty(permissions)) {
             permissions = getPermissions().get(idRole);

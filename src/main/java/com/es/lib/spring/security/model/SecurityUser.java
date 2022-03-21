@@ -17,11 +17,7 @@ public class SecurityUser extends User {
     public static final String ATTR_TIME_ZONE = "TIME_ZONE";
 
     private final Number id;
-    private final Number idScope;
-    private final String scopeGroup;
-    private final Number idRole;
-    private final boolean root;
-    private final boolean admin;
+    private final SecurityRole role;
     private final Map<String, String> attrs;
 
     public SecurityUser(
@@ -33,20 +29,12 @@ public class SecurityUser extends User {
         boolean credentialsNonExpired,
         boolean accountNonLocked,
         Collection<? extends GrantedAuthority> authorities,
-        Number idScope,
-        String scopeGroup,
-        Number idRole,
-        boolean root,
-        boolean admin,
+        SecurityRole role,
         Map<String, String> attrs
     ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
-        this.idScope = idScope;
-        this.scopeGroup = scopeGroup;
-        this.idRole = idRole;
-        this.root = root;
-        this.admin = admin;
+        this.role = role;
         this.attrs = attrs != null ? attrs : new HashMap<>();
     }
 }

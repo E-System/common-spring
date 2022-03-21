@@ -1,5 +1,6 @@
 package com.es.lib.spring.security;
 
+import com.es.lib.spring.security.model.SecurityRole;
 import com.es.lib.spring.security.model.SecurityUser;
 import com.es.lib.spring.security.service.DefaultUserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -22,11 +23,11 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 authorities(1, null, null, 1, true),
-                null,
-                null,
-                1,
-                true,
-                false,
+                new SecurityRole(
+                    1,
+                    true,
+                    false
+                ),
                 new HashMap<>()
             );
         } else if ("admin".equals(username)) {
@@ -39,11 +40,11 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 authorities(1, null, null, 1, false),
-                null,
-                null,
-                1,
-                false,
-                true,
+                new SecurityRole(
+                    1,
+                    false,
+                    true
+                ),
                 new HashMap<>()
             );
         } else if ("user".equals(username)) {
@@ -56,11 +57,11 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 authorities(1, null, null, 1, false),
-                null,
-                null,
-                1,
-                false,
-                false,
+                new SecurityRole(
+                    1,
+                    false,
+                    false
+                ),
                 new HashMap<>()
             );
         }
