@@ -1,6 +1,6 @@
 package com.es.lib.spring.security.handler;
 
-import com.es.lib.spring.security.service.SecurityService;
+import com.es.lib.spring.security.service.PermissionService;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
@@ -68,7 +68,7 @@ public class EsMethodSecurityExpressionRoot extends SecurityExpressionRoot imple
         this.returnObject = obj;
     }
 
-    public void setSecurityService(SecurityService securityService) {
-        expression.setSecurityService(securityService);
+    public void setPermissionService(PermissionService permissionService) {
+        expression.setPermissionService(permissionService);
     }
 }

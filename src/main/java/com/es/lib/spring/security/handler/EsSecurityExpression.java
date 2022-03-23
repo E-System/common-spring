@@ -2,13 +2,13 @@ package com.es.lib.spring.security.handler;
 
 import com.es.lib.entity.model.security.code.ISecurityAction;
 import com.es.lib.spring.security.SecurityHelper;
-import com.es.lib.spring.security.service.SecurityService;
+import com.es.lib.spring.security.service.PermissionService;
 import lombok.Setter;
 
 public class EsSecurityExpression {
 
     @Setter
-    private SecurityService securityService;
+    private PermissionService permissionService;
 
     public boolean isRoot() {
         return SecurityHelper.isRoot();
@@ -19,7 +19,7 @@ public class EsSecurityExpression {
     }
 
     public boolean can(String target, String action) {
-        return securityService.hasPermission(target, action);
+        return permissionService.can(target, action);
     }
 
     public boolean canView(String target) {

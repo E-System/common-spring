@@ -1,6 +1,6 @@
 package com.es.lib.spring.security.config;
 
-import com.es.lib.spring.security.service.SecurityService;
+import com.es.lib.spring.security.service.PermissionService;
 import com.es.lib.spring.security.handler.EsMethodSecurityExpressionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -26,7 +26,7 @@ public class EsSecurityExpressionsAuthorizationConfig extends GlobalMethodSecuri
         final EsMethodSecurityExpressionHandler expressionHandler = new EsMethodSecurityExpressionHandler();
         expressionHandler.setPermissionEvaluator(permissionEvaluator);
         expressionHandler.setApplicationContext(applicationContext);
-        expressionHandler.setSecurityService(applicationContext.getBean(SecurityService.class));
+        expressionHandler.setPermissionService(applicationContext.getBean(PermissionService.class));
         return expressionHandler;
     }
 }

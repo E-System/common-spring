@@ -27,6 +27,7 @@ public interface ErrorCodes {
     String VALIDATION = "validation.error";
     String FORBIDDEN = "forbidden";
     String THROWABLE = "throwable";
+    String UNAUTHORIZED = "unauthorized";
 
     static HttpStatus createStatus(CodeRuntimeException e) {
         if (e instanceof BadRequestException) {

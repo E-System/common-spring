@@ -1,6 +1,6 @@
 package com.es.lib.spring.security.handler;
 
-import com.es.lib.spring.security.service.SecurityService;
+import com.es.lib.spring.security.service.PermissionService;
 import lombok.Setter;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 public class EsMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
 
     @Setter
-    private SecurityService securityService;
+    private PermissionService permissionService;
 
     @Override
     protected MethodSecurityExpressionOperations createSecurityExpressionRoot(
@@ -21,7 +21,7 @@ public class EsMethodSecurityExpressionHandler extends DefaultMethodSecurityExpr
         root.setPermissionEvaluator(getPermissionEvaluator());
         root.setTrustResolver(getTrustResolver());
         root.setRoleHierarchy(getRoleHierarchy());
-        root.setSecurityService(securityService);
+        root.setPermissionService(permissionService);
         return root;
     }
 }
