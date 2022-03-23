@@ -1,6 +1,7 @@
 package com.es.lib.spring.security.service.impl;
 
 import com.es.lib.common.collection.Items;
+import com.es.lib.spring.security.model.SecurityRole;
 import com.es.lib.spring.security.service.AuthorityService;
 import com.es.lib.spring.security.service.PermissionListService;
 import com.es.lib.spring.security.service.PermissionSourceService;
@@ -18,10 +19,10 @@ public class AuthorityServiceImpl implements AuthorityService {
     private final PermissionListService permissionListService;
 
     @Override
-    public Map<String, Boolean> items(Number idScope, String group, Number idRole, boolean root) {
+    public Map<String, Boolean> items(SecurityRole role) {
         return Items.toMap(
-            root ? permissionListService.keys() :
-                permissionSourceService.keys(idScope, group, idRole),
+            role.isRoot() ? permissionListService.keys() :
+                permissionSourceService.keys(role.getIdScope(), role.getScopeGroup(), role.getId()),
             k -> k,
             v -> true
         );

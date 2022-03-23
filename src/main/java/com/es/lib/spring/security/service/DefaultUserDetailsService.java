@@ -1,5 +1,6 @@
 package com.es.lib.spring.security.service;
 
+import com.es.lib.spring.security.model.SecurityRole;
 import com.es.lib.spring.security.model.SecurityUser;
 import com.es.lib.spring.security.service.AuthorityService;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public abstract class DefaultUserDetailsService implements UserDetailsService {
 
     protected abstract SecurityUser fetchAndValidateSecurityUser(String username);
 
-    protected Collection<? extends GrantedAuthority> authorities(Number id, Number idScope, String scopeGroup, Number idRole, boolean root) {
-        return authorityService.authorities(idScope, scopeGroup, idRole, root);
+    protected Collection<? extends GrantedAuthority> authorities(SecurityRole role) {
+        return authorityService.authorities(role);
     }
 }

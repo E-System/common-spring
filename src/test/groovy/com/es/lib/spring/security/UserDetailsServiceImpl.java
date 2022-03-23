@@ -14,6 +14,11 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
     @Override
     protected SecurityUser fetchAndValidateSecurityUser(String username) {
         if ("root".equals(username)) {
+            SecurityRole role = new SecurityRole(
+                1,
+                true,
+                false
+            );
             return new SecurityUser(
                 1,
                 username,
@@ -22,15 +27,16 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 true,
-                authorities(1, null, null, 1, true),
-                new SecurityRole(
-                    1,
-                    true,
-                    false
-                ),
+                authorities(role),
+                role,
                 new HashMap<>()
             );
         } else if ("admin".equals(username)) {
+            SecurityRole role = new SecurityRole(
+                1,
+                false,
+                true
+            );
             return new SecurityUser(
                 1,
                 username,
@@ -39,15 +45,16 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 true,
-                authorities(1, null, null, 1, false),
-                new SecurityRole(
-                    1,
-                    false,
-                    true
-                ),
+                authorities(role),
+                role,
                 new HashMap<>()
             );
         } else if ("user".equals(username)) {
+            SecurityRole role = new SecurityRole(
+                1,
+                false,
+                false
+            );
             return new SecurityUser(
                 1,
                 username,
@@ -56,12 +63,8 @@ public class UserDetailsServiceImpl extends DefaultUserDetailsService {
                 true,
                 true,
                 true,
-                authorities(1, null, null, 1, false),
-                new SecurityRole(
-                    1,
-                    false,
-                    false
-                ),
+                authorities(role),
+                role,
                 new HashMap<>()
             );
         }
