@@ -21,6 +21,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -31,9 +32,11 @@ import javax.annotation.PostConstruct;
 public class BuildInfoServiceImpl implements BuildInfoService {
 
     private BuildInfo info;
+    private Collection<BuildInfo> allInfo;
 
     @PostConstruct
     public void postConstruct() {
         info = BuildInfo.create();
+        allInfo = BuildInfo.list("com.es");
     }
 }

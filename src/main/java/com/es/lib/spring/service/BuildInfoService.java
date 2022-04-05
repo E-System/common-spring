@@ -17,6 +17,8 @@ package com.es.lib.spring.service;
 
 import com.es.lib.common.model.BuildInfo;
 
+import java.util.Collection;
+
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 29.06.17
@@ -24,4 +26,6 @@ import com.es.lib.common.model.BuildInfo;
 public interface BuildInfoService {
 
     BuildInfo getInfo();
+
+    Collection<BuildInfo> getAllInfo();
 }
