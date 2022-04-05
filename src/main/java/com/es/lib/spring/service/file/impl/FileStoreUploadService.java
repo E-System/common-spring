@@ -56,7 +56,7 @@ public class FileStoreUploadService {
      * @param file данные загружаемого файла
      * @return объект сохраненного файла
      */
-    public IFileStore load(MultipartFile file, Set<String> checkers) {
+    public IFileStore load(MultipartFile file, Set<String> checkers, Set<String> tags) {
         if (file == null || file.isEmpty()) {
             return null;
         }
@@ -71,7 +71,8 @@ public class FileStoreUploadService {
                 fileName.getExt(),
                 file.getContentType(),
                 bytes,
-                checkers
+                checkers,
+                tags
             );
         } catch (IOException e) {
             throw new ESRuntimeException(e);

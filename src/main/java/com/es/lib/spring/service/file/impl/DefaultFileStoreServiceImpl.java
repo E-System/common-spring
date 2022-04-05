@@ -37,14 +37,14 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     protected FileStoreScopeService fileStoreScopeService;
 
     @Override
-    public IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers) {
-        log.warn("---USE DEFAULT FileStoreService::toStore({}, {})---", temporaryFile, checkers);
+    public IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers, Set<String> tags) {
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {})---", temporaryFile, checkers, tags);
         return null;
     }
 
     @Override
-    public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data, Set<String> checkers) {
-        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers);
+    public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data, Set<String> checkers, Set<String> tags) {
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers, tags);
         return null;
     }
 

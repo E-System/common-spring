@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 public interface FileStoreService {
 
-    IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers);
+    IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers, Set<String> tags);
 
     IFileStore toStore(
         long crc32,
@@ -42,29 +42,32 @@ public interface FileStoreService {
         String ext,
         String mime,
         byte[] data,
-        Set<String> checkers
+        Set<String> checkers,
+        Set<String> tags
     );
 
-    default IFileStore toStore(String data, String fileName, String ext, String mime, Set<String> checkers) {
+    default IFileStore toStore(String data, String fileName, String ext, String mime, Set<String> checkers, Set<String> tags) {
         return toStore(
             data.getBytes(),
             fileName,
             ext,
             mime,
-            checkers
+            checkers,
+            tags
         );
     }
 
-    default IFileStore toStore(String data, String fileNameWithExt, String mime, Set<String> checkers) {
+    default IFileStore toStore(String data, String fileNameWithExt, String mime, Set<String> checkers, Set<String> tags) {
         return toStore(
             data.getBytes(),
             fileNameWithExt,
             mime,
-            checkers
+            checkers,
+            tags
         );
     }
 
-    default IFileStore toStore(byte[] data, String fileName, String ext, String mime, Set<String> checkers) {
+    default IFileStore toStore(byte[] data, String fileName, String ext, String mime, Set<String> checkers, Set<String> tags) {
         return toStore(
             Hash.crc32().get(data),
             data.length,
@@ -72,11 +75,12 @@ public interface FileStoreService {
             ext,
             mime,
             data,
-            checkers
+            checkers,
+            tags
         );
     }
 
-    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime, Set<String> checkers) {
+    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime, Set<String> checkers, Set<String> tags) {
         FileName fileName = FileName.create(fileNameWithExt);
         return toStore(
             Hash.crc32().get(data),
@@ -85,7 +89,8 @@ public interface FileStoreService {
             fileName.getExt(),
             mime,
             data,
-            checkers
+            checkers,
+            tags
         );
     }
 

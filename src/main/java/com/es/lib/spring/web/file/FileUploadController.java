@@ -19,6 +19,7 @@ import com.es.lib.dto.DTOResponse;
 import com.es.lib.spring.service.file.impl.FileStoreUploadService;
 import com.es.lib.spring.web.common.ApiController;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Set;
 
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
@@ -44,9 +47,11 @@ public class FileUploadController extends ApiController {
 
     @Operation(description = "Загрузить файл")
     @PostMapping(value = PATH)
-    public DTOResponse<Long> upload(@RequestParam(value = "file") MultipartFile file) {
-        // TODO: Add checkers
-        return ok(fileStoreUploadService.load(file, null).getId());
+    public DTOResponse<Long> upload(
+        @Parameter(description = "Мультипарт файла") @RequestParam(value = "file") MultipartFile file,
+        @Parameter(description = "Идентификаторы чекеров") @RequestParam(value = "checkers", required = false) Set<String> checkers,
+        @Parameter(description = "Теги") @RequestParam(value = "tags", required = false) Set<String> tags) {
+        return ok(fileStoreUploadService.load(file, checkers, tags).getId());
     }
 
 }
