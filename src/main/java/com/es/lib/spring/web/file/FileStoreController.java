@@ -65,7 +65,7 @@ public class FileStoreController extends BaseStoreController {
                 try {
                     Thumb thumb = attributes.getThumb() != null ? attributes.getThumb() : new Thumb();
                     Images.write(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream(), "НЕТ ИЗОБРАЖЕНИЯ");
-                } catch (IOException ignored) { }
+                } catch (IOException ignored) {}
             }
         );
     }
