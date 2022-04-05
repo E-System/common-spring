@@ -21,6 +21,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,6 +38,8 @@ public class BuildInfoServiceImpl implements BuildInfoService {
     @PostConstruct
     public void postConstruct() {
         info = BuildInfo.create();
-        allInfo = BuildInfo.list("com.es");
+        allInfo = new ArrayList<>();
+        allInfo.add(info);
+        allInfo.addAll(BuildInfo.list("com.es"));
     }
 }
