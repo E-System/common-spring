@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public abstract class DefaultCaptchaServiceImpl extends BaseService implements CaptchaService {
 
-    @Value("${common.captcha.defaultCode:null}")
+    @Value("${common.captcha.default-code:null}")
     private String defaultCode;
 
     /**
