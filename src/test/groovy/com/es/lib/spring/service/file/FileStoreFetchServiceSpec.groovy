@@ -20,7 +20,7 @@ import com.es.lib.spring.BaseSpringSpec
 import com.es.lib.spring.service.file.impl.FileStoreFetchService
 import org.springframework.beans.factory.annotation.Autowired
 
-class FileStoreControllerServiceSpec extends BaseSpringSpec {
+class FileStoreFetchServiceSpec extends BaseSpringSpec {
 
     @Autowired
     FileStoreFetchService service
