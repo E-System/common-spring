@@ -35,7 +35,7 @@ import java.util.Set;
 
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
-@Tag(name = "Файлы")
+@Tag(name = "Files")
 @Slf4j
 @RestController
 @ConditionalOnProperty("common.file-store.path")
@@ -45,12 +45,12 @@ public class FileUploadController extends ApiController {
 
     private final FileStoreUploadService fileStoreUploadService;
 
-    @Operation(description = "Загрузить файл")
+    @Operation(description = "Upload file")
     @PostMapping(value = PATH)
     public DTOResponse<Long> upload(
-        @Parameter(description = "Мультипарт файла") @RequestParam(value = "file") MultipartFile file,
-        @Parameter(description = "Идентификаторы чекеров") @RequestParam(value = "checkers", required = false) Set<String> checkers,
-        @Parameter(description = "Теги") @RequestParam(value = "tags", required = false) Set<String> tags) {
+        @Parameter(description = "Multipart file") @RequestParam(value = "file") MultipartFile file,
+        @Parameter(description = "Checker identifiers") @RequestParam(value = "checkers", required = false) Set<String> checkers,
+        @Parameter(description = "Tags") @RequestParam(value = "tags", required = false) Set<String> tags) {
         return ok(fileStoreUploadService.load(file, checkers, tags).getId());
     }
 
