@@ -61,7 +61,7 @@ public class SecurityHelper {
             return null;
         }
         Object principal = authentication.getPrincipal();
-        if (principal == null || !(principal.getClass().isAssignableFrom(principalType))) {
+        if (principal == null || !(principalType.isAssignableFrom(principal.getClass()))) {
             return null;
         }
         return (T) principal;
