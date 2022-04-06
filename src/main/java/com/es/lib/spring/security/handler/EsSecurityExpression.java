@@ -30,6 +30,10 @@ public class EsSecurityExpression {
         return can(target, ISecurityAction.EDIT);
     }
 
+    public boolean canDelete(String target) {
+        return can(target, ISecurityAction.DELETE);
+    }
+
     public boolean canViewAny(String... targets) {
         for (String target : targets) {
             if (canView(target)) {

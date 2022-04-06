@@ -15,7 +15,6 @@
  */
 package com.es.lib.spring.security;
 
-import com.es.lib.spring.security.SecurityHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;

@@ -35,6 +35,10 @@ public class EsMethodSecurityExpressionRoot extends SecurityExpressionRoot imple
         return expression.canEdit(target);
     }
 
+    public boolean canDelete(String target) {
+        return expression.canDelete(target);
+    }
+
     public boolean canViewAny(String... targets) {
         return expression.canViewAny(targets);
     }
