@@ -32,6 +32,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 
 public class OAuthConfigureHelper {
 
+    public static AccessTokenConverter serverTokenConverter(String key) {
+        return serverTokenConverter(key, null);
+    }
+
     public static AccessTokenConverter serverTokenConverter(String key, UserDetailsService userDetailsService) {
         JwtAccessTokenConverter result = new JwtAccessTokenConverter();
         result.setSigningKey(key);
