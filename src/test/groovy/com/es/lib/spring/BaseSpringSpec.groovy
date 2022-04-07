@@ -15,10 +15,10 @@
  */
 package com.es.lib.spring
 
+
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
 /**

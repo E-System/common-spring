@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import spock.lang.Ignore
 
 class PreAuthorizeSpec extends BaseSpringSpec {
 
@@ -107,4 +108,15 @@ class PreAuthorizeSpec extends BaseSpringSpec {
         }
     }
 
+    @Ignore
+    def "permission user success with oauth"() {
+        when:
+        def response = getForEntity("root", "root", "oauth/view/target2", DTOResponse.class)
+        println(response)
+        then:
+        response.statusCode == HttpStatus.FORBIDDEN
+        with(response.body as DTOResult) {
+            it.code == ErrorCodes.FORBIDDEN
+        }
+    }
 }

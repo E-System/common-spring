@@ -4,8 +4,11 @@ package com.es.lib.spring.security
 import com.es.lib.dto.DTOResponse
 import com.es.lib.spring.web.common.ApiController
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+
+import java.security.Principal
 
 @RestController
 class PreAuthorizeController extends ApiController {
@@ -32,5 +35,12 @@ class PreAuthorizeController extends ApiController {
     @PreAuthorize("canView('TARGET2')")
     DTOResponse<String> canViewTarget2() {
         return ok("ok")
+    }
+
+    @GetMapping("oauth/view/target2")
+    @PreAuthorize("canView('TARGET2')")
+    DTOResponse<String> canViewTarget2OAuth(Principal principal) {
+        AuthenticationPrincipalArgumentResolver
+        return ok(principal.getClass().name)
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -60,7 +61,12 @@ public class SecurityHelper {
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
-        Object principal = authentication.getPrincipal();
+        Object principal;
+        if (authentication instanceof OAuth2Authentication) {
+            principal = ((OAuth2Authentication) authentication).getUserAuthentication().getPrincipal();
+        } else {
+            principal = authentication.getPrincipal();
+        }
         if (principal == null || !(principalType.isAssignableFrom(principal.getClass()))) {
             return null;
         }
