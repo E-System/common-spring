@@ -21,6 +21,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder;
+import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
@@ -70,17 +72,25 @@ public class OAuthConfigureHelper {
     }
 
     public static void serverClientDetails(ClientDetailsServiceConfigurer clients, String clientId, String clientSecret) throws Exception {
-        serverClientDetails(clients, clientId, clientSecret, null);
+        serverClientDetails(clients, clientId, clientSecret, null, null);
     }
 
     public static void serverClientDetails(ClientDetailsServiceConfigurer clients, String clientId, String clientSecret, Integer accessTokenValiditySeconds) throws Exception {
-        clients.inMemory()
-               .withClient(clientId)
-               .secret(clientSecret)
-               .authorizedGrantTypes("password", "refresh_token")
-               .authorities(OAuthHelper.OAUTH_ROLE_INTERNAL)
-               .scopes("read", "write")
-               .accessTokenValiditySeconds(accessTokenValiditySeconds != null ? accessTokenValiditySeconds : OAuthHelper.TOKEN_LIFETIME_NORMAL);
+        serverClientDetails(clients, clientId, clientSecret, accessTokenValiditySeconds, null);
+    }
+
+    public static void serverClientDetails(ClientDetailsServiceConfigurer clients, String clientId, String clientSecret, Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds) throws Exception {
+        ClientDetailsServiceBuilder<InMemoryClientDetailsServiceBuilder>.ClientBuilder clientBuilder =
+            clients.inMemory()
+                   .withClient(clientId)
+                   .secret(clientSecret)
+                   .authorizedGrantTypes("password", "refresh_token")
+                   .authorities(OAuthHelper.OAUTH_ROLE_INTERNAL)
+                   .scopes("read", "write")
+                   .accessTokenValiditySeconds(accessTokenValiditySeconds != null ? accessTokenValiditySeconds : OAuthHelper.TOKEN_LIFETIME_NORMAL);
+        if (refreshTokenValiditySeconds != null) {
+            clientBuilder.refreshTokenValiditySeconds(refreshTokenValiditySeconds);
+        }
     }
 
     public static void clientSecurity(HttpSecurity http) throws Exception {
