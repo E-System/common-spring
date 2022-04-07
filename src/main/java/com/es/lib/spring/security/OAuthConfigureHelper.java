@@ -15,25 +15,33 @@
  */
 package com.es.lib.spring.security;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-@Slf4j
 public class OAuthConfigureHelper {
 
-    public static AccessTokenConverter serverTokenConverter(String key) {
+    public static AccessTokenConverter serverTokenConverter(String key, UserDetailsService userDetailsService) {
         JwtAccessTokenConverter result = new JwtAccessTokenConverter();
         result.setSigningKey(key);
+        if (userDetailsService != null) {
+            DefaultUserAuthenticationConverter defaultUserAuthenticationConverter = new DefaultUserAuthenticationConverter();
+            defaultUserAuthenticationConverter.setUserDetailsService(userDetailsService);
+            DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter();
+            defaultAccessTokenConverter.setUserTokenConverter(defaultUserAuthenticationConverter);
+            result.setAccessTokenConverter(defaultAccessTokenConverter);
+        }
         return result;
     }
 
