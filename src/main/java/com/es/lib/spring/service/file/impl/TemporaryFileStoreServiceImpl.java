@@ -72,4 +72,15 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
             null
         );
     }
+
+    @Override
+    public TemporaryFileStore create(String url, StoreMode mode) {
+        return FileStores.createTemporary(
+            fileStorePathService.getBasePath(),
+            url,
+            mode,
+            fileStoreScopeService.getScope(),
+            null
+        );
+    }
 }

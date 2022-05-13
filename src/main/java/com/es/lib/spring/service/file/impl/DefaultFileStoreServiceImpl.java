@@ -49,6 +49,12 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
+    public IFileStore toStore(String url, Set<String> checkers, Set<String> tags) {
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {})---", url, checkers, tags);
+        return null;
+    }
+
+    @Override
     public IFileStore fromStore(long id) {
         log.warn("---USE DEFAULT FileStoreService::fromStore({})---", id);
         return null;

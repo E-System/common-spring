@@ -46,6 +46,8 @@ public interface FileStoreService {
         Set<String> tags
     );
 
+    IFileStore toStore(String url, Set<String> checkers, Set<String> tags);
+
     default IFileStore toStore(String data, String fileName, String ext, String mime, Set<String> checkers, Set<String> tags) {
         return toStore(
             data.getBytes(),

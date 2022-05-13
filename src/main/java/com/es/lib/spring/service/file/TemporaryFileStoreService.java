@@ -28,4 +28,6 @@ public interface TemporaryFileStoreService {
     TemporaryFileStore create(byte[] from, String ext, StoreMode mode);
 
     TemporaryFileStore create(InputStream from, String ext, int size, StoreMode mode);
+
+    TemporaryFileStore create(String url, StoreMode mode);
 }
