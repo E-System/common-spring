@@ -15,8 +15,8 @@
  */
 package com.es.lib.spring.service.file.impl;
 
+import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.FileStoreService;
@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 
 @Slf4j
 public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
@@ -37,20 +36,8 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     protected FileStoreScopeService fileStoreScopeService;
 
     @Override
-    public IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers, Set<String> tags) {
-        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {})---", temporaryFile, checkers, tags);
-        return null;
-    }
-
-    @Override
-    public IFileStore toStore(long crc32, long size, String fileName, String ext, String mime, byte[] data, Set<String> checkers, Set<String> tags) {
-        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {}, {}, {}, {}, {}, {})---", crc32, size, fileName, ext, mime, data, checkers, tags);
-        return null;
-    }
-
-    @Override
-    public IFileStore toStore(String url, Set<String> checkers, Set<String> tags) {
-        log.warn("---USE DEFAULT FileStoreService::toStore({}, {}, {})---", url, checkers, tags);
+    public IFileStore toStore(FileStores.Source source, FileStores.Attrs attrs) {
+        log.warn("---USE DEFAULT FileStoreService::toStore({}, {})---", source, attrs);
         return null;
     }
 

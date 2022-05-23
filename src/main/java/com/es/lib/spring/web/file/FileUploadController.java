@@ -16,6 +16,7 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.dto.DTOResponse;
+import com.es.lib.entity.FileStores;
 import com.es.lib.spring.service.file.impl.FileStoreUploadService;
 import com.es.lib.spring.web.common.ApiController;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Set;
 
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
@@ -50,8 +52,9 @@ public class FileUploadController extends ApiController {
     public DTOResponse<Long> upload(
         @Parameter(description = "Multipart file") @RequestParam(value = "file") MultipartFile file,
         @Parameter(description = "Checker identifiers") @RequestParam(value = "checkers", required = false) Set<String> checkers,
-        @Parameter(description = "Tags") @RequestParam(value = "tags", required = false) Set<String> tags) {
-        return ok(fileStoreUploadService.load(file, checkers, tags).getId());
+        @Parameter(description = "Tags") @RequestParam(value = "tags", required = false) Set<String> tags,
+        @RequestParam Map<String, String> attrs) {
+        return ok(fileStoreUploadService.load(file, new FileStores.Attrs(checkers, tags, attrs)).getId());
     }
 
 }

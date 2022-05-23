@@ -15,19 +15,11 @@
  */
 package com.es.lib.spring.service.file;
 
+import com.es.lib.entity.FileStores;
 import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 
-import java.io.InputStream;
-import java.nio.file.Path;
-
 public interface TemporaryFileStoreService {
 
-    TemporaryFileStore create(Path from, StoreMode mode);
-
-    TemporaryFileStore create(byte[] from, String ext, StoreMode mode);
-
-    TemporaryFileStore create(InputStream from, String ext, int size, StoreMode mode);
-
-    TemporaryFileStore create(String url, StoreMode mode);
+    TemporaryFileStore create(StoreMode mode, FileStores.Source source);
 }

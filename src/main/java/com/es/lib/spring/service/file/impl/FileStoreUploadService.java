@@ -16,15 +16,17 @@
 package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.exception.ESRuntimeException;
+import com.es.lib.common.file.FileInfo;
 import com.es.lib.common.file.FileName;
 import com.es.lib.common.security.Hash;
 import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
-import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
+import com.es.lib.spring.service.file.TemporaryFileStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -46,7 +49,7 @@ import java.util.Set;
 public class FileStoreUploadService {
 
     private final FileStoreService fileStoreService;
-    private final FileStorePathService fileStorePathService;
+    private final TemporaryFileStoreService temporaryFileStoreService;
     @Setter(onMethod_ = @Autowired(required = false))
     private Collection<FileStoreUploadCheckService> uploadCheckServices;
 
@@ -56,7 +59,7 @@ public class FileStoreUploadService {
      * @param file данные загружаемого файла
      * @return объект сохраненного файла
      */
-    public IFileStore load(MultipartFile file, Set<String> checkers, Set<String> tags) {
+    public IFileStore load(MultipartFile file, FileStores.Attrs attrs) {
         if (file == null || file.isEmpty()) {
             return null;
         }
@@ -65,14 +68,8 @@ public class FileStoreUploadService {
         try {
             byte[] bytes = file.getBytes();
             return fileStoreService.toStore(
-                Hash.crc32().get(bytes),
-                file.getSize(),
-                fileName.getName(),
-                fileName.getExt(),
-                file.getContentType(),
-                bytes,
-                checkers,
-                tags
+                new FileStores.ByteSource(bytes, new FileInfo(fileName, file.getSize(), Hash.crc32().get(bytes), file.getContentType())),
+                attrs
             );
         } catch (IOException e) {
             throw new ESRuntimeException(e);
@@ -86,15 +83,9 @@ public class FileStoreUploadService {
         FileName fileName = FileName.create(file.getOriginalFilename());
         check(file, fileName);
         try {
-            return FileStores.createTemporary(
-                fileStorePathService.getBasePath(),
-                null,
-                file.getInputStream(),
-                fileName,
-                file.getSize(),
-                file.getContentType(),
-                new ThumbnailatorThumbGenerator(),
-                null
+            return temporaryFileStoreService.create(
+                StoreMode.TEMPORARY,
+                new FileStores.StreamSource(file.getInputStream(), new FileInfo(fileName, file.getSize(), 0, file.getContentType()))
             );
         } catch (IOException e) {
             throw new ESRuntimeException(e);
