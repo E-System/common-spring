@@ -23,7 +23,6 @@ import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.StoreMode;
 import com.es.lib.entity.model.file.TemporaryFileStore;
-import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.FileStoreUploadCheckService;
 import com.es.lib.spring.service.file.TemporaryFileStoreService;
@@ -36,8 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -52,6 +49,10 @@ public class FileStoreUploadService {
     private final TemporaryFileStoreService temporaryFileStoreService;
     @Setter(onMethod_ = @Autowired(required = false))
     private Collection<FileStoreUploadCheckService> uploadCheckServices;
+
+    public IFileStore load(String url, boolean upload, FileStores.Attrs attrs) {
+        return fileStoreService.toStore(new FileStores.UrlSource(url, upload), attrs);
+    }
 
     /**
      * Обработать событие загрузки файла

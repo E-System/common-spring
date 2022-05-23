@@ -50,11 +50,17 @@ public class FileUploadController extends ApiController {
     @Operation(description = "Upload file")
     @PostMapping(value = PATH)
     public DTOResponse<Long> upload(
-        @Parameter(description = "Multipart file") @RequestParam(value = "file") MultipartFile file,
+        @Parameter(description = "Multipart file") @RequestParam(value = "file", required = false) MultipartFile file,
+        @Parameter(description = "Url to file") @RequestParam(value = "url", required = false) String url,
+        @Parameter(description = "Upload file by url flag") @RequestParam(value = "upload", required = false, defaultValue = "false") boolean upload,
         @Parameter(description = "Checker identifiers") @RequestParam(value = "checkers", required = false) Set<String> checkers,
         @Parameter(description = "Tags") @RequestParam(value = "tags", required = false) Set<String> tags,
         @RequestParam Map<String, String> attrs) {
-        return ok(fileStoreUploadService.load(file, new FileStores.Attrs(checkers, tags, attrs)).getId());
+        FileStores.Attrs fileStoreAttrs = new FileStores.Attrs(checkers, tags, attrs);
+        if (file == null) {
+            return ok(fileStoreUploadService.load(url, upload, fileStoreAttrs).getId());
+        }
+        return ok(fileStoreUploadService.load(file, fileStoreAttrs).getId());
     }
 
 }
