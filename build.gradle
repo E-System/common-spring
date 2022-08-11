@@ -30,7 +30,7 @@ buildscript {
 }
 
 wrapper {
-    gradleVersion = '7.4.2'
+    gradleVersion = '7.5.1'
 }
 
 apply from: "build-${profile}.gradle"
@@ -139,7 +139,7 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.7.1'
+    springVersion = '2.7.2'
     springSecurityVersion = '5.7.2'
     springSecurityOAuth = '2.5.2.RELEASE'
     pgVersion = '42.3.6'
