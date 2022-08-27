@@ -18,6 +18,7 @@ package com.es.lib.spring.service
 import com.es.lib.spring.BaseSpringSpec
 import com.es.lib.spring.exception.ServiceException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 
 import java.text.MessageFormat
 
@@ -97,6 +98,19 @@ class BaseServiceSpec extends BaseSpringSpec {
         def res = service.fetch({ obj }, errorCode, errorMessage, errorOs)
         then:
         res == obj
+    }
+
+    def "toSort"() {
+        when:
+        def sort = service.toSort('desc:field1;asc:field2')
+        then:
+        sort.getOrderFor('field1').getDirection() == Sort.Direction.DESC
+        sort.getOrderFor('field2').getDirection() == Sort.Direction.ASC
+        when:
+        sort = service.toSort('field1;field2')
+        then:
+        sort.getOrderFor('field1').getDirection() == Sort.Direction.ASC
+        sort.getOrderFor('field2').getDirection() == Sort.Direction.ASC
     }
 
 }
