@@ -139,12 +139,12 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.7.3'
+    springVersion = '2.7.4'
     springSecurityVersion = '5.7.3'
     springSecurityOAuth = '2.5.2.RELEASE'
-    pgVersion = '42.3.6'
+    pgVersion = '42.5.0'
     lombokVersion = '1.18.24'
-    springDocVersion = '1.6.10'
+    springDocVersion = '1.6.11'
     commonVersion = "1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
 }
 dependencies {
@@ -168,14 +168,14 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
-    testImplementation 'org.spockframework:spock-spring:2.1-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.2-groovy-4.0'
+    testImplementation 'org.spockframework:spock-spring:2.2-groovy-4.0'
     testImplementation "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
     testImplementation "org.springframework.security:spring-security-test:${springSecurityVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
-    testImplementation 'org.springframework.data:spring-data-commons:2.7.2'
+    testImplementation 'org.springframework.data:spring-data-commons:2.7.3'
     testImplementation "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOAuth}"
     testImplementation "org.springframework.security:spring-security-jwt:1.1.1.RELEASE"
     testImplementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
