@@ -28,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -114,7 +115,8 @@ public abstract class BaseStoreController extends BaseController {
 
     private void addFileName(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
         if (StringUtils.isNotBlank(fileName)) {
-            response.setHeader("Content-Disposition", IO.fileNameDisposition(false, fileName));
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, IO.fileNameDisposition(false, fileName));
+            response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
         }
     }
 }
