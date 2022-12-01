@@ -15,6 +15,8 @@
  */
 package com.es.lib.spring.service.file
 
+import com.es.lib.common.file.FileInfo
+import com.es.lib.entity.FileStores
 import com.es.lib.entity.model.file.StoreMode
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +44,7 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
 
     def "Create from exist file"() {
         when:
-        def file = service.create(path, StoreMode.TEMPORARY)
+        def file = service.create(StoreMode.TEMPORARY, new FileStores.PathSource(path, null))
         println file
         then:
         with(file) {
@@ -59,7 +61,7 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
 
     def "Create from bytes"() {
         when:
-        def file = service.create("Hello".bytes, 'txt', StoreMode.TEMPORARY)
+        def file = service.create(StoreMode.TEMPORARY, new FileStores.ByteSource("Hello".bytes, new FileInfo(null, 'txt', 0, 0, null)), )
         println file
         then:
         with(file) {
@@ -76,7 +78,7 @@ class TemporaryFileStoreServiceSpec extends BaseSpringSpec {
     def "Create from input stream"() {
         when:
         def inputStream = new ByteArrayInputStream("Hello".bytes)
-        def file = service.create(inputStream, 'txt', 5, StoreMode.TEMPORARY)
+        def file = service.create(StoreMode.TEMPORARY, new FileStores.StreamSource(inputStream, new FileInfo(null, 'txt', 0, 0, null)))
         println file
         then:
         with(file) {

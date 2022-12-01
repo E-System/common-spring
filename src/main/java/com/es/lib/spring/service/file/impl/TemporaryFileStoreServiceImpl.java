@@ -26,9 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.nio.file.Path;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -38,48 +35,12 @@ public class TemporaryFileStoreServiceImpl implements TemporaryFileStoreService 
     private final FileStoreScopeService fileStoreScopeService;
 
     @Override
-    public TemporaryFileStore create(Path from, StoreMode mode) {
-        return FileStores.createTemporary(
+    public TemporaryFileStore create(StoreMode mode, FileStores.Source source) {
+        return FileStores.toStore(
             fileStorePathService.getBasePath(),
-            from,
             mode,
             fileStoreScopeService.getScope(),
-            null
-        );
-    }
-
-    @Override
-    public TemporaryFileStore create(byte[] from, String ext, StoreMode mode) {
-        return FileStores.createTemporary(
-            fileStorePathService.getBasePath(),
-            from,
-            ext,
-            mode,
-            fileStoreScopeService.getScope(),
-            null
-        );
-    }
-
-    @Override
-    public TemporaryFileStore create(InputStream from, String ext, int size, StoreMode mode) {
-        return FileStores.createTemporary(
-            fileStorePathService.getBasePath(),
-            from,
-            ext,
-            size,
-            mode,
-            fileStoreScopeService.getScope(),
-            null
-        );
-    }
-
-    @Override
-    public TemporaryFileStore create(String url, StoreMode mode) {
-        return FileStores.createTemporary(
-            fileStorePathService.getBasePath(),
-            url,
-            mode,
-            fileStoreScopeService.getScope(),
+            source,
             null
         );
     }

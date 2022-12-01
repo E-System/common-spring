@@ -16,15 +16,12 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.common.collection.Items;
-import com.es.lib.common.file.FileName;
-import com.es.lib.common.security.Hash;
+import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
-import com.es.lib.entity.model.file.TemporaryFileStore;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,68 +30,7 @@ import java.util.stream.Collectors;
  */
 public interface FileStoreService {
 
-    IFileStore toStore(TemporaryFileStore temporaryFile, Set<String> checkers, Set<String> tags);
-
-    IFileStore toStore(
-        long crc32,
-        long size,
-        String fileName,
-        String ext,
-        String mime,
-        byte[] data,
-        Set<String> checkers,
-        Set<String> tags
-    );
-
-    IFileStore toStore(String url, Set<String> checkers, Set<String> tags);
-
-    default IFileStore toStore(String data, String fileName, String ext, String mime, Set<String> checkers, Set<String> tags) {
-        return toStore(
-            data.getBytes(),
-            fileName,
-            ext,
-            mime,
-            checkers,
-            tags
-        );
-    }
-
-    default IFileStore toStore(String data, String fileNameWithExt, String mime, Set<String> checkers, Set<String> tags) {
-        return toStore(
-            data.getBytes(),
-            fileNameWithExt,
-            mime,
-            checkers,
-            tags
-        );
-    }
-
-    default IFileStore toStore(byte[] data, String fileName, String ext, String mime, Set<String> checkers, Set<String> tags) {
-        return toStore(
-            Hash.crc32().get(data),
-            data.length,
-            fileName,
-            ext,
-            mime,
-            data,
-            checkers,
-            tags
-        );
-    }
-
-    default IFileStore toStore(byte[] data, String fileNameWithExt, String mime, Set<String> checkers, Set<String> tags) {
-        FileName fileName = FileName.create(fileNameWithExt);
-        return toStore(
-            Hash.crc32().get(data),
-            data.length,
-            fileName.getName(),
-            fileName.getExt(),
-            mime,
-            data,
-            checkers,
-            tags
-        );
-    }
+    IFileStore toStore(FileStores.Source source, FileStores.Attrs attrs);
 
     IFileStore fromStore(long id);
 

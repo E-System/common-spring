@@ -15,15 +15,22 @@
  */
 package com.es.lib.spring.service;
 
+import com.es.lib.common.collection.Items;
 import com.es.lib.spring.exception.ServiceException;
 import com.es.lib.spring.service.message.MessageService;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -80,6 +87,45 @@ public abstract class BaseService {
      */
     protected <T> T fetch(Supplier<T> supplier, String code, String message, Object... args) {
         return fetch(supplier, true, code, message, args);
+    }
+
+    protected Sort toSort(String sort) {
+        return toSort(sort, null, Sort.unsorted());
+    }
+
+    protected Sort toSort(String sort, Set<String> allowed) {
+        return toSort(sort, allowed, Sort.unsorted());
+    }
+
+    protected Sort toSort(String sort, Sort defaultSoring) {
+        return toSort(sort, null, defaultSoring);
+    }
+
+    protected Sort toSort(String sort, Set<String> allowed, Sort defaultSoring) {
+        if (StringUtils.isBlank(sort)) {
+            return defaultSoring;
+        }
+        List<Sort.Order> orders = Arrays.stream(sort.split(";"))
+                                        .map(String::trim)
+                                        .map(v -> {
+                                            Sort.Direction direction = Sort.Direction.ASC;
+                                            if (v.toLowerCase().startsWith("desc:")) {
+                                                direction = Sort.Direction.DESC;
+                                                v = v.substring(5);
+                                            } else if (v.toLowerCase().startsWith("asc:")) {
+                                                v = v.substring(4);
+                                            }
+                                            if (!Items.isEmpty(allowed) && !allowed.contains(v)) {
+                                                return null;
+                                            }
+                                            return new Sort.Order(direction, v);
+                                        })
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toList());
+        if (Items.isEmpty(orders)) {
+            return defaultSoring;
+        }
+        return Sort.by(orders);
     }
 
     /**
