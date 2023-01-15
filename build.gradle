@@ -28,7 +28,9 @@ buildscript {
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
     }
 }
-
+plugins {
+    id "com.github.ben-manes.versions" version "0.44.0"
+}
 wrapper {
     gradleVersion = '7.6'
 }
@@ -144,7 +146,7 @@ ext {
     springSecurityOAuth = '2.5.2.RELEASE'
     pgVersion = '42.5.1'
     lombokVersion = '1.18.24'
-    springDocVersion = '1.6.13'
+    springDocVersion = '1.6.14'
     commonVersion = "1.5.0${project.ext.snapshot ? '-SNAPSHOT' : ''}"
 }
 dependencies {
@@ -155,7 +157,7 @@ dependencies {
 
     api "commons-io:commons-io:2.11.0"
     api "javax.servlet:javax.servlet-api:4.0.1"
-    api "net.coobird:thumbnailator:0.4.18"
+    api "net.coobird:thumbnailator:0.4.19"
 
     compileOnly "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     compileOnly "org.springframework.boot:spring-boot-starter-jdbc:${springVersion}"
