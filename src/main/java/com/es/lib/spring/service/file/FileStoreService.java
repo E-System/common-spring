@@ -16,8 +16,11 @@
 package com.es.lib.spring.service.file;
 
 import com.es.lib.common.collection.Items;
+import com.es.lib.common.exception.web.ForbiddenException;
+import com.es.lib.common.exception.web.NotFoundException;
 import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +36,17 @@ public interface FileStoreService {
     IFileStore toStore(FileStores.Source source, FileStores.Attrs attrs);
 
     IFileStore fromStore(long id);
+
+    default IFileStore fromStore(long id, String tag) {
+        IFileStore result = fromStore(id);
+        if (result == null) {
+            throw new NotFoundException("file.notFound", "File with id=" + id + " not found");
+        }
+        if (StringUtils.isNotBlank(tag) && !result.getTags().contains(tag)) {
+            throw new ForbiddenException("file.permissionDenied", "You have no permissions to access file with id=" + id);
+        }
+        return result;
+    }
 
     IFileStore fromStore(String base64);
 

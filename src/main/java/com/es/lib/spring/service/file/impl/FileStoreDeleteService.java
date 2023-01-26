@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.service.file.impl;
 
+import com.es.lib.common.collection.Items;
 import com.es.lib.entity.event.file.DeleteFileEvent;
 import com.es.lib.entity.event.file.DeleteFileStoreEvent;
 import com.es.lib.entity.iface.file.IFileStore;
@@ -25,6 +26,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Paths;
+import java.util.Collection;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -45,5 +47,12 @@ public class FileStoreDeleteService {
             )
         );
         eventPublisher.publishEvent(new DeleteFileStoreEvent(file));
+    }
+
+    public void delete(Collection<IFileStore> files) {
+        if (Items.isEmpty(files)) {
+            return;
+        }
+        files.forEach(this::delete);
     }
 }
