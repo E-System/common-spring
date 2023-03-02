@@ -2,35 +2,9 @@ package com.es.lib.spring.web.common
 
 import com.es.lib.dto.DTOPagerResponse
 import com.es.lib.dto.DTOResponse
-import com.es.lib.spring.BaseSpringSpec
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.http.ResponseEntity
+import com.es.lib.spring.BaseSpringControllerSpec
 
-class ApiControllerSpec extends BaseSpringSpec {
-
-    @LocalServerPort
-    private Integer port
-
-    @Value('${server.servlet.context-path:}')
-    private String contextPath
-
-    @Autowired
-    private TestRestTemplate restTemplate
-
-    String url(String path) {
-        return "http://localhost:" + port + contextPath + "/" + path
-    }
-
-    ResponseEntity getForEntity(String path, Class responseType, Object... params) {
-        return restTemplate.getForEntity(url(path), responseType, params)
-    }
-
-    ResponseEntity postForEntity(String path, Object request, Class responseType, Object... params) {
-        return restTemplate.postForEntity(url(path), request, responseType, params)
-    }
+class ApiControllerSpec extends BaseSpringControllerSpec {
 
     def "Simple and pager response"() {
         when:

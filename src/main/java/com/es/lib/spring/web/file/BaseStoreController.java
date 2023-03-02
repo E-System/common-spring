@@ -32,6 +32,7 @@ import org.springframework.http.HttpHeaders;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,6 +54,18 @@ public abstract class BaseStoreController extends BaseController {
             }
             resp.getOutputStream().flush();
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    protected void sendError(HttpServletResponse resp) {
+        sendError(resp, 400, "Bad request");
+    }
+
+    protected void sendError(HttpServletResponse resp, int code, String message) {
+        try {
+            resp.sendError(code, message);
+        } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
     }

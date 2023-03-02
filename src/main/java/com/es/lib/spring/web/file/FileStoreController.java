@@ -16,9 +16,10 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.common.file.Images;
+import com.es.lib.common.model.data.OutputData;
 import com.es.lib.entity.model.file.StoreRequest;
 import com.es.lib.entity.model.file.Thumb;
-import com.es.lib.spring.service.file.impl.FileStoreFetchService;
+import com.es.lib.spring.service.file.provider.FileStoreProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 @Slf4j
@@ -42,43 +44,40 @@ public class FileStoreController extends BaseStoreController {
 
     public static final String PATH = "/files";
     private static final String FULL_PATH = PATH + "/";
+    private final Collection<FileStoreProvider> fileStoreProviders;
 
-    private final FileStoreFetchService fileStoreFetchService;
-
-    @GetMapping(value = FULL_PATH + "*")
+    @GetMapping(value = FULL_PATH + "**")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
-        StoreRequest attributes = extractAttributes(req);
-        if (attributes == null) {
+        StoreRequest request = extractRequest(req);
+        if (request == null) {
             sendError(resp);
             return;
         }
 
-        process(
-            resp,
-            () -> fileStoreFetchService.getData(attributes),
-            () -> {
-                if (!attributes.isGenerateEmpty()) {
-                    sendError(resp);
-                    return;
-                }
-                resp.setContentType("image/png");
-                try {
-                    Thumb thumb = attributes.getThumb() != null ? attributes.getThumb() : new Thumb();
-                    Images.write(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream(), "НЕТ ИЗОБРАЖЕНИЯ");
-                } catch (IOException ignored) {}
-            }
+        process(resp,
+            () -> getData(request),
+            () -> processNotFound(request, resp)
         );
     }
 
-    private void sendError(HttpServletResponse resp) {
+    private OutputData getData(StoreRequest request) {
+        return fileStoreProviders.stream().filter(v -> v.support(request)).findFirst().get().provide(request);
+    }
+
+    private void processNotFound(StoreRequest request, HttpServletResponse resp) {
+        if (!request.isGenerateEmpty()) {
+            sendError(resp);
+            return;
+        }
+        resp.setContentType("image/png");
         try {
-            resp.sendError(400, "Bad request parameters");
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            Thumb thumb = request.getThumb() != null ? request.getThumb() : new Thumb();
+            Images.write(thumb.getWidth(), thumb.getHeight(), resp.getOutputStream(), "НЕТ ИЗОБРАЖЕНИЯ");
+        } catch (IOException ignored) {
         }
     }
 
-    private StoreRequest extractAttributes(HttpServletRequest req) {
+    private StoreRequest extractRequest(HttpServletRequest req) {
         Map<String, String[]> params = req.getParameterMap();
         String id = req.getParameter("id");
         if (StringUtils.isBlank(id)) {
