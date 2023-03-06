@@ -56,7 +56,7 @@ public class EntityFileMergeService {
     }
 
     public void merge(Long idEntity, String entity, String tag, Collection<? extends IEntityFile<? extends IFileStore>> current, Collection<DTOFileStore> target, Runnable onChange,
-                      Function<DTOFileStore, ? extends IEntityFile<? extends IFileStore>> creator, BiConsumer<IEntityFile<? extends IFileStore>, DTOFileStore> saver) {
+                      Function<DTOFileStore, ? extends IEntityFile<? extends IFileStore>> creator, BiConsumer<IEntityFile<? extends IFileStore>, IFileStore> saver) {
         boolean changed = false;
 
         List<? extends IEntityFile<? extends IFileStore>> currentFiles = new ArrayList<>(current == null ? Collections.emptyList() : current);
@@ -95,7 +95,7 @@ public class EntityFileMergeService {
                 entityFile.setSorting(i);
                 entityFile.setEntity(entity);
                 entityFile.setEntityId(idEntity);
-                saver.accept(entityFile, fileSource);
+                saver.accept(entityFile, file);
             }
         }
         if (!Items.isEmpty(toRemoveFiles)) {
