@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public abstract class EntityFileMergeService {
+public class EntityFileMergeService {
 
     private final FileStoreService fileStoreService;
     private final FileStoreDeleteService fileStoreDeleteService;
