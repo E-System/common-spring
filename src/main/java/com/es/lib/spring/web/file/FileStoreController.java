@@ -46,6 +46,18 @@ public class FileStoreController extends BaseStoreController {
     private static final String FULL_PATH = PATH + "/";
     private final Collection<FileStoreProvider> fileStoreProviders;
 
+    private final static FileStoreProvider NULL_FILE_STORE_PROVIDER = new FileStoreProvider() {
+        @Override
+        public OutputData provide(StoreRequest request) {
+            return null;
+        }
+
+        @Override
+        public boolean support(StoreRequest request) {
+            return true;
+        }
+    };
+
     @GetMapping(value = FULL_PATH + "**")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
         StoreRequest request = extractRequest(req);
@@ -61,7 +73,7 @@ public class FileStoreController extends BaseStoreController {
     }
 
     private OutputData getData(StoreRequest request) {
-        return fileStoreProviders.stream().filter(v -> v.support(request)).findFirst().get().provide(request);
+        return fileStoreProviders.stream().filter(v -> v.support(request)).findFirst().orElse(NULL_FILE_STORE_PROVIDER).provide(request);
     }
 
     private void processNotFound(StoreRequest request, HttpServletResponse resp) {
