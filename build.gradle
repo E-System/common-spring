@@ -25,7 +25,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:4.0.0.2929"
     }
 }
 plugins {
@@ -126,7 +126,6 @@ publishing {
 }
 ext {
     springVersion = '2.7.9'
-    springDataVersion = '2.7.8'
     springSecurityVersion = '5.7.6'
     springSecurityOAuth = '2.5.2.RELEASE'
     pgVersion = '42.5.4'
@@ -162,7 +161,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
     testImplementation "org.springframework.security:spring-security-test:${springSecurityVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
-    testImplementation "org.springframework.data:spring-data-commons:${springDataVersion}"
+    testImplementation "org.springframework.data:spring-data-commons:${springVersion}"
     testImplementation "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOAuth}"
     testImplementation "org.springframework.security:spring-security-jwt:1.1.1.RELEASE"
     testImplementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
