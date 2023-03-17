@@ -176,7 +176,7 @@ test {
 def sonarAvailable = properties['sonar_url'] != null && properties['sonar_user'] != null && properties['sonar_password'] != null
 if (sonarAvailable) {
     apply plugin: 'org.sonarqube'
-    sonarqube {
+    sonar {
         properties {
             property "sonar.host.url", "${sonar_url}"
             property "sonar.login", "${sonar_user}"
