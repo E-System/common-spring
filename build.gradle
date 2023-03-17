@@ -125,7 +125,7 @@ publishing {
     }
 }
 ext {
-    springVersion = '2.7.9'
+    springVersion = '2.7.8'
     springSecurityVersion = '5.7.6'
     springSecurityOAuth = '2.5.2.RELEASE'
     pgVersion = '42.5.4'
