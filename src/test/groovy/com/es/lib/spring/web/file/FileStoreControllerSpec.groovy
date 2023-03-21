@@ -2,6 +2,7 @@ package com.es.lib.spring.web.file
 
 import com.es.lib.spring.BaseSpringControllerSpec
 import org.apache.commons.io.IOUtils
+import org.springframework.http.HttpStatus
 
 class FileStoreControllerSpec extends BaseSpringControllerSpec {
 
@@ -19,17 +20,14 @@ class FileStoreControllerSpec extends BaseSpringControllerSpec {
         }
         response1.headers['Content-Disposition'].get(0).contains("filename=\"image.jpg\"")
         response1.headers['Content-Type'].get(0) == 'image/jpeg'
+
         with(response2.body as byte[]) {
             println it
             (IOUtils.toByteArray(FileStoreControllerSpec.class.getResourceAsStream("/file-store/" + fileName2)) == it)
         }
         response2.headers['Content-Disposition'].get(0).contains("filename=\"image.jpg\"")
         response2.headers['Content-Type'].get(0) == 'image/jpeg'
-        with(response3.body as byte[]) {
-            println it
-            (IOUtils.toByteArray(FileStoreControllerSpec.class.getResourceAsStream("/file-store/" + fileName3)) == it)
-        }
-        response3.headers['Content-Disposition'].get(0).contains("filename=\"image.jpg\"")
-        response3.headers['Content-Type'].get(0) == 'image/jpeg'
+
+        response3.statusCode == HttpStatus.BAD_REQUEST
     }
 }
