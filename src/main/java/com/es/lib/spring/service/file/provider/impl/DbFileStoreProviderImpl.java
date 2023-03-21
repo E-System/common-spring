@@ -25,15 +25,6 @@ public class DbFileStoreProviderImpl implements FileStoreProvider {
 
     @Override
     public boolean support(StoreRequest request) {
-        long value = NumberUtils.toLong(request.getId(), 0);
-        if (value > 0) {
-            return true;
-        }
-        try {
-            Base64.getUrlDecoder().decode(request.getId());
-            return true;
-        } catch (IllegalArgumentException ignore) {
-        }
-        return false;
+        return request.isValidForFileStore();
     }
 }
