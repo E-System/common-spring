@@ -53,4 +53,5 @@ abstract class BaseSpringControllerSpec extends BaseSpringSpec {
     protected ResponseEntity getForFile(String path) {
         return restTemplate.exchange(url(path), HttpMethod.GET, null, byte[].class)
     }
+
 }

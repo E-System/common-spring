@@ -13,15 +13,22 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Order(20)
 @Service
 public class ResourceFileStoreProviderImpl implements FileStoreProvider {
+    private static final String PATH_PREFIX = "/file-store/";
     @Override
     public OutputData provide(StoreRequest request) {
-        InputStream stream = ResourceFileStoreProviderImpl.class.getResourceAsStream("/file-store/" + request.getId());
+        String filePath = PATH_PREFIX + request.getId();
+        if (!Paths.get(filePath).normalize().startsWith(PATH_PREFIX)){
+            return null;
+        }
+        InputStream stream = ResourceFileStoreProviderImpl.class.getResourceAsStream(filePath);
         return OutputData.create(FilenameUtils.getName(request.getId()), IO.mime(request.getId()), stream);
     }
 
