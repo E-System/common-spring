@@ -15,13 +15,16 @@
  */
 package com.es.lib.spring.web.common;
 
+import com.es.lib.common.Jsons;
 import com.es.lib.dto.DTOPager;
 import com.es.lib.dto.DTOPagerResponse;
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.dto.validation.DTOValidationField;
 import com.es.lib.spring.config.Const;
 import com.es.lib.spring.exception.ServiceValidationException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -82,5 +85,19 @@ public abstract class ApiController extends BaseController {
             fields.add(new DTOValidationField(fieldError.getField(), message));
         }
         throw new ServiceValidationException(code, fields, messageService.get(code));
+    }
+
+    protected <T> T createFilter(String value, Class<T> classOfT) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+        return Jsons.fromJson(value, classOfT);
+    }
+
+    protected <T> T createFilter(String value, TypeReference<T> typeReference) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+        return Jsons.fromJson(value, typeReference);
     }
 }
