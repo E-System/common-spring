@@ -15,6 +15,7 @@
  */
 package com.es.lib.spring.service.file
 
+import com.es.lib.common.store.IStore
 import com.es.lib.entity.iface.file.IFileStore
 import com.es.lib.spring.BaseSpringSpec
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +53,7 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath(null, name, ext)
         expect:
-        with(result){
+        with(result) {
             root == Paths.get(configPath)
             relative.endsWith(fileName)
             !relative.toString().contains("/null/")
@@ -70,7 +71,7 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
         then:
         def result = fileStorePathService.getPath("null", name, ext)
         expect:
-        with(result){
+        with(result) {
             root == Paths.get(configPath)
             relative.endsWith(fileName)
             relative.toString().contains("/null/")
@@ -135,12 +136,12 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
 
         @Override
         String getAbbreviatedFileName(int maxWidth) {
-            return abbreviatedFileName(this, maxWidth)
+            return IStore.abbreviatedFileName(this, maxWidth)
         }
 
         @Override
         boolean isImage() {
-            return isImage(this)
+            return IStore.isImage(this)
         }
 
         @Override
@@ -148,7 +149,7 @@ class FileStorePathServiceSpec extends BaseSpringSpec {
 
         @Override
         String getFullName() {
-            return fullName(this)
+            return IStore.fullName(this)
         }
 
         @Override

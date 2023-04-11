@@ -16,7 +16,9 @@ import com.es.lib.entity.iface.file.IEntityFile;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.spring.service.file.impl.FileStoreDeleteService;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,8 +37,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EntityFileMergeService {
 
-    private final FileStoreService fileStoreService;
-    private final FileStoreDeleteService fileStoreDeleteService;
+    @Setter(onMethod_ = @Autowired)
+    private FileStoreService fileStoreService;
+    @Setter(onMethod_ = @Autowired)
+    private FileStoreDeleteService fileStoreDeleteService;
 
     public void merge(Consumer<IFileStore> setter, Supplier<IFileStore> getter, DTOFileStore value, String field,
                       List<Patcher.UpdatedField> noteFields, String tag) {
@@ -71,7 +75,7 @@ public class EntityFileMergeService {
         } else {
             DTOFileStore[] files = target.toArray(new DTOFileStore[0]);
             if (files.length < currentFiles.size()) {
-                toRemove = currentFiles.subList(files.length - 1, currentFiles.size());
+                toRemove = currentFiles.subList(files.length, currentFiles.size());
             }
             for (int i = 0; i < files.length; ++i) {
                 DTOFileStore fileSource = files[i];

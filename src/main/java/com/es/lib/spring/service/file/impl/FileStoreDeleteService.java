@@ -21,6 +21,7 @@ import com.es.lib.entity.event.file.DeleteFileStoreEvent;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,10 @@ import java.util.Collection;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileStoreDeleteService {
 
-    private final FileStorePathService fileStorePathService;
-    private final ApplicationEventPublisher eventPublisher;
+    @Setter(onMethod_ = @Autowired)
+    private FileStorePathService fileStorePathService;
+    @Setter(onMethod_ = @Autowired)
+    private ApplicationEventPublisher eventPublisher;
 
     public void delete(IFileStore file) {
         eventPublisher.publishEvent(
