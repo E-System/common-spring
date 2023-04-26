@@ -15,19 +15,37 @@
  */
 package com.es.lib.spring.config;
 
+import org.springframework.http.HttpMethod;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public abstract class AllowAllCorsFilter implements Filter {
 
     private FilterConfig config;
 
-    private static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
-    private static final String METHODS_NAME = "Access-Control-Allow-Methods";
-    private static final String MAX_AGE_NAME = "Access-Control-Max-Age";
-    private static final String HEADERS_NAME = "Access-Control-Allow-Headers";
+    public static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
+    public static final String METHODS_NAME = "Access-Control-Allow-Methods";
+    public static final String MAX_AGE_NAME = "Access-Control-Max-Age";
+    public static final String HEADERS_NAME = "Access-Control-Allow-Headers";
+
+    public static final String DEFAULT_ORIGIN = "*";
+    public static final Collection<String> DEFAULT_ALLOWED_METHODS = Arrays.asList(
+        HttpMethod.OPTIONS.name(),
+        HttpMethod.GET.name(),
+        HttpMethod.POST.name(),
+        HttpMethod.PUT.name(),
+        HttpMethod.PATCH.name(),
+        HttpMethod.DELETE.name()
+    );
+    public static final String DEFAULT_MAX_AGE = "3600";
+    public static final String DEFAULT_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -35,14 +53,14 @@ public abstract class AllowAllCorsFilter implements Filter {
     }
 
     @Override
-    public void destroy() { }
+    public void destroy() {}
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;
         fillHeaders(response);
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+        if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             chain.doFilter(req, resp);
@@ -50,9 +68,20 @@ public abstract class AllowAllCorsFilter implements Filter {
     }
 
     protected void fillHeaders(HttpServletResponse response) {
-        response.setHeader(ORIGIN_NAME, "*");
-        response.setHeader(METHODS_NAME, "OPTIONS, GET, POST, PUT, DELETE");
-        response.setHeader(MAX_AGE_NAME, "3600");
-        response.setHeader(HEADERS_NAME, "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
+        getResponseHeaders().forEach(response::setHeader);
+    }
+
+    protected Map<String, String> getResponseHeaders() {
+        Map<String, String> result = new LinkedHashMap<>();
+        result.put(ORIGIN_NAME, DEFAULT_ORIGIN);
+        result.put(METHODS_NAME, String.join(", ", getAllowedMethods()));
+        result.put(MAX_AGE_NAME, DEFAULT_MAX_AGE);
+        result.put(HEADERS_NAME, DEFAULT_HEADERS);
+        return result;
+
+    }
+
+    protected Collection<String> getAllowedMethods() {
+        return DEFAULT_ALLOWED_METHODS;
     }
 }
