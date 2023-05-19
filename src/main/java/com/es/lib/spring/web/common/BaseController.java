@@ -19,6 +19,8 @@ import com.es.lib.spring.service.message.MessageService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.Principal;
+
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 24.06.16
@@ -27,4 +29,8 @@ public abstract class BaseController {
 
     @Setter(onMethod_ = @Autowired)
     protected MessageService messageService;
+
+    protected String getLogin(Principal principal) {
+        return principal != null ? principal.getName() : null;
+    }
 }
