@@ -32,6 +32,7 @@ import org.springframework.validation.Validator;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.TimeZone;
 
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
@@ -91,13 +92,13 @@ public abstract class ApiController extends BaseController {
         if (StringUtils.isBlank(value)) {
             return null;
         }
-        return Jsons.fromJson(value, classOfT);
+        return Jsons.fromJson(value, classOfT, Jsons.mapper().setTimeZone(TimeZone.getDefault()));
     }
 
     protected <T> T createFilter(String value, TypeReference<T> typeReference) {
         if (StringUtils.isBlank(value)) {
             return null;
         }
-        return Jsons.fromJson(value, typeReference);
+        return Jsons.fromJson(value, typeReference, Jsons.mapper().setTimeZone(TimeZone.getDefault()));
     }
 }
