@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Supplier;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class PermissionServiceImpl implements PermissionService {
@@ -17,7 +19,7 @@ public class PermissionServiceImpl implements PermissionService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
-    public boolean can(String target, String action) {
+    public boolean can(String target, String action, Supplier<Boolean> teamSupplier, Supplier<Boolean> ownerSupplier) {
         SecurityUser securityUser = SecurityHelper.getSecurityUser();
         if (securityUser == null) {
             return false;
@@ -26,7 +28,9 @@ public class PermissionServiceImpl implements PermissionService {
             eventPublisher.publishEvent(new PermissionAvailableCheckEvent(
                 securityUser.getRole(),
                 target,
-                action
+                action,
+                teamSupplier,
+                ownerSupplier
             ));
         } catch (AccessDeniedException e) {
             return false;

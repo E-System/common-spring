@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.function.Supplier;
+
 /**
  * @author Dmitriy Zuzoev - zuzoev.d@ext-system.com
  * @since 15.03.2022
@@ -25,4 +27,6 @@ public class PermissionAvailableCheckEvent {
     private final SecurityRole role;
     private final String target;
     private final String action;
+    private final Supplier<Boolean> teamSupplier;
+    private final Supplier<Boolean> ownerSupplier;
 }

@@ -48,13 +48,19 @@ public class PermissionEventListener implements Serializable {
     private final ApplicationEventPublisher eventPublisher;
 
     private Map<Number, Collection<String>> permissions;
+    private Map<String, String> domains;
     private Map<String, Map<Number, Collection<String>>> scopeGroupedPermission;
+    private Map<String, Map<String, String>> scopeGroupedDomains;
     private Map<Number, Map<Number, Collection<String>>> scopedPermission;
+
+    private Map<Number, Map<String, String>> scopedDomains;
 
     @PostConstruct
     public void postConstruct() {
         scopedPermission = new ConcurrentHashMap<>();
+        scopedDomains = new ConcurrentHashMap<>();
         scopeGroupedPermission = new ConcurrentHashMap<>();
+        scopeGroupedDomains = new ConcurrentHashMap<>();
         reloadPermissions(false, null, null);
     }
 
@@ -94,11 +100,14 @@ public class PermissionEventListener implements Serializable {
         try {
             if (reloadAll) {
                 scopedPermission.clear();
+                scopedDomains.clear();
                 scopeGroupedPermission.clear();
             }
             if (idScope == null && StringUtils.isBlank(scopeGroup)) {
-                permissions = groupPermission(permissionSourceService.global());
-                log.info("Global permissions: {}", permissions);
+                Collection<PermissionItem> global = permissionSourceService.global();
+                permissions = groupPermission(global);
+                domains = extractDomains(global);
+                log.info("Global permissions: {} -> {}", permissions, domains);
             } else {
                 if (idScope != null) {
                     scopedPermission.remove(idScope);
@@ -110,6 +119,12 @@ public class PermissionEventListener implements Serializable {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        }
+    }
+
+    private Map<String, String> extractDomains(Collection<PermissionItem> items){
+        if (Items.isEmpty(items)){
+            return new ConcurrentHashMap<>();
         }
     }
 
@@ -137,7 +152,8 @@ public class PermissionEventListener implements Serializable {
     }
 
     private Map<Number, Collection<String>> reloadScopePermission(Number idScope) {
-        final Map<Number, Collection<String>> result = groupPermission(permissionSourceService.scope(idScope));
+        Collection<PermissionItem> scope = permissionSourceService.scope(idScope);
+        final Map<Number, Collection<String>> result = groupPermission(scope);
         log.info("Scope permissions: {}, {}", idScope, result);
         return result;
     }
