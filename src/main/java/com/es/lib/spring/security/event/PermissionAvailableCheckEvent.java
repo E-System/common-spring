@@ -29,4 +29,8 @@ public class PermissionAvailableCheckEvent {
     private final String action;
     private final Supplier<Boolean> teamSupplier;
     private final Supplier<Boolean> ownerSupplier;
+
+    public PermissionAvailableCheckEvent(SecurityRole role, String target, String action) {
+        this(role, target, action, null, null);
+    }
 }
