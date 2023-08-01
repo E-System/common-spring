@@ -19,6 +19,7 @@ import com.es.lib.dto.permission.DTOPermission;
 import com.es.lib.entity.model.security.PermissionGroups;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -33,5 +34,5 @@ public interface PermissionListService {
 
     boolean isAvailable(String key);
 
-    DTOPermission toModel(Collection<String> enabledPermissions, Function<String, String> groupNameResolver, Function<String, String> targetNameResolver, Function<String, String> actionNameResolver);
+    DTOPermission toModel(Collection<String> enabledPermissions, Map<String, String> domains, Function<String, String> groupNameResolver, Function<String, String> targetNameResolver, Function<String, String> actionNameResolver);
 }

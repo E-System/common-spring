@@ -81,7 +81,7 @@ public class PermissionListServiceImpl implements PermissionListService {
     }
 
     @Override
-    public DTOPermission toModel(Collection<String> enabledPermissions, Function<String, String> groupNameResolver, Function<String, String> targetNameResolver, Function<String, String> actionNameResolver) {
+    public DTOPermission toModel(Collection<String> enabledPermissions, Map<String, String> domains, Function<String, String> groupNameResolver, Function<String, String> targetNameResolver, Function<String, String> actionNameResolver) {
         Set<String> allActions = new LinkedHashSet<>();
         Collection<DTOGroup> result = new ArrayList<>();
         for (PermissionGroup group : groups()) {
@@ -89,10 +89,12 @@ public class PermissionListServiceImpl implements PermissionListService {
             for (Map.Entry<String, Collection<String>> entry : group.getActions().entrySet()) {
                 Collection<DTOAction> actions = new ArrayList<>();
                 for (String action : entry.getValue()) {
+                    String key = ISecurityAction.join(entry.getKey(), action);
                     actions.add(new DTOAction(
                         action,
                         actionNameResolver.apply(action),
-                        isEnabled(entry.getKey(), action, enabledPermissions)
+                        enabledPermissions.contains(key),
+                        domains.get(key)
                     ));
                     allActions.add(action);
                 }
@@ -111,11 +113,11 @@ public class PermissionListServiceImpl implements PermissionListService {
         return new DTOPermission(convertActions(allActions, actionNameResolver), result);
     }
 
-    private boolean isEnabled(String target, String action, Collection<String> enabledPermissions) {
-        return enabledPermissions.contains(ISecurityAction.join(target, action));
+    private String getDomain(String target, String action, Map<String, String> domains) {
+        return domains.get(ISecurityAction.join(target, action));
     }
 
     private Collection<DTOAction> convertActions(Collection<String> items, Function<String, String> actionNameResolver) {
-        return items.stream().map(v -> new DTOAction(v, actionNameResolver.apply(v), false)).collect(Collectors.toList());
+        return items.stream().map(v -> new DTOAction(v, actionNameResolver.apply(v), false, null)).collect(Collectors.toList());
     }
 }
