@@ -5,6 +5,8 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 
+import java.util.function.Supplier;
+
 public class EsMethodSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
     private Object filterObject;
@@ -25,6 +27,14 @@ public class EsMethodSecurityExpressionRoot extends SecurityExpressionRoot imple
 
     public boolean can(String target, String action) {
         return expression.can(target, action);
+    }
+
+    public boolean can(String target, String action, Supplier<Boolean> teamSupplier, Supplier<Boolean> ownerSupplier) {
+        return expression.can(target, action, teamSupplier, ownerSupplier);
+    }
+
+    public boolean canSelect(String target) {
+        return expression.canSelect(target);
     }
 
     public boolean canView(String target) {

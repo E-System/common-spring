@@ -5,6 +5,8 @@ import com.es.lib.spring.security.SecurityHelper;
 import com.es.lib.spring.security.service.PermissionService;
 import lombok.Setter;
 
+import java.util.function.Supplier;
+
 public class EsSecurityExpression {
 
     @Setter
@@ -19,7 +21,15 @@ public class EsSecurityExpression {
     }
 
     public boolean can(String target, String action) {
-        return permissionService.can(target, action);
+        return can(target, action, null, null);
+    }
+
+    public boolean can(String target, String action, Supplier<Boolean> teamSupplier, Supplier<Boolean> ownerSupplier) {
+        return permissionService.can(target, action, teamSupplier, ownerSupplier);
+    }
+
+    public boolean canSelect(String target) {
+        return can(target, ISecurityAction.SELECT);
     }
 
     public boolean canView(String target) {
