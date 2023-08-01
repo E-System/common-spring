@@ -11,13 +11,16 @@ package com.es.lib.spring.security.service.impl;
 import com.es.lib.common.collection.Items;
 import com.es.lib.entity.model.security.PermissionItem;
 import com.es.lib.entity.model.security.code.ISecurityAction;
+import com.es.lib.entity.model.security.code.ISecurityDomain;
 import com.es.lib.spring.security.event.PermissionAvailableCheckEvent;
 import com.es.lib.spring.security.event.PermissionReloadEvent;
 import com.es.lib.spring.security.event.PermissionReloadedEvent;
 import com.es.lib.spring.security.model.SecurityRole;
 import com.es.lib.spring.security.service.PermissionListService;
 import com.es.lib.spring.security.service.PermissionSourceService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +31,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -47,20 +49,53 @@ public class PermissionEventListener implements Serializable {
     private final PermissionListService permissionListService;
     private final ApplicationEventPublisher eventPublisher;
 
-    private Map<Number, Collection<String>> permissions;
-    private Map<String, String> domains;
-    private Map<String, Map<Number, Collection<String>>> scopeGroupedPermission;
-    private Map<String, Map<String, String>> scopeGroupedDomains;
-    private Map<Number, Map<Number, Collection<String>>> scopedPermission;
+    private Map<Number, Permission> permissions;
+    private Map<String, Map<Number, Permission>> scopeGroupedPermission;
+    private Map<Number, Map<Number, Permission>> scopedPermission;
 
-    private Map<Number, Map<String, String>> scopedDomains;
+    @Getter
+    @ToString
+    @RequiredArgsConstructor
+    private static class Permission {
+
+        private final Collection<String> items;
+        private final Map<String, String> domains;
+
+        public static Permission create(Collection<PermissionItem> items) {
+            Collection<String> perms = new ArrayList<>();
+            Map<String, String> domains = new HashMap<>();
+            if (Items.isNotEmpty(items)) {
+                for (PermissionItem item : items) {
+                    String key = item.getKey();
+                    perms.add(key);
+                    domains.put(key, item.getDomain());
+                }
+            }
+            return new Permission(perms, domains);
+        }
+
+        public boolean isValid(String key, Supplier<Boolean> teamSupplier, Supplier<Boolean> ownerSupplier) {
+            if (!items.contains(key)) {
+                return false;
+            }
+            String domain = domains.get(key);
+            if (StringUtils.isBlank(domain)) {
+                return true;
+            }
+            if (ISecurityDomain.TEAM.equals(domain)) {
+                return teamSupplier != null && teamSupplier.get();
+            }
+            if (ISecurityDomain.OWNER.equals(domain)) {
+                return ownerSupplier != null && ownerSupplier.get();
+            }
+            return false;
+        }
+    }
 
     @PostConstruct
     public void postConstruct() {
         scopedPermission = new ConcurrentHashMap<>();
-        scopedDomains = new ConcurrentHashMap<>();
         scopeGroupedPermission = new ConcurrentHashMap<>();
-        scopeGroupedDomains = new ConcurrentHashMap<>();
         reloadPermissions(false, null, null);
     }
 
@@ -81,17 +116,17 @@ public class PermissionEventListener implements Serializable {
             return;
         }
         Integer idRole = role.getId().intValue();
-        Collection<String> permissions = new ArrayList<>();
+        Permission permission = null;
         if (role.getIdScope() != null) {
-            permissions = getScopePermission(role.getIdScope()).get(idRole);
+            permission = getScopePermission(role.getIdScope()).get(idRole);
         }
-        if (Items.isEmpty(permissions) && StringUtils.isNotBlank(role.getScopeGroup())) {
-            permissions = getScopeGroupPermission(role.getScopeGroup()).get(idRole);
+        if (permission == null && StringUtils.isNotBlank(role.getScopeGroup())) {
+            permission = getScopeGroupPermission(role.getScopeGroup()).get(idRole);
         }
-        if (Items.isEmpty(permissions)) {
-            permissions = getPermissions().get(idRole);
+        if (permission == null) {
+            permission = getPermissions().get(idRole);
         }
-        if (permissions == null || !permissions.contains(pKey)) {
+        if (permission == null || !permission.isValid(pKey, event.getTeamSupplier(), event.getOwnerSupplier())) {
             throw new AccessDeniedException("Permission invalid");
         }
     }
@@ -100,14 +135,11 @@ public class PermissionEventListener implements Serializable {
         try {
             if (reloadAll) {
                 scopedPermission.clear();
-                scopedDomains.clear();
                 scopeGroupedPermission.clear();
             }
             if (idScope == null && StringUtils.isBlank(scopeGroup)) {
-                Collection<PermissionItem> global = permissionSourceService.global();
-                permissions = groupPermission(global);
-                domains = extractDomains(global);
-                log.info("Global permissions: {} -> {}", permissions, domains);
+                permissions = groupPermission(permissionSourceService.global());
+                log.info("Global permissions: {}", permissions);
             } else {
                 if (idScope != null) {
                     scopedPermission.remove(idScope);
@@ -122,48 +154,39 @@ public class PermissionEventListener implements Serializable {
         }
     }
 
-    private Map<String, String> extractDomains(Collection<PermissionItem> items){
-        if (Items.isEmpty(items)){
-            return new ConcurrentHashMap<>();
+    private Map<Number, Permission> groupPermission(Collection<PermissionItem> list) {
+        Map<Number, Permission> result = new ConcurrentHashMap<>();
+        Map<Integer, List<PermissionItem>> groupedByRole = list.stream().collect(Collectors.groupingBy(PermissionItem::getIdRole));
+        for (Map.Entry<Integer, List<PermissionItem>> entry : groupedByRole.entrySet()) {
+            result.put(entry.getKey(), Permission.create(entry.getValue()));
         }
+        return result;
     }
 
-    private Map<Number, Collection<String>> groupPermission(Collection<PermissionItem> list) {
-        return list.stream().collect(
-            Collectors.groupingBy(
-                PermissionItem::getIdRole,
-                Collectors.mapping(
-                    PermissionItem::getKey,
-                    Collectors.toCollection(ArrayList::new)
-                )
-            )
-        );
-    }
-
-    private Map<Number, Collection<String>> getPermissions() {
+    private Map<Number, Permission> getPermissions() {
         if (permissions == null) {
             reloadPermissions(false, null, null);
         }
         return permissions;
     }
 
-    private Map<Number, Collection<String>> getScopePermission(Number idScope) {
+    private Map<Number, Permission> getScopePermission(Number idScope) {
         return scopedPermission.computeIfAbsent(idScope, this::reloadScopePermission);
     }
 
-    private Map<Number, Collection<String>> reloadScopePermission(Number idScope) {
+    private Map<Number, Permission> reloadScopePermission(Number idScope) {
         Collection<PermissionItem> scope = permissionSourceService.scope(idScope);
-        final Map<Number, Collection<String>> result = groupPermission(scope);
+        final Map<Number, Permission> result = groupPermission(scope);
         log.info("Scope permissions: {}, {}", idScope, result);
         return result;
     }
 
-    private Map<Number, Collection<String>> getScopeGroupPermission(String scopeGroup) {
+    private Map<Number, Permission> getScopeGroupPermission(String scopeGroup) {
         return scopeGroupedPermission.computeIfAbsent(scopeGroup, this::reloadScopeGroupPermission);
     }
 
-    private Map<Number, Collection<String>> reloadScopeGroupPermission(String group) {
-        final Map<Number, Collection<String>> result = groupPermission(permissionSourceService.scopeGroup(group));
+    private Map<Number, Permission> reloadScopeGroupPermission(String group) {
+        final Map<Number, Permission> result = groupPermission(permissionSourceService.scopeGroup(group));
         log.info("Scope group permissions: {}, {}", group, result);
         return result;
     }
