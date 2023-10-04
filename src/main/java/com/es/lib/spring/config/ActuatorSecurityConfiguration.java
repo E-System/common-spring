@@ -67,8 +67,8 @@ public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter 
 
     private UserDetailsService specialUserDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User
-            .withUsername("user")
-            .password(passwordEncoder.encode("password"))
+            .withUsername(username)
+            .password(passwordEncoder.encode(password))
             .roles("ACTUATOR_ROLE")
             .build();
         return new InMemoryUserDetailsManager(user);
