@@ -17,8 +17,7 @@ package com.es.lib.spring.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +39,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Order(-100)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.EndpointId")
-@ConditionalOnExpression("!'${common.actuator.auth.username:}'.isBlank() && !'${common.actuator.auth.password:}'.isBlank()")
+@ConditionalOnProperty({"common.actuator.auth.username", "common.actuator.auth.password"})
 public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Value("${common.actuator.auth.username}")
