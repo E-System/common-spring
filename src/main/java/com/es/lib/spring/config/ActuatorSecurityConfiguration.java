@@ -40,12 +40,12 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Order(-100)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.EndpointId")
-@ConditionalOnExpression("!'${es.actuator.auth.username:}'.isBlank() && !'${es.actuator.auth.password:}'.isBlank()")
+@ConditionalOnExpression("!'${common.actuator.auth.username:}'.isBlank() && !'${common.actuator.auth.password:}'.isBlank()")
 public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Value("${es.actuator.auth.username}")
+    @Value("${common.actuator.auth.username}")
     private String username;
-    @Value("${es.actuator.auth.password}")
+    @Value("${common.actuator.auth.password}")
     private String password;
 
     @Override
