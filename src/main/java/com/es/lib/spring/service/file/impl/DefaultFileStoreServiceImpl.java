@@ -17,6 +17,7 @@ package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.entity.FileStores;
 import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.spring.service.file.FileStoreConverterService;
 import com.es.lib.spring.service.file.FileStorePathService;
 import com.es.lib.spring.service.file.FileStoreScopeService;
 import com.es.lib.spring.service.file.FileStoreService;
@@ -34,6 +35,8 @@ public abstract class DefaultFileStoreServiceImpl implements FileStoreService {
     protected FileStorePathService fileStorePathService;
     @Setter(onMethod_ = @Autowired)
     protected FileStoreScopeService fileStoreScopeService;
+    @Setter(onMethod_ = @Autowired)
+    protected FileStoreConverterService fileStoreConverterService;
 
     @Override
     public IFileStore toStore(FileStores.Source source, FileStores.Attrs attrs) {

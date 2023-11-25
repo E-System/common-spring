@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 @Order(20)
 @Service
 public class ResourceFileStoreProviderImpl implements FileStoreProvider {
+
     private static final String PATH_PREFIX = "/file-store/";
 
     @Override
