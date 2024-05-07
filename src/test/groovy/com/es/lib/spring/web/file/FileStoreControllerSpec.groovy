@@ -18,14 +18,14 @@ class FileStoreControllerSpec extends BaseSpringControllerSpec {
         with(response1.body as byte[]) {
             (IOUtils.toByteArray(FileStoreControllerSpec.class.getResourceAsStream("/file-store/" + fileName1)) == it)
         }
-        response1.headers['Content-Disposition'].get(0).contains("filename=\"image.jpg\"")
+        response1.headers['Content-Disposition'].get(0).contains("filename=\"=?UTF-8?Q?image.jpg?=\";")
         response1.headers['Content-Type'].get(0) == 'image/jpeg'
 
         with(response2.body as byte[]) {
             println it
             (IOUtils.toByteArray(FileStoreControllerSpec.class.getResourceAsStream("/file-store/" + fileName2)) == it)
         }
-        response2.headers['Content-Disposition'].get(0).contains("filename=\"image.jpg\"")
+        response2.headers['Content-Disposition'].get(0).contains("filename=\"=?UTF-8?Q?image.jpg?=\";")
         response2.headers['Content-Type'].get(0) == 'image/jpeg'
 
         response3.statusCode == HttpStatus.BAD_REQUEST
