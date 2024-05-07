@@ -46,6 +46,8 @@ public interface ErrorCodes {
             return HttpStatus.UNPROCESSABLE_ENTITY;
         } else if (e instanceof UpgradeRequiredException) {
             return HttpStatus.UPGRADE_REQUIRED;
+        } else if (e instanceof TooManyRequestsException) {
+            return HttpStatus.TOO_MANY_REQUESTS;
         }
         return HttpStatus.BAD_REQUEST;
     }

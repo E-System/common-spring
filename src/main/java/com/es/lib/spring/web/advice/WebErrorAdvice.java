@@ -75,7 +75,8 @@ public class WebErrorAdvice {
         UnauthorizedException.class,
         UnprocessableEntityException.class,
         UpgradeRequiredException.class,
-        CodeRuntimeException.class
+        CodeRuntimeException.class,
+        TooManyRequestsException.class
     })
     public ModelAndView exception(CodeRuntimeException e, Locale locale) {
         HttpStatus status = ErrorCodes.createStatus(e);

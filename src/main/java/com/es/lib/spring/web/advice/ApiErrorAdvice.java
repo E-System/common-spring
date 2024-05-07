@@ -105,7 +105,8 @@ public class ApiErrorAdvice {
         UnauthorizedException.class,
         UnprocessableEntityException.class,
         UpgradeRequiredException.class,
-        CodeRuntimeException.class
+        CodeRuntimeException.class,
+        TooManyRequestsException.class
     })
     public ResponseEntity<DTOResult> exception(CodeRuntimeException e) {
         log.error(e.getMessage(), e);
