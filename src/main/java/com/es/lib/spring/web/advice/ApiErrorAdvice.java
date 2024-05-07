@@ -119,7 +119,7 @@ public class ApiErrorAdvice {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public DTOResult throwable(Throwable e) {
-        log.error("Runtime exception: " + e.getMessage(), e);
+        log.error("Runtime exception: {}", e.getMessage(), e);
         String message;
         Map.Entry<Boolean, String> messageResolveResult = databaseConstraintMessageResolverService.resolveMessage(e);
         if (messageResolveResult.getKey()) {
