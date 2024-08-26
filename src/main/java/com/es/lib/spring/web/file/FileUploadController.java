@@ -18,6 +18,8 @@ package com.es.lib.spring.web.file;
 import com.es.lib.common.collection.Items;
 import com.es.lib.dto.DTOResponse;
 import com.es.lib.entity.FileStores;
+import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.spring.converter.FullFileStoreConverter;
 import com.es.lib.spring.service.file.impl.FileStoreUploadService;
 import com.es.lib.spring.web.common.ApiController;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,26 +55,32 @@ public class FileUploadController extends ApiController {
     private static final String UPLOAD = "upload";
     private static final String CHECKERS = "checkers";
     private static final String TAGS = "tags";
+    private static final String EX = "ex";
 
     private static final Collection<String> ALL = Arrays.asList(
-        FILE, URL, UPLOAD, CHECKERS, TAGS
+        FILE, URL, UPLOAD, CHECKERS, TAGS, EX
     );
 
     private final FileStoreUploadService fileStoreUploadService;
+    private final FullFileStoreConverter fullFileStoreConverter;
 
     @Operation(description = "Upload file")
     @PostMapping(value = PATH)
-    public DTOResponse<Long> upload(
+    public DTOResponse<?> upload(
         @Parameter(description = "Multipart file") @RequestParam(value = FILE, required = false) MultipartFile file,
         @Parameter(description = "Url to file") @RequestParam(value = URL, required = false) String url,
         @Parameter(description = "Upload file by url flag") @RequestParam(value = UPLOAD, required = false, defaultValue = "false") boolean upload,
         @Parameter(description = "Checker identifiers") @RequestParam(value = CHECKERS, required = false) Set<String> checkers,
         @Parameter(description = "Tags") @RequestParam(value = TAGS, required = false) Set<String> tags,
+        @Parameter(description = "Ex result") @RequestParam(value = EX, required = false, defaultValue = "false") boolean ex,
         @RequestParam Map<String, String> attrs) {
         FileStores.Attrs fileStoreAttrs = new FileStores.Attrs(checkers, tags, Items.remove(attrs, ALL));
+        IFileStore fileStore;
         if (file == null) {
-            return ok(fileStoreUploadService.load(url, upload, fileStoreAttrs).getId());
+            fileStore = fileStoreUploadService.load(url, upload, fileStoreAttrs);
+        } else {
+            fileStore = fileStoreUploadService.load(file, fileStoreAttrs);
         }
-        return ok(fileStoreUploadService.load(file, fileStoreAttrs).getId());
+        return ok(ex ? fullFileStoreConverter.convert(fileStore) : fileStore.getId());
     }
 }
