@@ -22,6 +22,7 @@ import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.spring.service.file.FileStorePathService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -43,12 +44,14 @@ public class FileStoreDeleteService {
     private ApplicationEventPublisher eventPublisher;
 
     public void delete(IFileStore file) {
-        eventPublisher.publishEvent(
-            new DeleteFileEvent(
-                fileStorePathService.getBasePath(),
-                Paths.get(file.getFilePath())
-            )
-        );
+        if(StringUtils.isNotBlank(file.getFilePath())) {
+            eventPublisher.publishEvent(
+                new DeleteFileEvent(
+                    fileStorePathService.getBasePath(),
+                    Paths.get(file.getFilePath())
+                )
+            );
+        }
         eventPublisher.publishEvent(new DeleteFileStoreEvent(file));
     }
 
