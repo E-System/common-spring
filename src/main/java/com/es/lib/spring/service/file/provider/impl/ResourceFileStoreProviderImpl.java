@@ -51,6 +51,7 @@ public class ResourceFileStoreProviderImpl implements FileStoreProvider {
             try {
                 Path pathForGenerator = thumbFolder.resolve(request.getId());
                 if (!Files.exists(pathForGenerator)) {
+                    Files.createFile(pathForGenerator);
                     Files.copy(stream, pathForGenerator, StandardCopyOption.REPLACE_EXISTING);
                 }
                 Path resultFile = Thumbs.generate(pathForGenerator, request.getThumb(), null, new ThumbnailatorThumbGenerator());
