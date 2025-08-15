@@ -26,10 +26,10 @@ public abstract class AllowAllCorsFilter implements Filter {
 
     private FilterConfig config;
 
-    private static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
-    private static final String METHODS_NAME = "Access-Control-Allow-Methods";
-    private static final String MAX_AGE_NAME = "Access-Control-Max-Age";
-    private static final String HEADERS_NAME = "Access-Control-Allow-Headers";
+    protected static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
+    protected static final String METHODS_NAME = "Access-Control-Allow-Methods";
+    protected static final String MAX_AGE_NAME = "Access-Control-Max-Age";
+    protected static final String HEADERS_NAME = "Access-Control-Allow-Headers";
 
     protected static final Collection<String> DEFAULT_ALLOWED_HEADERS = Arrays.asList(
         "x-requested-with",
