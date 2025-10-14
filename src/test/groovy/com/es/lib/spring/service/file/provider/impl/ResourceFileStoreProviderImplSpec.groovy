@@ -8,5 +8,6 @@ class ResourceFileStoreProviderImplSpec extends Specification {
         expect:
         ResourceFileStoreProviderImpl.processInput("image.jpg") == 'image.jpg'
         ResourceFileStoreProviderImpl.processInput("image\$v=123123123123.jpg") == 'image.jpg'
+        ResourceFileStoreProviderImpl.processInput("image.jpg\$v=123123123123") == 'image.jpg'
     }
 }
