@@ -41,15 +41,16 @@ public class ResourceFileStoreProviderImpl implements FileStoreProvider {
 
     @Override
     public OutputData provide(StoreRequest request) {
-        String filePath = PATH_PREFIX + request.getId();
+        String input = processInput(request.getId());
+        String filePath = PATH_PREFIX + input;
         if (!Paths.get(filePath).normalize().startsWith(PATH_PREFIX)) {
             return null;
         }
         InputStream stream = ResourceFileStoreProviderImpl.class.getResourceAsStream(filePath);
-        String fileName = FilenameUtils.getName(request.getId());
+        String fileName = FilenameUtils.getName(input);
         if (request.getThumb() != null) {
             try {
-                Path pathForGenerator = thumbFolder.resolve(request.getId());
+                Path pathForGenerator = thumbFolder.resolve(input);
                 if (!Files.exists(pathForGenerator)) {
                     Files.createDirectories(pathForGenerator.toAbsolutePath().getParent());
                     Files.copy(stream, pathForGenerator, StandardCopyOption.REPLACE_EXISTING);
@@ -66,9 +67,16 @@ public class ResourceFileStoreProviderImpl implements FileStoreProvider {
         }
         return OutputData.create(
             fileName,
-            IO.mime(request.getId()),
+            IO.mime(input),
             stream
         );
+    }
+
+    public static String processInput(String fileName) {
+        if (fileName == null) {
+            return null;
+        }
+        return fileName.replaceAll("\\$v=(\\d)*", "");
     }
 
     @Override

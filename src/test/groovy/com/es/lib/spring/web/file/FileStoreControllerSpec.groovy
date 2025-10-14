@@ -16,6 +16,9 @@ class FileStoreControllerSpec extends BaseSpringControllerSpec {
         def response3 = getForFile("files?id=" + fileName3)
         def fileName4 = 'image.jpg'
         def response4 = getForFile("files/" + fileName4 + '?thumb&tw=100')
+
+        def fileName5 = 'image.jpg'
+        def response5 = getForFile("files/" + fileName5 + "#123123" + '?thumb&tw=100')
         then:
         with(response1.body as byte[]) {
             (IOUtils.toByteArray(FileStoreControllerSpec.class.getResourceAsStream("/file-store/" + fileName1)) == it)
@@ -38,5 +41,17 @@ class FileStoreControllerSpec extends BaseSpringControllerSpec {
         }*/
         response4.headers['Content-Disposition'].get(0).contains("filename=\"=?UTF-8?Q?image.jpg?=\";")
         response4.headers['Content-Type'].get(0) == 'image/jpeg'
+
+        response5.headers['Content-Disposition'].get(0).contains("filename=\"=?UTF-8?Q?image.jpg?=\";")
+        response5.headers['Content-Type'].get(0) == 'image/jpeg'
+    }
+
+    def "File from resource with hash"(){
+        when:
+        def fileName = 'image$v=123123123.jpg'
+        def response = getForFile("files/" + fileName + '?thumb&tw=100')
+        then:
+        response.headers['Content-Disposition'].get(0).contains("filename=\"=?UTF-8?Q?image.jpg?=\";")
+        response.headers['Content-Type'].get(0) == 'image/jpeg'
     }
 }
