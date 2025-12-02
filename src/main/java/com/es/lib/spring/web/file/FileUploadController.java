@@ -16,6 +16,8 @@
 package com.es.lib.spring.web.file;
 
 import com.es.lib.dto.DTOResponse;
+import com.es.lib.entity.iface.file.IFileStore;
+import com.es.lib.spring.converter.FullFileStoreConverter;
 import com.es.lib.spring.service.file.impl.FileStoreUploadService;
 import com.es.lib.spring.web.common.BaseNewRestController;
 import lombok.RequiredArgsConstructor;
@@ -28,20 +30,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RestController
 @ConditionalOnProperty("common.fileStore.path")
 @ConditionalOnExpression("${common.fileStore.enabled:true}")
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FileUploadController extends BaseNewRestController {
 
+    private static final String FILE = "file";
+    private static final String URL = "url";
+    private static final String UPLOAD = "upload";
+    private static final String CHECKERS = "checkers";
+    private static final String TAGS = "tags";
+    private static final String EX = "ex";
+
+    private static final Collection<String> ALL = Arrays.asList(
+        FILE, URL, UPLOAD, CHECKERS, TAGS, EX
+    );
+
     private final FileStoreUploadService fileStoreUploadService;
+    private final FullFileStoreConverter fullFileStoreConverter;
 
     @PostMapping(value = PATH)
-    public DTOResponse<Long> upload(@RequestParam(value = "file") MultipartFile file) {
-        return ok(fileStoreUploadService.load(file).getId());
+    public DTOResponse<?> upload(
+        @RequestParam(value = FILE) MultipartFile file,
+        @RequestParam(value = EX, required = false, defaultValue = "false") boolean ex
+    ) {
+        IFileStore fileStore = fileStoreUploadService.load(file);
+        return ok(ex ? fullFileStoreConverter.convert(fileStore) : fileStore.getId());
     }
 
 }
