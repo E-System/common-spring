@@ -45,7 +45,7 @@ public class FileStoreController extends BaseStoreController {
 
     private final FileStoreControllerService service;
 
-    @GetMapping(value = FULL_PATH + "*")
+    @GetMapping(value = FULL_PATH + "**")
     public void files(HttpServletRequest req, HttpServletResponse resp) {
         FileStoreRequest attributes = extractAttributes(req);
         if (attributes == null) {
