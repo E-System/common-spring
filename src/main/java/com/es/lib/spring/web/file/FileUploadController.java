@@ -32,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import static com.es.lib.spring.web.file.FileStoreController.PATH;
 
@@ -58,8 +60,13 @@ public class FileUploadController extends BaseNewRestController {
 
     @PostMapping(value = PATH)
     public DTOResponse<?> upload(
-        @RequestParam(value = FILE) MultipartFile file,
-        @RequestParam(value = EX, required = false, defaultValue = "false") boolean ex
+        @RequestParam(value = FILE, required = false) MultipartFile file,
+        @RequestParam(value = URL, required = false) String url,
+        @RequestParam(value = UPLOAD, required = false, defaultValue = "false") boolean upload,
+        @RequestParam(value = CHECKERS, required = false) Set<String> checkers,
+        @RequestParam(value = TAGS, required = false) Set<String> tags,
+        @RequestParam(value = EX, required = false, defaultValue = "false") boolean ex,
+        @RequestParam Map<String, String> attrs
     ) {
         IFileStore fileStore = fileStoreUploadService.load(file);
         return ok(ex ? fullFileStoreConverter.convert(fileStore) : fileStore.getId());

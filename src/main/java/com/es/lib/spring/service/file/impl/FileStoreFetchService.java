@@ -21,6 +21,7 @@ import com.es.lib.entity.model.file.FileStoreRequest;
 import com.es.lib.entity.model.file.Thumb;
 import com.es.lib.entity.util.ThumbUtil;
 import com.es.lib.spring.service.file.FileStorePathService;
+import com.es.lib.spring.service.file.FileStoreSecurityService;
 import com.es.lib.spring.service.file.FileStoreService;
 import com.es.lib.spring.service.file.ThumbnailatorThumbGenerator;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class FileStoreFetchService {
 
     private final FileStorePathService fileStorePathService;
     private final FileStoreService fileStoreService;
+    private final FileStoreSecurityService fileStoreSecurityService;
 
     public Map.Entry<File, ? extends IFileStore> getFile(FileStoreRequest request) {
         long value = NumberUtils.toLong(request.getId(), 0);
@@ -72,10 +74,13 @@ public class FileStoreFetchService {
         if (fileStore == null || fileStore.getFilePath() == null) {
             return null;
         }
-        return Pair.of(
-            getRealFile(fileStore.getFilePath(), thumb, fileStore),
-            fileStore
-        );
+        if (fileStoreSecurityService.isFileAvailable(fileStore)) {
+            return Pair.of(
+                getRealFile(fileStore.getFilePath(), thumb, fileStore),
+                fileStore
+            );
+        }
+        return  null;
     }
 
     protected File getRealFile(String path, Thumb thumb, IFileStore fileStore) {

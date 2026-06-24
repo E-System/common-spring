@@ -18,6 +18,7 @@ package com.es.lib.spring.service.file.impl;
 import com.es.lib.spring.service.BuildInfoService;
 import com.es.lib.spring.service.EnvironmentProfileService;
 import com.es.lib.spring.service.file.FileStorePathService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public abstract class DefaultFileStorePathServiceImpl implements FileStorePathService {
 
+    @Setter(onMethod_ = @Autowired)
     private EnvironmentProfileService environmentProfileService;
+    @Setter(onMethod_ = @Autowired)
     private BuildInfoService buildInfoService;
     private String projectRoot;
     private String basePath;
@@ -35,16 +38,6 @@ public abstract class DefaultFileStorePathServiceImpl implements FileStorePathSe
     public String getBasePath() {
         String path = StringUtils.isNoneBlank(basePath) ? basePath : "/srv/es/" + buildInfoService.getInfo().getName() + "/file-store";
         return environmentProfileService.isDevelop() ? (projectRoot + path) : path;
-    }
-
-    @Autowired
-    public void setEnvironmentProfileService(EnvironmentProfileService environmentProfileService) {
-        this.environmentProfileService = environmentProfileService;
-    }
-
-    @Autowired
-    public void setBuildInfoService(BuildInfoService buildInfoService) {
-        this.buildInfoService = buildInfoService;
     }
 
     @Value("${project.root:./}")

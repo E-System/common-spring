@@ -17,6 +17,7 @@ package com.es.lib.spring.service.file.impl;
 
 import com.es.lib.common.FileUtil;
 import com.es.lib.common.exception.ESRuntimeException;
+import com.es.lib.common.file.FileName;
 import com.es.lib.entity.iface.file.IFileStore;
 import com.es.lib.entity.model.file.FileParts;
 import com.es.lib.entity.model.file.TemporaryFileStore;
