@@ -63,13 +63,6 @@ version = ext.mainVersion + (ext.snapshot ? '-SNAPSHOT' : '')
 repositories {
     mavenCentral()
     maven {
-        url "${artifactory_contextUrl}/libs-${project.ext.snapshot ? 'all-local' : 'release'}"
-        credentials {
-            username = 'public-reader'
-            password = 'Public-reader_123'
-        }
-    }
-    maven {
         url = uri("${resolve("repos_url")}/${((rootProject.ext.snapshot) ? "snapshots" : "releases")}")
         credentials {
             username "${resolve('repos_user')}"
