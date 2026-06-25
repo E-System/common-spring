@@ -7,4 +7,8 @@ public interface FileStoreSecurityCheckService {
     String getName();
 
     boolean isAvailable(IFileStore fileStore);
+
+    default boolean isAccept(String code) {
+        return code.equals(getName());
+    }
 }

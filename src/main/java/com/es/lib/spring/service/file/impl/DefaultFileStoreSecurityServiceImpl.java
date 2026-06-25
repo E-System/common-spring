@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class DefaultFileStoreSecurityServiceImpl implements FileStoreSecurityService {
@@ -22,16 +21,7 @@ public class DefaultFileStoreSecurityServiceImpl implements FileStoreSecuritySer
             return true;
         }
         for (String checker : fileStore.getCheckers()) {
-            if (!isAvailable(fileStore, checker)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    protected boolean isAvailable(IFileStore fileStore, String checker) {
-        for (FileStoreSecurityCheckService service : checkServices.stream().filter(v -> v.getName().equals(checker)).collect(Collectors.toList())) {
-            if (!service.isAvailable(fileStore)) {
+            if (!FileStoreSecurityService.isAvailable(fileStore, checker, checkServices)) {
                 return false;
             }
         }
