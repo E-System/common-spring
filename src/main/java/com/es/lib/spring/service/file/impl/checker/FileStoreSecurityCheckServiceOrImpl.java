@@ -1,4 +1,4 @@
-package com.es.lib.spring.service.file.impl;
+package com.es.lib.spring.service.file.impl.checker;
 
 import com.es.lib.common.collection.CollectionUtil;
 import com.es.lib.entity.iface.file.IFileStore;
