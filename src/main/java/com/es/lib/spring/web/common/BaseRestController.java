@@ -46,6 +46,11 @@ public abstract class BaseRestController extends BaseController {
             .build();
     }
 
+    protected DTOResponse ok(Runnable runnable) {
+        runnable.run();
+        return ok();
+    }
+
     protected <T> DTOResponse<T> ok(T data) {
         return new ResponseBuilder<T>()
             .code(DTOResult.OK)
